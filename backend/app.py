@@ -1,6 +1,7 @@
 import os
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Header
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -37,7 +38,7 @@ class NewsItem(BaseModel):
     title: str
     link: str
     source: Optional[str] = None
-    published_at: Optional[datetime] = None
+    published_at: Optional[str] = None
 
 class DataStore:
     def __init__(self):
@@ -100,7 +101,7 @@ class DataStore:
                 title="TechCrunch Robotics Update",
                 link="https://techcrunch.com/robotics",
                 source="TechCrunch",
-                published_at=datetime.utcnow(),
+                published_at=datetime.utcnow().isoformat(),
             )
         ]
 
@@ -170,6 +171,25 @@ class DataStore:
 store = DataStore()
 app = FastAPI(title="Robot Portal API")
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
+origins = [o.strip() for o in allowed_origins.split(",")] if allowed_origins else ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins if origins != ["*"] else ["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+try:
+    from ai_system.pipelines.news_pipeline import run_news_pipeline
+    from ai_system.pipelines.article_pipeline import run_article_pipeline
+    from ai_system.pipelines.robot_pipeline import run_robot_pipeline
+except Exception:
+    run_news_pipeline = None
+    run_article_pipeline = None
+    run_robot_pipeline = None
+
 @app.get("/health")
 def health():
     return {"ok": True}
@@ -192,3 +212,27 @@ def article(slug: str):
         return store.get_article_by_slug(slug)
     except KeyError:
         raise HTTPException(status_code=404, detail="Not found")
+
+@app.post("/tasks/run-daily")
+def run_daily(request: Request, x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token")):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    if not (run_news_pipeline and run_article_pipeline and run_robot_pipeline):
+        raise HTTPException(status_code=503, detail="Pipelines unavailable")
+    items = run_news_pipeline()
+    news_upserted = store.upsert_news(items)
+    topics = [it.get("title", "") for it in items[:3] if it.get("title")]
+    for t in topics:
+        art = run_article_pipeline(t)
+        store.upsert_article(art)
+    robots_seed = [
+        {"name": "Unitree Go2 Robot Dog", "company": "Unitree", "category": "robot dog"},
+        {"name": "Eilik Robot Companion", "company": "Energize Lab", "category": "companion"},
+    ]
+    for r in robots_seed:
+        robo = run_robot_pipeline(r)
+        store.upsert_robot(robo)
+    return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": len(robots_seed)}
