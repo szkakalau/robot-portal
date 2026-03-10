@@ -10,8 +10,22 @@ export async function getArticles() {
   return fetchJSON('/articles')
 }
 
-export async function getRobots() {
-  return fetchJSON('/robots')
+type RobotFilters = {
+  category?: string
+  company?: string
+  q?: string
+  min_price?: string | number
+  max_price?: string | number
+  limit?: string | number
+}
+
+export async function getRobots(filters: RobotFilters = {}) {
+  const qs = new URLSearchParams()
+  Object.entries(filters).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
+  })
+  const query = qs.toString()
+  return fetchJSON(query ? `/robots?${query}` : '/robots')
 }
 
 export async function getNews() {
@@ -20,4 +34,8 @@ export async function getNews() {
 
 export async function getArticle(slug: string) {
   return fetchJSON(`/article/${slug}`)
+}
+
+export async function getRobotByName(name: string) {
+  return fetchJSON(`/robot/by-name/${encodeURIComponent(name)}`)
 }

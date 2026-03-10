@@ -1,6 +1,6 @@
 create table if not exists robots (
   id uuid primary key default gen_random_uuid(),
-  name text not null,
+  name text unique not null,
   company text,
   category text,
   price numeric,
@@ -24,11 +24,12 @@ create table if not exists articles (
 
 create index if not exists articles_slug_idx on articles(slug);
 create index if not exists articles_category_idx on articles(category);
+create index if not exists robots_category_idx on robots(category);
 
 create table if not exists news_sources (
   id uuid primary key default gen_random_uuid(),
   title text not null,
-  link text not null,
+  link text unique not null,
   source text,
   published_at timestamptz
 );

@@ -31,6 +31,12 @@ uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload --app-dir robot-port
 python3 robot-portal/run.py
 ```
 
+脚本会自动执行：
+
+```
+新闻抓取 -> 文章生成 -> Top200机器人数据库入库
+```
+
 前端：
 
 ```
@@ -53,6 +59,7 @@ npm run dev
    - `SUPABASE_KEY`（可选）
    - `ALLOWED_ORIGINS=https://你的vercel域名.vercel.app`
 5. 验证：访问 `/health` 返回 `{"ok": true}`
+6. 首次接 Supabase 时先执行 `database/schema.sql`，确保 `robots/articles/news_sources` 表已创建
 
 全免费定时任务（推荐）：
 
@@ -80,6 +87,7 @@ npm run dev
 
 - 端点：`POST /tasks/run-daily`
 - 保护：设置后端环境变量 `TASK_TOKEN`，调用时需在请求头带 `X-Task-Token: <TOKEN>`（或使用查询参数 `?token=<TOKEN>`）
+- 内容：会自动写入新闻、文章和 Top200 机器人种子数据
 - 示例（本地，如未设置 `TASK_TOKEN` 则直接可用）：
   ```
   curl -X POST http://localhost:8000/tasks/run-daily
@@ -88,6 +96,17 @@ npm run dev
   ```
   curl -X POST https://<your-api>.onrender.com/tasks/run-daily \
     -H "X-Task-Token: <YOUR_TASK_TOKEN>"
+  ```
+
+机器人数据库接口：
+
+- 列表：`GET /robots`
+- 筛选参数（可选）：`category`、`company`、`q`、`min_price`、`max_price`、`limit`
+- 详情：`GET /robot/by-name/{name}`（前端会自动 URL 编码）
+- 示例：
+  ```
+  curl "http://localhost:8000/robots?category=robot%20dog&min_price=1000&limit=20"
+  curl "http://localhost:8000/robot/by-name/Unitree%20Go2%20Robot%20Dog"
   ```
 
 ## 部署到 Vercel（前端）

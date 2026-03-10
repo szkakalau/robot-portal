@@ -105,11 +105,55 @@ class DataStore:
             )
         ]
 
-    def get_robots(self) -> List[Robot]:
+    def _filter_robots(
+        self,
+        robots: List[Robot],
+        category: Optional[str] = None,
+        company: Optional[str] = None,
+        q: Optional[str] = None,
+        min_price: Optional[float] = None,
+        max_price: Optional[float] = None,
+        limit: int = 200,
+    ) -> List[Robot]:
+        items = robots
+        if category:
+            items = [r for r in items if (r.category or "").lower() == category.lower()]
+        if company:
+            items = [r for r in items if (r.company or "").lower() == company.lower()]
+        if q:
+            qn = q.lower()
+            items = [r for r in items if qn in (r.name or "").lower() or qn in (r.description or "").lower()]
+        if min_price is not None:
+            items = [r for r in items if r.price is not None and r.price >= min_price]
+        if max_price is not None:
+            items = [r for r in items if r.price is not None and r.price <= max_price]
+        return items[: max(1, min(limit, 500))]
+
+    def get_robots(
+        self,
+        category: Optional[str] = None,
+        company: Optional[str] = None,
+        q: Optional[str] = None,
+        min_price: Optional[float] = None,
+        max_price: Optional[float] = None,
+        limit: int = 200,
+    ) -> List[Robot]:
         if self.client:
             data = self.client.table("robots").select("*").order("created_at", desc=True).execute().data
-            return [Robot(**r) for r in data]
-        return self._robots
+            robots = [Robot(**r) for r in data]
+            return self._filter_robots(robots, category, company, q, min_price, max_price, limit)
+        return self._filter_robots(self._robots, category, company, q, min_price, max_price, limit)
+
+    def get_robot_by_name(self, name: str) -> Robot:
+        if self.client:
+            data = self.client.table("robots").select("*").eq("name", name).limit(1).execute().data
+            if data:
+                return Robot(**data[0])
+            raise KeyError("not found")
+        for r in self._robots:
+            if r.name == name:
+                return r
+        raise KeyError("not found")
 
     def get_articles(self) -> List[Article]:
         if self.client:
@@ -185,18 +229,34 @@ try:
     from ai_system.pipelines.news_pipeline import run_news_pipeline
     from ai_system.pipelines.article_pipeline import run_article_pipeline
     from ai_system.pipelines.robot_pipeline import run_robot_pipeline
+    from ai_system.data.top200_robots import build_top200_robot_list
 except Exception:
     run_news_pipeline = None
     run_article_pipeline = None
     run_robot_pipeline = None
+    build_top200_robot_list = None
 
 @app.get("/health")
 def health():
     return {"ok": True}
 
 @app.get("/robots", response_model=List[Robot])
-def robots():
-    return store.get_robots()
+def robots(
+    category: Optional[str] = None,
+    company: Optional[str] = None,
+    q: Optional[str] = None,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    limit: int = 200,
+):
+    return store.get_robots(category=category, company=company, q=q, min_price=min_price, max_price=max_price, limit=limit)
+
+@app.get("/robot/by-name/{name}", response_model=Robot)
+def robot_by_name(name: str):
+    try:
+        return store.get_robot_by_name(name)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Not found")
 
 @app.get("/articles", response_model=List[Article])
 def articles():
@@ -228,10 +288,7 @@ def run_daily(request: Request, x_task_token: Optional[str] = Header(default=Non
     for t in topics:
         art = run_article_pipeline(t)
         store.upsert_article(art)
-    robots_seed = [
-        {"name": "Unitree Go2 Robot Dog", "company": "Unitree", "category": "robot dog"},
-        {"name": "Eilik Robot Companion", "company": "Energize Lab", "category": "companion"},
-    ]
+    robots_seed = build_top200_robot_list() if build_top200_robot_list else []
     for r in robots_seed:
         robo = run_robot_pipeline(r)
         store.upsert_robot(robo)

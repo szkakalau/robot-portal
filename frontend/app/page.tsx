@@ -1,5 +1,11 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { getArticles, getRobots, getNews } from '../lib/api'
+
+export const metadata: Metadata = {
+  title: 'Robot Portal | Robotics News, Reviews and Database',
+  description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.'
+}
 
 export default async function Home() {
   const [articles, robots, news] = await Promise.all([getArticles(), getRobots(), getNews()])
@@ -7,7 +13,7 @@ export default async function Home() {
     <div>
       <section>
         <h1 style={{fontSize:32, fontWeight:700}}>Robot Portal</h1>
-        <p>专注机器人新闻、评测与数据库</p>
+        <p>Focused on robotics news, reviews, and product database pages</p>
       </section>
       <section>
         <h2>Trending Robots</h2>
@@ -21,7 +27,7 @@ export default async function Home() {
         <h2>Latest News</h2>
         <ul>
           {news.slice(0,5).map((n:any)=>(
-            <li key={n.link}><a href={n.link} target="_blank">{n.title}</a></li>
+            <li key={n.link}><a href={n.link} target="_blank" rel="noopener noreferrer">{n.title}</a></li>
           ))}
         </ul>
       </section>
