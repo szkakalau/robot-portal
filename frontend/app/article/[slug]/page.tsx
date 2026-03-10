@@ -19,6 +19,32 @@ function normalizeContent(value?: string) {
   return lines.join('\n').trim()
 }
 
+function splitParagraphs(content: string) {
+  if (!content) return []
+  const blocks = content
+    .split(/\n\s*\n+/g)
+    .map((p) => p.trim())
+    .filter(Boolean)
+  if (blocks.length > 1) return blocks
+  const lines = content
+    .split(/\n+/g)
+    .map((p) => p.trim())
+    .filter(Boolean)
+  if (lines.length > 1) return lines
+  const sentences = content.split(/(?<=[.!?])\s+/g).filter(Boolean)
+  if (sentences.length <= 1) return [content]
+  const grouped: string[] = []
+  let buf: string[] = []
+  sentences.forEach((sentence, idx) => {
+    buf.push(sentence)
+    if (buf.length >= 3 || idx === sentences.length - 1) {
+      grouped.push(buf.join(' '))
+      buf = []
+    }
+  })
+  return grouped
+}
+
 function buildImageUrl(title: string) {
   const prompt = encodeURIComponent(`cinematic robotics concept art, ${title}, photorealistic, dramatic lighting, ultra-detailed`)
   return `https://image.pollinations.ai/prompt/${prompt}?width=1200&height=675&seed=${encodeURIComponent(title)}`
@@ -86,7 +112,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const articleUrl = `${SITE_URL}/article/${article.slug}`
   const displayTitle = normalizeTitle(article.title)
   const content = normalizeContent(article.content)
-  const paragraphs = content ? content.split(/\n\s*\n+/g) : []
+  const paragraphs = splitParagraphs(content)
   const wordCount = content ? content.split(/\s+/).filter(Boolean).length : 0
   const readingMinutes = Math.max(3, Math.round(wordCount / 200))
   const publishedDate = formatDate(article.created_at)
