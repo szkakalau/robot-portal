@@ -66,7 +66,12 @@ npm run dev
 
 1. Render Dashboard → Blueprints → New Blueprint
 2. 选择仓库并识别 `render.yaml`
-3. 在 Blueprint 界面为 `DEEPSEEK_API_KEY`、`DEEPSEEK_API_BASE`、`DEEPSEEK_MODEL`、`SUPABASE_*`、`ALLOWED_ORIGINS`、`TASK_TOKEN` 填值
+3. 在 Blueprint 界面为 `DEEPSEEK_API_KEY`、`DEEPSEEK_API_BASE`、`DEEPSEEK_MODEL`、`ALLOWED_ORIGINS`、`TASK_TOKEN` 填值
+   - 全免费快速通过建议：
+     - `DEEPSEEK_API_BASE=https://api.deepseek.com`
+     - `DEEPSEEK_MODEL=deepseek-chat`
+     - `ALLOWED_ORIGINS=*`（后续再改成你的 Vercel 域名）
+     - `TASK_TOKEN` 填随机字符串
 4. Apply Blueprint 后仅创建免费 Web 服务
 
 手动触发每日任务（受保护）：
