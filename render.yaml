@@ -22,8 +22,6 @@ services:
         sync: false
       - key: TASK_TOKEN
         sync: false
-
-jobs:
   - type: cron
     name: robot-portal-daily
     env: python
