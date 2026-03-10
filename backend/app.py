@@ -284,7 +284,7 @@ def run_daily(request: Request, x_task_token: Optional[str] = Header(default=Non
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
     items = run_news_pipeline()
     news_upserted = store.upsert_news(items)
-    topics = [it.get("title", "") for it in items[:3] if it.get("title")]
+    topics = [it.get("title", "") for it in items[:10] if it.get("title")]
     for t in topics:
         art = run_article_pipeline(t)
         store.upsert_article(art)
