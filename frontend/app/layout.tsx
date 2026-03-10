@@ -28,17 +28,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <header style={{padding:'16px', borderBottom:'1px solid #eee'}}>
-          <nav style={{display:'flex', gap:16}}>
-            <a href="/">Home</a>
-            <a href="/news">Robot News</a>
-            <a href="/reviews">Robot Reviews</a>
-            <a href="/robots">Robot Database</a>
-          </nav>
-        </header>
-        <main style={{maxWidth:960, margin:'0 auto', padding:'24px'}}>
-          {children}
-        </main>
+        <div className="page">
+          <div className="bg-orb orb-1" />
+          <div className="bg-orb orb-2" />
+          <header className="site-header">
+            <div className="nav-wrap">
+              <a className="brand" href="/">Robot Portal</a>
+              <nav className="nav-links">
+                <a href="/news">Robot News</a>
+                <a href="/reviews">Robot Reviews</a>
+                <a href="/robots">Robot Database</a>
+              </nav>
+              <a className="nav-cta" href="/reviews">Explore Reviews</a>
+            </div>
+          </header>
+          <main className="main">
+            {children}
+          </main>
+          <footer className="footer">Robotics intelligence, curated daily.</footer>
+        </div>
       </body>
     </html>
   )

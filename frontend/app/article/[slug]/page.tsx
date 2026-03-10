@@ -19,14 +19,9 @@ function normalizeContent(value?: string) {
   return lines.join('\n').trim()
 }
 
-function buildImageUrl(slug: string) {
-  let hash = 0
-  for (let i = 0; i < slug.length; i += 1) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i)
-    hash |= 0
-  }
-  const sig = Math.abs(hash) % 1000
-  return `https://source.unsplash.com/1200x675/?robotics,robot,ai&sig=${sig}`
+function buildImageUrl(title: string) {
+  const prompt = encodeURIComponent(`cinematic robotics concept art, ${title}, photorealistic, dramatic lighting, ultra-detailed`)
+  return `https://image.pollinations.ai/prompt/${prompt}?width=1200&height=675&seed=${encodeURIComponent(title)}`
 }
 
 function getArticleSection(category?: string) {
@@ -42,7 +37,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const seoTitle = normalizeTitle(article.seo_title) || `${displayTitle} | Robot Portal`
   const description = article.meta_description || `Read ${displayTitle} on Robot Portal.`
   const canonicalPath = `/article/${article.slug}`
-  const image = article.image_url || buildImageUrl(article.slug) || `${SITE_URL}/og-default.png`
+  const image = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   return {
     title: seoTitle,
     description,
@@ -72,7 +67,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const displayTitle = normalizeTitle(article.title)
   const content = normalizeContent(article.content)
   const paragraphs = content ? content.split(/\n\s*\n+/g) : []
-  const articleImage = article.image_url || buildImageUrl(article.slug) || `${SITE_URL}/og-default.png`
+  const articleImage = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -108,19 +103,25 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     ]
   }
   return (
-    <article>
+    <article className="article-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <nav style={{display:'flex', gap:8, marginBottom:12}}>
+      <nav className="card" style={{display:'flex', gap:8, alignItems:'center'}}>
         <Link href="/">Home</Link>
         <span>/</span>
         <Link href={section.href}>{section.name}</Link>
         <span>/</span>
         <span>{displayTitle}</span>
       </nav>
-      <h1>{displayTitle}</h1>
-      <img src={articleImage} alt={displayTitle} style={{width:'100%', height:'auto', margin:'12px 0 20px', borderRadius:12}} />
-      <div style={{display:'grid', gap:16}}>
+      <section className="card">
+        <div className="chip">{article.category || 'review'}</div>
+        <h1 className="hero-title">{displayTitle}</h1>
+        <p className="section-subtitle">{article.meta_description || 'Robotics analysis written for teams shipping real hardware.'}</p>
+        <div className="article-image">
+          <img src={articleImage} alt={displayTitle} />
+        </div>
+      </section>
+      <div className="article-body">
         {paragraphs.length > 0 ? paragraphs.map((p, idx) => (
           <p key={`${article.slug}-${idx}`} style={{margin:0, lineHeight:1.8}}>{p}</p>
         )) : <p style={{margin:0, lineHeight:1.8}}>{content}</p>}

@@ -35,19 +35,26 @@ export default async function NewsPage({ searchParams }: { searchParams?: { page
   const safePage = Math.min(page, totalPages)
   const pageItems = news.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
   return (
-    <div>
-      <h1>Robot News</h1>
-      <ul>
+    <div className="section">
+      <section className="section">
+        <h1 className="section-title">Robot News</h1>
+        <p className="section-subtitle">Funding, product launches, and research highlights from top feeds.</p>
+      </section>
+      <div className="list">
         {pageItems.map((n:any)=>(
-          <li key={n.link} style={{marginBottom:8}}>
-            <a href={n.link} target="_blank" rel="noopener noreferrer">{n.title}</a> {n.source ? `· ${n.source}`:''}
-          </li>
+          <a className="card" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
+            <div className="card-meta">{n.source || 'Newswire'}</div>
+            <h2 className="card-title">{n.title}</h2>
+            <p className="card-description">Read at source →</p>
+          </a>
         ))}
-      </ul>
-      <nav style={{display:'flex', gap:12, marginTop:16}}>
-        {safePage > 1 ? <Link href={safePage - 1 === 1 ? '/news' : `/news?page=${safePage - 1}`}>Previous</Link> : <span>Previous</span>}
-        <span>Page {safePage} / {totalPages}</span>
-        {safePage < totalPages ? <Link href={`/news?page=${safePage + 1}`}>Next</Link> : <span>Next</span>}
+      </div>
+      <nav className="list">
+        <div className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          {safePage > 1 ? <Link href={safePage - 1 === 1 ? '/news' : `/news?page=${safePage - 1}`}>Previous</Link> : <span>Previous</span>}
+          <span className="card-meta">Page {safePage} / {totalPages}</span>
+          {safePage < totalPages ? <Link href={`/news?page=${safePage + 1}`}>Next</Link> : <span>Next</span>}
+        </div>
       </nav>
     </div>
   )

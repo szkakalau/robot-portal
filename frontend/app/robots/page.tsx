@@ -94,46 +94,45 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
     page: safePage < totalPages ? String(safePage + 1) : ''
   })
   return (
-    <div>
-      <h1>Robot Database</h1>
-      <form method="get" style={{display:'grid', gridTemplateColumns:'repeat(5, minmax(120px, 1fr))', gap:12, marginBottom:16}}>
+    <div className="section">
+      <section className="section">
+        <h1 className="section-title">Robot Database</h1>
+        <p className="section-subtitle">Filter by category, company, and price to find your next build platform.</p>
+      </section>
+      <form method="get" className="form-grid">
         <input name="q" defaultValue={filters.q} placeholder="Keyword" />
         <input name="category" defaultValue={filters.category} placeholder="Category" />
         <input name="company" defaultValue={filters.company} placeholder="Company" />
         <input name="min_price" defaultValue={filters.min_price} placeholder="Min Price" />
         <input name="max_price" defaultValue={filters.max_price} placeholder="Max Price" />
-        <button type="submit" style={{gridColumn:'span 2'}}>Filter</button>
-        <Link href="/robots">Reset</Link>
+        <button type="submit">Filter</button>
+        <Link className="button button-ghost" href="/robots">Reset</Link>
       </form>
-      <p>{total} robots found</p>
-      <table style={{width:'100%', borderCollapse:'collapse'}}>
-        <thead>
-          <tr>
-            <th style={{textAlign:'left'}}>Name</th>
-            <th style={{textAlign:'left'}}>Company</th>
-            <th style={{textAlign:'left'}}>Category</th>
-            <th style={{textAlign:'left'}}>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pageItems.map((r:any)=>(
-            <tr key={r.id || r.name}>
-              <td>
-                <Link href={`/robots/${encodeURIComponent(r.name)}`}>{r.name}</Link>
-              </td>
-              <td>{r.company || '-'}</td>
-              <td>{r.category || '-'}</td>
-              <td>{r.price || '-'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <nav style={{display:'flex', gap:12, marginTop:16}}>
-        {safePage > 1 ? <Link href={prevPageQuery ? `/robots?${prevPageQuery}` : '/robots'}>Previous</Link> : <span>Previous</span>}
-        <span>Page {safePage} / {totalPages}</span>
-        {safePage < totalPages ? <Link href={nextPageQuery ? `/robots?${nextPageQuery}` : '/robots'}>Next</Link> : <span>Next</span>}
+      <div className="card-meta">{total} robots found</div>
+      <div className="table-grid">
+        <div className="table-row table-head">
+          <span>Name</span>
+          <span>Company</span>
+          <span>Category</span>
+          <span>Price</span>
+        </div>
+        {pageItems.map((r:any)=>(
+          <div className="table-row" key={r.id || r.name}>
+            <Link href={`/robots/${encodeURIComponent(r.name)}`}>{r.name}</Link>
+            <span>{r.company || '-'}</span>
+            <span>{r.category || '-'}</span>
+            <span>{r.price || '-'}</span>
+          </div>
+        ))}
+      </div>
+      <nav className="list">
+        <div className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          {safePage > 1 ? <Link href={prevPageQuery ? `/robots?${prevPageQuery}` : '/robots'}>Previous</Link> : <span>Previous</span>}
+          <span className="card-meta">Page {safePage} / {totalPages}</span>
+          {safePage < totalPages ? <Link href={nextPageQuery ? `/robots?${nextPageQuery}` : '/robots'}>Next</Link> : <span>Next</span>}
+        </div>
       </nav>
-      {linkBaseQuery && <p style={{marginTop:8}}>Filtered view</p>}
+      {linkBaseQuery && <div className="card-meta">Filtered view</div>}
     </div>
   )
 }
