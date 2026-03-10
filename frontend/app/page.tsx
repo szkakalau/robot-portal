@@ -2,6 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getArticles, getRobots, getNews } from '../lib/api'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Robot Portal | Robotics News, Reviews and Database',
   description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.'

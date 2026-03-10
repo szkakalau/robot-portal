@@ -1,12 +1,27 @@
 import type { MetadataRoute } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
 
+async function fetchJson(url: string) {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 5000)
+  try {
+    const res = await fetch(url, { cache: 'no-store', signal: controller.signal })
+    if (!res.ok) return null
+    return res.json()
+  } catch {
+    return null
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
 async function getRobotData(): Promise<{ names: string[]; categories: string[]; total: number }> {
-  const res = await fetch(`${API_BASE}/robots?limit=500`, { cache: 'no-store' })
-  if (!res.ok) return { names: [], categories: [], total: 0 }
-  const robots = await res.json()
+  const robots = await fetchJson(`${API_BASE}/robots?limit=500`)
+  if (!robots) return { names: [], categories: [], total: 0 }
   const names = (robots || []).map((r: any) => r.name).filter((name: any): name is string => Boolean(name))
   const categorySet = new Set<string>(
     (robots || []).map((r: any) => r.category).filter((category: any): category is string => Boolean(category))
@@ -16,9 +31,8 @@ async function getRobotData(): Promise<{ names: string[]; categories: string[]; 
 }
 
 async function getArticleData(): Promise<{ slugs: string[]; reviewCount: number }> {
-  const res = await fetch(`${API_BASE}/articles`, { cache: 'no-store' })
-  if (!res.ok) return { slugs: [], reviewCount: 0 }
-  const articles = await res.json()
+  const articles = await fetchJson(`${API_BASE}/articles`)
+  if (!articles) return { slugs: [], reviewCount: 0 }
   const slugs = (articles || [])
     .map((item: any) => item.slug)
     .filter((slug: any): slug is string => Boolean(slug))
@@ -30,9 +44,8 @@ async function getArticleData(): Promise<{ slugs: string[]; reviewCount: number 
 }
 
 async function getNewsTotal(): Promise<number> {
-  const res = await fetch(`${API_BASE}/news`, { cache: 'no-store' })
-  if (!res.ok) return 0
-  const news = await res.json()
+  const news = await fetchJson(`${API_BASE}/news`)
+  if (!news) return 0
   return Array.isArray(news) ? news.length : 0
 }
 
