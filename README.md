@@ -37,6 +37,23 @@ python3 robot-portal/run.py
 新闻抓取 -> 文章生成 -> Top200机器人数据库入库
 ```
 
+生产前一键验收：
+
+```
+cd robot-portal
+python3 preflight_check.py
+```
+
+可选参数：
+
+```
+python3 preflight_check.py \
+  --api-base http://localhost:8000 \
+  --frontend-base http://localhost:3000 \
+  --task-token <TASK_TOKEN> \
+  --frontend-dir frontend
+```
+
 前端：
 
 ```
