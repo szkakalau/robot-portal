@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="bg-orb orb-2" />
           <header className="site-header">
             <div className="nav-wrap">
-              <a className="brand" href="/">Robot Portal</a>
+              <a className="brand" href="/">mechaverses.com</a>
               <nav className="nav-links">
                 <a href="/news">Robot News</a>
                 <a href="/reviews">Robot Reviews</a>
