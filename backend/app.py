@@ -93,6 +93,36 @@ class DataStore:
                 seo_title="Latest Robotics News",
                 meta_description="Weekly robotics trends",
                 created_at=datetime.utcnow(),
+            ),
+            Article(
+                id="r-1",
+                title="Unitree Go2 Review: Consumer Quadruped Breakthrough",
+                slug="unitree-go2-review",
+                content="Overview\n\nDesign and mobility\n\nSpecs and pricing\n\nVerdict",
+                category="review",
+                seo_title="Unitree Go2 Review",
+                meta_description="A focused review of Unitree Go2 with specs, pricing, and who it fits.",
+                created_at=datetime.utcnow(),
+            ),
+            Article(
+                id="r-2",
+                title="Robot Vacuum Buying Guide: What Matters in 2026",
+                slug="robot-vacuum-buying-guide-2026",
+                content="Introduction\n\nNavigation and obstacle avoidance\n\nDocking and maintenance\n\nShortlist and recommendations",
+                category="guide",
+                seo_title="Robot Vacuum Buying Guide 2026",
+                meta_description="Key criteria to choose the right robot vacuum in 2026.",
+                created_at=datetime.utcnow(),
+            ),
+            Article(
+                id="r-3",
+                title="Humanoid Robots in Warehouses: ROI and Readiness",
+                slug="humanoid-robots-warehouse-roi",
+                content="Background\n\nCost structure\n\nDeployment risks\n\nReadiness checklist",
+                category="review",
+                seo_title="Humanoid Robots Warehouse ROI",
+                meta_description="A review of warehouse humanoids with ROI drivers and readiness risks.",
+                created_at=datetime.utcnow(),
             )
         ]
         self._news = [

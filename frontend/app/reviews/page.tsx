@@ -44,9 +44,10 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
   const page = toPositiveInt(searchParams?.page, 1)
   const articles = await getArticles()
   const reviews = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
-  const totalPages = Math.max(1, Math.ceil(reviews.length / PAGE_SIZE))
+  const visible = reviews.length > 0 ? reviews : articles
+  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
-  const pageItems = reviews.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+  const pageItems = visible.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
   return (
     <div className="section">
       <section className="section">
