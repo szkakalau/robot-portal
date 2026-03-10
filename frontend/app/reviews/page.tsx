@@ -6,6 +6,13 @@ export const dynamic = 'force-dynamic'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const PAGE_SIZE = 20
+const TOPICS = [
+  { slug: 'robot-dog', label: 'Robot Dogs' },
+  { slug: 'ai-robot', label: 'AI Robots' },
+  { slug: 'robot-toys', label: 'Robot Toys' },
+  { slug: 'best-robot-dog-under-1000', label: 'Best Robot Dog Under $1000' },
+  { slug: 'best-robot-toys-for-kids-2026', label: 'Best Robot Toys for Kids 2026' }
+]
 
 function normalizeTitle(value?: string) {
   if (!value) return ''
@@ -53,6 +60,16 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
       <section className="section">
         <h1 className="section-title">Robot Reviews</h1>
         <p className="section-subtitle">Long-form evaluations, guides, and competitive analysis.</p>
+      </section>
+      <section className="section">
+        <h2 className="section-title">Topic Pages</h2>
+        <div className="list">
+          <div className="card" style={{display:'flex', flexWrap:'wrap', gap:8}}>
+            {TOPICS.map((topic) => (
+              <Link className="chip" key={topic.slug} href={`/topic/${topic.slug}`}>{topic.label}</Link>
+            ))}
+          </div>
+        </div>
       </section>
       <div className="grid-2">
         {pageItems.map((a:any)=>(

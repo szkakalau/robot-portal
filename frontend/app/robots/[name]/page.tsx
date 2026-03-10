@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getRobotByName, getRobots } from '../../../lib/api'
 
@@ -34,6 +35,16 @@ export default async function RobotDetailPage({ params }: { params: { name: stri
   const robot = await getRobotByName(decodeURIComponent(params.name))
   const robotUrl = `${SITE_URL}/robots/${encodeURIComponent(robot.name)}`
   const heroImage = buildRobotImage(robot.name)
+  const specs = robot.specs || {}
+  const highlights = Object.entries(specs).slice(0, 4)
+  const category = `${robot.category || ''}`.toLowerCase()
+  const useCases = category.includes('robot dog')
+    ? ['Site inspection', 'Security patrol', 'R&D mobility']
+    : category.includes('humanoid')
+      ? ['Warehouse picking', 'Industrial assistance', 'Lab research']
+      : category.includes('companion') || category.includes('home')
+        ? ['Home assistance', 'Social interaction', 'Daily routines']
+        : ['Education', 'Prototyping', 'Service automation']
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -98,7 +109,14 @@ export default async function RobotDetailPage({ params }: { params: { name: stri
         <h1 className="hero-title">{robot.name}</h1>
         <p className="section-subtitle">{robot.description || 'No description available yet.'}</p>
         <div className="article-image">
-          <img src={heroImage} alt={robot.name} />
+          <Image
+            src={heroImage}
+            alt={robot.name}
+            width={1200}
+            height={675}
+            sizes="(max-width: 980px) 100vw, 50vw"
+            style={{ width: '100%', height: 'auto' }}
+          />
         </div>
       </section>
       <section className="card">
@@ -115,6 +133,28 @@ export default async function RobotDetailPage({ params }: { params: { name: stri
             <span>{robot.price || '-'}</span>
             <span>Release Year</span>
             <span>{robot.release_year || '-'}</span>
+          </div>
+        </div>
+      </section>
+      <section className="card">
+        <h2 className="section-title">Positioning</h2>
+        <p className="card-description">Built for {robot.category || 'robotics'} use cases with emphasis on reliability, deployment speed, and operator ease.</p>
+        <div className="grid-2">
+          <div className="card">
+            <div className="card-meta">Use cases</div>
+            <ul className="article-body">
+              {useCases.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="card">
+            <div className="card-meta">Specs highlights</div>
+            <ul className="article-body">
+              {highlights.length > 0 ? highlights.map(([key, value]) => (
+                <li key={key}>{key}: {String(value)}</li>
+              )) : <li>Specs detail coming soon.</li>}
+            </ul>
           </div>
         </div>
       </section>

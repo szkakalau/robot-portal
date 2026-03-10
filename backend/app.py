@@ -191,6 +191,22 @@ class DataStore:
             return [Article(**r) for r in data]
         return self._articles
 
+    def _normalize_category(self, value: Optional[str]) -> str:
+        text = (value or "").strip().lower()
+        if text in {"review", "guide", "news"}:
+            return text
+        if "guide" in text:
+            return "guide"
+        if "news" in text:
+            return "news"
+        return "review"
+
+    def has_article_slug(self, slug: str) -> bool:
+        if self.client:
+            data = self.client.table("articles").select("slug").eq("slug", slug).limit(1).execute().data
+            return bool(data)
+        return any(a.slug == slug for a in self._articles)
+
     def get_news(self) -> List[NewsItem]:
         if self.client:
             data = self.client.table("news_sources").select("*").order("published_at", desc=True).execute().data
@@ -222,6 +238,7 @@ class DataStore:
         return len(self._news) - before
 
     def upsert_article(self, article: dict) -> None:
+        article["category"] = self._normalize_category(article.get("category"))
         if self.client:
             self.client.table("articles").upsert(article, on_conflict="slug").execute()
             return
@@ -230,6 +247,12 @@ class DataStore:
                 self._articles[idx] = Article(**article)
                 return
         self._articles.append(Article(**article))
+
+    def has_robot_name(self, name: str) -> bool:
+        if self.client:
+            data = self.client.table("robots").select("name").eq("name", name).limit(1).execute().data
+            return bool(data)
+        return any(r.name == name for r in self._robots)
 
     def upsert_robot(self, robot: dict) -> None:
         if self.client:
@@ -317,9 +340,11 @@ def run_daily(request: Request, x_task_token: Optional[str] = Header(default=Non
     topics = [it.get("title", "") for it in items[:10] if it.get("title")]
     for t in topics:
         art = run_article_pipeline(t)
-        store.upsert_article(art)
+        if not store.has_article_slug(art.get("slug", "")):
+            store.upsert_article(art)
     robots_seed = build_top200_robot_list() if build_top200_robot_list else []
     for r in robots_seed:
         robo = run_robot_pipeline(r)
-        store.upsert_robot(robo)
+        if not store.has_robot_name(robo.get("name", "")):
+            store.upsert_robot(robo)
     return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": len(robots_seed)}

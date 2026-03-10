@@ -53,12 +53,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const ROBOT_PAGE_SIZE = 24
   const CONTENT_PAGE_SIZE = 20
+  const TOPIC_SLUGS = [
+    'robot-dog',
+    'ai-robot',
+    'robot-toys',
+    'best-robot-dog-under-1000',
+    'best-robot-toys-for-kids-2026'
+  ]
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: 'daily', priority: 1 },
     { url: `${SITE_URL}/news`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${SITE_URL}/reviews`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${SITE_URL}/robots`, lastModified: now, changeFrequency: 'daily', priority: 0.9 }
+    { url: `${SITE_URL}/robots`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${SITE_URL}/search`, lastModified: now, changeFrequency: 'weekly', priority: 0.5 }
   ]
+  const topicPages: MetadataRoute.Sitemap = TOPIC_SLUGS.map((slug) => ({
+    url: `${SITE_URL}/topic/${slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.6
+  }))
   const { names, categories, total } = await getRobotData()
   const robotPages: MetadataRoute.Sitemap = names.map((name) => ({
     url: `${SITE_URL}/robots/${encodeURIComponent(name)}`,
@@ -101,5 +115,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly',
     priority: 0.5
   }))
-  return [...staticPages, ...pagedNews, ...pagedReviews, ...categoryPages, ...pagedRobotLists, ...robotPages, ...articlePages]
+  return [...staticPages, ...topicPages, ...pagedNews, ...pagedReviews, ...categoryPages, ...pagedRobotLists, ...robotPages, ...articlePages]
 }

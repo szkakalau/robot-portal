@@ -51,6 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <a href="/news">Robot News</a>
                 <a href="/reviews">Robot Reviews</a>
                 <a href="/robots">Robot Database</a>
+                <a href="/search">Search</a>
               </nav>
               <a className="nav-cta" href="/reviews">Explore Reviews</a>
             </div>

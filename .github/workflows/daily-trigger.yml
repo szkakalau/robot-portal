@@ -16,6 +16,12 @@ jobs:
         run: |
           test -n "$API_BASE"
           test -n "$TASK_TOKEN"
-          curl -sS -X POST "$API_BASE/tasks/run-daily" \
-            -H "X-Task-Token: $TASK_TOKEN" \
-            -H "Content-Type: application/json"
+          for i in 1 2 3 4 5; do
+            response=$(curl -sS -X POST "$API_BASE/tasks/run-daily" \
+              -H "X-Task-Token: $TASK_TOKEN" \
+              -H "Content-Type: application/json")
+            echo "$response"
+            echo "$response" | grep -q '"ok":true' && exit 0
+            sleep 30
+          done
+          exit 1

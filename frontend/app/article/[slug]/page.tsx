@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getArticle } from '../../../lib/api'
 
@@ -43,6 +44,29 @@ function splitParagraphs(content: string) {
     }
   })
   return grouped
+}
+
+function splitSentences(text: string) {
+  return text
+    .split(/(?<=[.!?])\s+/g)
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+function pickBullets(sentences: string[], keywords: string[], fallback: string[]) {
+  const hits = sentences.filter((s) => keywords.some((k) => s.toLowerCase().includes(k)))
+  const deduped = Array.from(new Set(hits)).slice(0, 3)
+  if (deduped.length > 0) return deduped
+  return fallback.slice(0, 3)
+}
+
+function whoForFromTitle(title: string) {
+  const text = title.toLowerCase()
+  if (text.includes("kids") || text.includes("toy")) return ["Parents and educators", "STEM classrooms", "Family gifting"]
+  if (text.includes("pet") || text.includes("companion")) return ["Home users", "Seniors and caregivers", "Companion seekers"]
+  if (text.includes("warehouse") || text.includes("logistics")) return ["Operations teams", "Warehouse automation", "Logistics leaders"]
+  if (text.includes("humanoid")) return ["Enterprise R&D", "Robotics labs", "Manufacturing leaders"]
+  return ["Builders and operators", "Product teams", "Robotics enthusiasts"]
 }
 
 function buildImageUrl(title: string) {
@@ -113,11 +137,26 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const displayTitle = normalizeTitle(article.title)
   const content = normalizeContent(article.content)
   const paragraphs = splitParagraphs(content)
+  const sentences = splitSentences(content)
   const wordCount = content ? content.split(/\s+/).filter(Boolean).length : 0
   const readingMinutes = Math.max(3, Math.round(wordCount / 200))
   const publishedDate = formatDate(article.created_at)
   const articleImage = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   const quoteText = pickQuote(article.meta_description, paragraphs)
+  const summaryText = article.meta_description || paragraphs[0] || ''
+  const whatItIs = paragraphs[0] || summaryText
+  const howItWorks = paragraphs[1] || paragraphs[0] || summaryText
+  const pros = pickBullets(sentences, ['advantage', 'strong', 'efficient', 'reliable', 'best', 'improve'], [
+    'Balanced performance across core tasks',
+    'Clear positioning versus adjacent platforms',
+    'Practical deployment considerations addressed'
+  ])
+  const cons = pickBullets(sentences, ['however', 'but', 'limitation', 'risk', 'challenge', 'cost', 'expensive', 'complex'], [
+    'Requires careful setup and tuning',
+    'Cost can rise with advanced configurations',
+    'Early-stage ecosystem maturity'
+  ])
+  const whoFor = whoForFromTitle(displayTitle)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -178,7 +217,14 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           </div>
         </div>
         <div className="article-hero-media">
-          <img src={articleImage} alt={displayTitle} />
+          <Image
+            src={articleImage}
+            alt={displayTitle}
+            width={1200}
+            height={675}
+            sizes="(max-width: 980px) 100vw, 50vw"
+            style={{ width: '100%', height: 'auto' }}
+          />
         </div>
       </section>
       <section className="article-grid">
@@ -203,8 +249,55 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             <a className="article-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(displayTitle)}&url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Post on X</a>
             <a className="article-share" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
           </div>
+          <div className="article-aside-card">
+            <div className="article-aside-title">Explore</div>
+            <Link className="article-share" href="/robots">Robot Database</Link>
+            <Link className="article-share" href="/topic/robot-dog">Robot Dogs</Link>
+            <Link className="article-share" href="/topic/ai-robot">AI Robots</Link>
+            <Link className="article-share" href="/topic/robot-toys">Robot Toys</Link>
+          </div>
         </aside>
         <div className="article-content">
+        {(article.category === 'review' || article.category === 'guide') && (
+          <section className="review-blocks">
+            <div className="review-card">
+              <div className="review-title">What it is</div>
+              <p>{whatItIs}</p>
+            </div>
+            <div className="review-card">
+              <div className="review-title">How it works</div>
+              <p>{howItWorks}</p>
+            </div>
+            <div className="review-card">
+              <div className="review-title">Summary</div>
+              <p>{summaryText}</p>
+            </div>
+            <div className="review-card">
+              <div className="review-title">Pros</div>
+              <ul>
+                {pros.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="review-card">
+              <div className="review-title">Cons</div>
+              <ul>
+                {cons.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="review-card">
+              <div className="review-title">Who it’s for</div>
+              <ul>
+                {whoFor.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
         {paragraphs.length > 0 ? paragraphs.flatMap((p, idx) => {
           const blocks: JSX.Element[] = []
           if (idx === 0) {
