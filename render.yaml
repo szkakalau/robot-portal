@@ -11,9 +11,9 @@ services:
       - key: DEEPSEEK_API_KEY
         sync: false
       - key: DEEPSEEK_API_BASE
-        value: https://api.deepseek.com
+        sync: false
       - key: DEEPSEEK_MODEL
-        value: deepseek-chat
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
@@ -36,9 +36,9 @@ jobs:
       - key: DEEPSEEK_API_KEY
         sync: false
       - key: DEEPSEEK_API_BASE
-        value: https://api.deepseek.com
+        sync: false
       - key: DEEPSEEK_MODEL
-        value: deepseek-chat
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
