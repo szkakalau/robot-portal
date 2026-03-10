@@ -53,20 +53,21 @@ npm run dev
    - `ALLOWED_ORIGINS=https://你的vercel域名.vercel.app`
 5. 验证：访问 `/health` 返回 `{"ok": true}`
 
-定时任务（可选）：
+全免费定时任务（推荐）：
 
-1. 新建 Cron Job
-2. Build Command 同上
-3. Job Command: `python3 robot-portal/run.py`
-4. Schedule: 每日
-5. 同步设置与后端相同环境变量
+1. 使用仓库内的 GitHub Actions 工作流：`.github/workflows/daily-trigger.yml`
+2. 在 GitHub 仓库 Settings → Secrets and variables → Actions 添加：
+   - `RENDER_API_BASE=https://你的后端域名.onrender.com`
+   - `RENDER_TASK_TOKEN=<你的TASK_TOKEN>`
+3. 工作流会每天触发 `POST /tasks/run-daily`
+4. 也可在 Actions 页面手动点击 `Run workflow`
 
 使用蓝图一键部署（推荐）：
 
 1. Render Dashboard → Blueprints → New Blueprint
 2. 选择仓库并识别 `render.yaml`
-3. 在 Blueprint 界面为 `DEEPSEEK_API_KEY`、`SUPABASE_*`、`ALLOWED_ORIGINS` 填值
-4. Apply Blueprint 后即创建 Web 服务与每日 Cron Job
+3. 在 Blueprint 界面为 `DEEPSEEK_API_KEY`、`DEEPSEEK_API_BASE`、`DEEPSEEK_MODEL`、`SUPABASE_*`、`ALLOWED_ORIGINS`、`TASK_TOKEN` 填值
+4. Apply Blueprint 后仅创建免费 Web 服务
 
 手动触发每日任务（受保护）：
 

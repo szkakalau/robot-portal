@@ -21,23 +21,3 @@ services:
         sync: false
       - key: TASK_TOKEN
         sync: false
-  - type: cron
-    name: robot-portal-daily
-    runtime: python
-    plan: starter
-    schedule: "0 3 * * *"
-    buildCommand: pip install -r robot-portal/backend/requirements.txt
-    startCommand: python robot-portal/run.py
-    envVars:
-      - key: DEEPSEEK_API_KEY
-        sync: false
-      - key: DEEPSEEK_API_BASE
-        sync: false
-      - key: DEEPSEEK_MODEL
-        sync: false
-      - key: SUPABASE_URL
-        sync: false
-      - key: SUPABASE_KEY
-        sync: false
-      - key: TASK_TOKEN
-        sync: false

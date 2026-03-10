@@ -1,0 +1,21 @@
+name: Daily Trigger
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger run-daily endpoint
+        env:
+          API_BASE: ${{ secrets.RENDER_API_BASE }}
+          TASK_TOKEN: ${{ secrets.RENDER_TASK_TOKEN }}
+        run: |
+          test -n "$API_BASE"
+          test -n "$TASK_TOKEN"
+          curl -sS -X POST "$API_BASE/tasks/run-daily" \
+            -H "X-Task-Token: $TASK_TOKEN" \
+            -H "Content-Type: application/json"
