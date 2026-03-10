@@ -30,7 +30,7 @@ def generate_article(topic: str) -> Dict:
         content = f"Article about {topic}."
         title = f"{topic} Insights"
         slug = topic.lower().replace(" ", "-")[:80]
-        return {"title": title, "slug": slug, "content": content, "category": "news"}
+        return {"title": title, "slug": slug, "content": content, "category": "review"}
     try:
         url = f"{api_base}/chat/completions"
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
@@ -46,9 +46,9 @@ def generate_article(topic: str) -> Dict:
             text = data["choices"][0]["message"]["content"]
             title = text.splitlines()[0].strip("# ").strip()[:120] or f"{topic} Article"
             slug = "-".join(title.lower().split())[:80]
-            return {"title": title, "slug": slug, "content": text, "category": "news"}
+            return {"title": title, "slug": slug, "content": text, "category": "review"}
     except Exception:
         content = f"Article about {topic}."
         title = f"{topic} Insights"
         slug = topic.lower().replace(" ", "-")[:80]
-        return {"title": title, "slug": slug, "content": content, "category": "news"}
+        return {"title": title, "slug": slug, "content": content, "category": "review"}
