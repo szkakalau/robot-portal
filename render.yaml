@@ -1,10 +1,9 @@
 services:
   - type: web
     name: robot-portal-api
-    env: python
-    pythonVersion: 3.11
+    runtime: python
     plan: free
-    autoDeploy: true
+    autoDeployTrigger: commit
     buildCommand: pip install -r robot-portal/backend/requirements.txt
     startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT --app-dir robot-portal
     envVars:
@@ -22,13 +21,10 @@ services:
         sync: false
       - key: TASK_TOKEN
         sync: false
-
-jobs:
   - type: cron
     name: robot-portal-daily
-    env: python
-    pythonVersion: 3.11
-    plan: free
+    runtime: python
+    plan: starter
     schedule: "0 3 * * *"
     buildCommand: pip install -r robot-portal/backend/requirements.txt
     startCommand: python robot-portal/run.py
