@@ -1,0 +1,194 @@
+import os
+from typing import List, Optional
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from datetime import datetime
+
+try:
+    from supabase import create_client, Client
+except Exception:
+    create_client = None
+    Client = None
+
+class Robot(BaseModel):
+    id: Optional[str] = None
+    name: str
+    company: Optional[str] = None
+    category: Optional[str] = None
+    price: Optional[float] = None
+    release_year: Optional[int] = None
+    description: Optional[str] = None
+    specs: Optional[dict] = None
+    image_url: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+class Article(BaseModel):
+    id: Optional[str] = None
+    title: str
+    slug: str
+    content: str
+    category: str
+    seo_title: Optional[str] = None
+    meta_description: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+class NewsItem(BaseModel):
+    id: Optional[str] = None
+    title: str
+    link: str
+    source: Optional[str] = None
+    published_at: Optional[datetime] = None
+
+class DataStore:
+    def __init__(self):
+        self.supabase_url = os.getenv("SUPABASE_URL")
+        self.supabase_key = os.getenv("SUPABASE_KEY")
+        self.client: Optional[Client] = None
+        if self.supabase_url and self.supabase_key and create_client:
+            try:
+                self.client = create_client(self.supabase_url, self.supabase_key)
+            except Exception:
+                self.client = None
+        self._robots: List[Robot] = []
+        self._articles: List[Article] = []
+        self._news: List[NewsItem] = []
+        if not self.client:
+            self._seed()
+
+    def _seed(self):
+        self._robots = [
+            Robot(
+                id="stub-1",
+                name="Unitree Go2 Robot Dog",
+                company="Unitree",
+                category="robot dog",
+                price=3999.0,
+                release_year=2023,
+                description="Agile quadruped robot",
+                specs={"weight": "15kg"},
+                image_url="https://example.com/go2.jpg",
+                created_at=datetime.utcnow(),
+            ),
+            Robot(
+                id="stub-2",
+                name="Eilik Robot Companion",
+                company="Energize Lab",
+                category="companion",
+                price=129.0,
+                release_year=2022,
+                description="Desktop companion robot",
+                specs={"battery": "2h"},
+                image_url="https://example.com/eilik.jpg",
+                created_at=datetime.utcnow(),
+            ),
+        ]
+        self._articles = [
+            Article(
+                id="a-1",
+                title="Robotics Trends This Week",
+                slug="robotics-trends-this-week",
+                content="Stub content",
+                category="news",
+                seo_title="Latest Robotics News",
+                meta_description="Weekly robotics trends",
+                created_at=datetime.utcnow(),
+            )
+        ]
+        self._news = [
+            NewsItem(
+                id="n-1",
+                title="TechCrunch Robotics Update",
+                link="https://techcrunch.com/robotics",
+                source="TechCrunch",
+                published_at=datetime.utcnow(),
+            )
+        ]
+
+    def get_robots(self) -> List[Robot]:
+        if self.client:
+            data = self.client.table("robots").select("*").order("created_at", desc=True).execute().data
+            return [Robot(**r) for r in data]
+        return self._robots
+
+    def get_articles(self) -> List[Article]:
+        if self.client:
+            data = self.client.table("articles").select("*").order("created_at", desc=True).execute().data
+            return [Article(**r) for r in data]
+        return self._articles
+
+    def get_news(self) -> List[NewsItem]:
+        if self.client:
+            data = self.client.table("news_sources").select("*").order("published_at", desc=True).execute().data
+            return [NewsItem(**r) for r in data]
+        return self._news
+
+    def get_article_by_slug(self, slug: str) -> Article:
+        if self.client:
+            data = self.client.table("articles").select("*").eq("slug", slug).single().execute().data
+            if not data:
+                raise KeyError("not found")
+            return Article(**data)
+        for a in self._articles:
+            if a.slug == slug:
+                return a
+        raise KeyError("not found")
+
+    def upsert_news(self, items: List[dict]) -> int:
+        if self.client:
+            for batch_start in range(0, len(items), 50):
+                batch = items[batch_start:batch_start+50]
+                self.client.table("news_sources").upsert(batch).execute()
+            return len(items)
+        before = len(self._news)
+        for it in items:
+            exists = any(n.link == it.get("link") for n in self._news)
+            if not exists:
+                self._news.append(NewsItem(**it))
+        return len(self._news) - before
+
+    def upsert_article(self, article: dict) -> None:
+        if self.client:
+            self.client.table("articles").upsert(article, on_conflict="slug").execute()
+            return
+        for idx, a in enumerate(self._articles):
+            if a.slug == article.get("slug"):
+                self._articles[idx] = Article(**article)
+                return
+        self._articles.append(Article(**article))
+
+    def upsert_robot(self, robot: dict) -> None:
+        if self.client:
+            self.client.table("robots").upsert(robot, on_conflict="name").execute()
+            return
+        names = [r.name for r in self._robots]
+        if robot.get("name") in names:
+            i = names.index(robot["name"])
+            self._robots[i] = Robot(**robot)
+        else:
+            self._robots.append(Robot(**robot))
+
+store = DataStore()
+app = FastAPI(title="Robot Portal API")
+
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+@app.get("/robots", response_model=List[Robot])
+def robots():
+    return store.get_robots()
+
+@app.get("/articles", response_model=List[Article])
+def articles():
+    return store.get_articles()
+
+@app.get("/news", response_model=List[NewsItem])
+def news():
+    return store.get_news()
+
+@app.get("/article/{slug}", response_model=Article)
+def article(slug: str):
+    try:
+        return store.get_article_by_slug(slug)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Not found")
