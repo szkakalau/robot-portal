@@ -42,8 +42,8 @@ npm run dev
 ## 部署到 Render（后端）
 
 1. 新建 Web Service，连接仓库
-2. Build Command: `pip3 install -r robot-portal/backend/requirements.txt`
-3. Start Command: `uvicorn backend.app:app --host 0.0.0.0 --port $PORT --app-dir robot-portal`
+2. Build Command: `pip3 install -r backend/requirements.txt`
+3. Start Command: `uvicorn backend.app:app --host 0.0.0.0 --port $PORT`
 4. 环境变量：
    - `DEEPSEEK_API_KEY`
    - `DEEPSEEK_API_BASE=https://api.deepseek.com`
