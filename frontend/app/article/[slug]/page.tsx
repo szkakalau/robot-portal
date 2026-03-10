@@ -24,6 +24,26 @@ function buildImageUrl(title: string) {
   return `https://image.pollinations.ai/prompt/${prompt}?width=1200&height=675&seed=${encodeURIComponent(title)}`
 }
 
+function formatDate(value?: string) {
+  if (!value) return ''
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return ''
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
+}
+
+function splitDropcap(text: string) {
+  const match = text.match(/^(\W*)(\w)([\s\S]*)$/)
+  if (!match) return { prefix: '', first: '', rest: text }
+  return { prefix: match[1], first: match[2], rest: match[3] }
+}
+
+function pickQuote(meta: string | undefined, paragraphs: string[]) {
+  if (meta && meta.trim()) return meta.trim()
+  const candidate = paragraphs.find((p) => p.length > 80) || paragraphs[0] || ''
+  const sentence = candidate.split(/(?<=[.!?])\s+/)[0] || candidate
+  return sentence.trim()
+}
+
 function getArticleSection(category?: string) {
   const value = (category || '').toLowerCase()
   if (value === 'news') return { name: 'Robot News', href: '/news' }
@@ -34,8 +54,8 @@ function getArticleSection(category?: string) {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const article = await getArticle(params.slug)
   const displayTitle = normalizeTitle(article.title)
-  const seoTitle = normalizeTitle(article.seo_title) || `${displayTitle} | Robot Portal`
-  const description = article.meta_description || `Read ${displayTitle} on Robot Portal.`
+  const seoTitle = normalizeTitle(article.seo_title) || `${displayTitle} | Mechaverses`
+  const description = article.meta_description || `Read ${displayTitle} on Mechaverses.`
   const canonicalPath = `/article/${article.slug}`
   const image = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   return {
@@ -67,7 +87,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const displayTitle = normalizeTitle(article.title)
   const content = normalizeContent(article.content)
   const paragraphs = content ? content.split(/\n\s*\n+/g) : []
+  const wordCount = content ? content.split(/\s+/).filter(Boolean).length : 0
+  const readingMinutes = Math.max(3, Math.round(wordCount / 200))
+  const publishedDate = formatDate(article.created_at)
   const articleImage = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
+  const quoteText = pickQuote(article.meta_description, paragraphs)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -81,16 +105,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     image: articleImage,
     author: {
       '@type': 'Organization',
-      name: 'Robot Portal Editorial Team'
+      name: 'Mechaverses Editorial Team'
     },
     isPartOf: {
       '@type': 'WebSite',
-      name: 'Robot Portal',
+      name: 'Mechaverses',
       url: SITE_URL
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Robot Portal'
+      name: 'Mechaverses'
     }
   }
   const breadcrumbJsonLd = {
@@ -103,29 +127,86 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     ]
   }
   return (
-    <article className="article-shell">
+    <article className="article-shell article-magazine">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <nav className="card" style={{display:'flex', gap:8, alignItems:'center'}}>
+      <nav className="article-breadcrumb">
         <Link href="/">Home</Link>
         <span>/</span>
         <Link href={section.href}>{section.name}</Link>
         <span>/</span>
         <span>{displayTitle}</span>
       </nav>
-      <section className="card">
-        <div className="chip">{article.category || 'review'}</div>
-        <h1 className="hero-title">{displayTitle}</h1>
-        <p className="section-subtitle">{article.meta_description || 'Robotics analysis written for teams shipping real hardware.'}</p>
-        <div className="article-image">
+      <section className="article-hero">
+        <div className="article-hero-copy">
+          <div className="article-kicker">
+            <span className="chip">{article.category || 'review'}</span>
+            {publishedDate && <span className="article-meta">{publishedDate}</span>}
+            <span className="article-meta">{readingMinutes} min read</span>
+          </div>
+          <h1 className="article-title">{displayTitle}</h1>
+          <p className="article-lede">{article.meta_description || 'Robotics analysis written for teams shipping real hardware.'}</p>
+          <div className="article-meta-row">
+            <span className="article-meta">Mechaverses Editorial Team</span>
+            {publishedDate && <span className="article-meta">Updated {publishedDate}</span>}
+          </div>
+        </div>
+        <div className="article-hero-media">
           <img src={articleImage} alt={displayTitle} />
         </div>
       </section>
-      <div className="article-body">
-        {paragraphs.length > 0 ? paragraphs.map((p, idx) => (
-          <p key={`${article.slug}-${idx}`} style={{margin:0, lineHeight:1.8}}>{p}</p>
-        )) : <p style={{margin:0, lineHeight:1.8}}>{content}</p>}
-      </div>
+      <section className="article-grid">
+        <aside className="article-aside">
+          <div className="article-aside-card">
+            <div className="article-aside-title">Article Brief</div>
+            <div className="article-aside-item">
+              <span>Section</span>
+              <span>{section.name}</span>
+            </div>
+            <div className="article-aside-item">
+              <span>Words</span>
+              <span>{wordCount.toLocaleString()}</span>
+            </div>
+            <div className="article-aside-item">
+              <span>Format</span>
+              <span>Long-form</span>
+            </div>
+          </div>
+          <div className="article-aside-card">
+            <div className="article-aside-title">Share</div>
+            <a className="article-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(displayTitle)}&url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Post on X</a>
+            <a className="article-share" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+          </div>
+        </aside>
+        <div className="article-content">
+        {paragraphs.length > 0 ? paragraphs.flatMap((p, idx) => {
+          const blocks: JSX.Element[] = []
+          if (idx === 0) {
+            const dropcap = splitDropcap(p)
+            blocks.push(
+              <p key={`${article.slug}-${idx}`} className="article-lead">
+                {dropcap.prefix}
+                <span className="article-dropcap">{dropcap.first}</span>
+                {dropcap.rest}
+              </p>
+            )
+          } else {
+            blocks.push(<p key={`${article.slug}-${idx}`}>{p}</p>)
+          }
+          if ((idx === 1 || idx === 4) && quoteText) {
+            blocks.push(
+              <div className="article-pullquote" key={`${article.slug}-quote-${idx}`}>
+                <span>“{quoteText}”</span>
+              </div>
+            )
+          }
+          if (idx > 0 && idx % 3 === 0) {
+            blocks.push(<div className="article-divider" key={`${article.slug}-divider-${idx}`} />)
+          }
+          return blocks
+        }) : <p className="article-lead">{content}</p>}
+        </div>
+      </section>
     </article>
   )
 }

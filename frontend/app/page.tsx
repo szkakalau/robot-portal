@@ -5,8 +5,18 @@ import { getArticles, getRobots, getNews } from '../lib/api'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Robot Portal | Robotics News, Reviews and Database',
-  description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.'
+  title: 'Mechaverses | Robotics News, Reviews and Database',
+  description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.',
+  openGraph: {
+    title: 'Mechaverses | Robotics News, Reviews and Database',
+    description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.',
+    url: '/'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mechaverses | Robotics News, Reviews and Database',
+    description: 'Explore robotics news, robot product reviews, and a growing robot database for consumers and builders.'
+  }
 }
 
 function normalizeTitle(value?: string) {

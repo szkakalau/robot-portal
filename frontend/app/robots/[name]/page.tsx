@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: { name: string } })
   const name = decodeURIComponent(params.name)
   const robot = await getRobotByName(name)
   const path = `/robots/${encodeURIComponent(robot.name)}`
-  const title = `${robot.name} Review, Specs and Price | Robot Portal`
+  const title = `${robot.name} Review, Specs and Price | Mechaverses`
   const description = robot.description || `${robot.name} profile with specs, pricing and category details.`
   return {
     title,

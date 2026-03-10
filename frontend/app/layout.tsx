@@ -7,20 +7,33 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Robot Portal',
-    template: '%s | Robot Portal'
+    default: 'Mechaverses',
+    template: '%s | Mechaverses'
   },
-  description: 'Robotics news, product reviews, and a searchable robot database.',
+  description: 'Mechaverses delivers robotics news, product reviews, and a searchable robot database.',
   alternates: {
     canonical: '/'
   },
+  keywords: [
+    'robotics news',
+    'robot reviews',
+    'robot database',
+    'AI robots',
+    'service robots',
+    'humanoid robots'
+  ],
   openGraph: {
-    siteName: 'Robot Portal',
+    siteName: 'Mechaverses',
+    title: 'Mechaverses',
+    description: 'Robotics news, reviews, and a searchable robot database.',
+    url: SITE_URL,
     type: 'website',
     locale: 'en_US'
   },
   twitter: {
-    card: 'summary_large_image'
+    card: 'summary_large_image',
+    title: 'Mechaverses',
+    description: 'Robotics news, reviews, and a searchable robot database.'
   }
 }
 
