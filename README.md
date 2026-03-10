@@ -45,6 +45,7 @@ npm run dev
 2. Build Command: `pip3 install -r backend/requirements.txt`
 3. Start Command: `uvicorn backend.app:app --host 0.0.0.0 --port $PORT`
 4. 环境变量：
+   - `PYTHON_VERSION=3.11.11`（重要，避免 Render 默认 Python 3.14 触发 pydantic-core 构建失败）
    - `DEEPSEEK_API_KEY`
    - `DEEPSEEK_API_BASE=https://api.deepseek.com`
    - `DEEPSEEK_MODEL=deepseek-chat`
@@ -67,6 +68,7 @@ npm run dev
 1. Render Dashboard → Blueprints → New Blueprint
 2. 选择仓库并识别 `render.yaml`
 3. 在 Blueprint 界面为 `DEEPSEEK_API_KEY`、`DEEPSEEK_API_BASE`、`DEEPSEEK_MODEL`、`ALLOWED_ORIGINS`、`TASK_TOKEN` 填值
+   - `PYTHON_VERSION` 已在 `render.yaml` 固定为 `3.11.11`
    - 全免费快速通过建议：
      - `DEEPSEEK_API_BASE=https://api.deepseek.com`
      - `DEEPSEEK_MODEL=deepseek-chat`
