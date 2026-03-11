@@ -1,6 +1,6 @@
 import os
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException, Request, Header
+from fastapi import FastAPI, HTTPException, Request, Header, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
@@ -326,18 +326,21 @@ def article(slug: str):
     except KeyError:
         raise HTTPException(status_code=404, detail="Not found")
 
-@app.post("/tasks/run-daily")
-def run_daily(request: Request, x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token")):
-    secret = os.getenv("TASK_TOKEN")
-    if secret:
-        query_token = request.query_params.get("token")
-        if x_task_token != secret and query_token != secret:
-            raise HTTPException(status_code=403, detail="Forbidden")
+def _clamp_int(value: Optional[str], default: int, minimum: int, maximum: int) -> int:
+    try:
+        parsed = int(value or default)
+    except Exception:
+        parsed = default
+    return max(minimum, min(maximum, parsed))
+
+
+def _perform_daily() -> dict:
     if not (run_news_pipeline and run_article_pipeline and run_robot_pipeline):
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
     items = run_news_pipeline()
     news_upserted = store.upsert_news(items)
-    topics = [it.get("title", "") for it in items[:10] if it.get("title")]
+    limit = _clamp_int(os.getenv("DAILY_ARTICLE_LIMIT"), 5, 1, 10)
+    topics = [it.get("title", "") for it in items[:limit] if it.get("title")]
     for t in topics:
         art = run_article_pipeline(t)
         if not store.has_article_slug(art.get("slug", "")):
@@ -348,3 +351,21 @@ def run_daily(request: Request, x_task_token: Optional[str] = Header(default=Non
         if not store.has_robot_name(robo.get("name", "")):
             store.upsert_robot(robo)
     return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": len(robots_seed)}
+
+
+@app.post("/tasks/run-daily")
+def run_daily(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    if sync:
+        return _perform_daily()
+    background_tasks.add_task(_perform_daily)
+    return {"ok": True, "queued": True}

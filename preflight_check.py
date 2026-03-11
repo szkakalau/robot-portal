@@ -96,7 +96,7 @@ def run() -> int:
 
     try:
         headers = {"X-Task-Token": args.task_token} if args.task_token else {}
-        status, daily = request_json(f"{api_base}/tasks/run-daily", method="POST", headers=headers)
+        status, daily = request_json(f"{api_base}/tasks/run-daily?sync=1", method="POST", headers=headers)
         results.append(check(status == 200, "run-daily HTTP", f"status={status}", f"status={status}"))
         results.append(
             check(
