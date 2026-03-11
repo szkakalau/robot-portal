@@ -265,6 +265,33 @@ class DataStore:
         else:
             self._robots.append(Robot(**robot))
 
+    def cleanup_seed(self) -> dict:
+        seed_robot_ids = ["stub-1", "stub-2"]
+        seed_article_ids = ["a-1", "r-1", "r-2", "r-3"]
+        seed_news_ids = ["n-1"]
+        removed = {"robots": 0, "articles": 0, "news": 0}
+        if self.client:
+            if seed_robot_ids:
+                self.client.table("robots").delete().in_("id", seed_robot_ids).execute()
+                removed["robots"] = len(seed_robot_ids)
+            if seed_article_ids:
+                self.client.table("articles").delete().in_("id", seed_article_ids).execute()
+                removed["articles"] = len(seed_article_ids)
+            if seed_news_ids:
+                self.client.table("news_sources").delete().in_("id", seed_news_ids).execute()
+                removed["news"] = len(seed_news_ids)
+            return removed
+        before_r = len(self._robots)
+        before_a = len(self._articles)
+        before_n = len(self._news)
+        self._robots = [r for r in self._robots if r.id not in seed_robot_ids]
+        self._articles = [a for a in self._articles if a.id not in seed_article_ids]
+        self._news = [n for n in self._news if n.id not in seed_news_ids]
+        removed["robots"] = before_r - len(self._robots)
+        removed["articles"] = before_a - len(self._articles)
+        removed["news"] = before_n - len(self._news)
+        return removed
+
 store = DataStore()
 app = FastAPI(title="Robot Portal API")
 auto_seeded = False
@@ -399,3 +426,17 @@ def seed_robots(
             raise HTTPException(status_code=403, detail="Forbidden")
     seeded = _seed_robots()
     return {"ok": True, "robots_seeded": seeded}
+
+
+@app.post("/tasks/cleanup-seed")
+def cleanup_seed(
+    request: Request,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    removed = store.cleanup_seed()
+    return {"ok": True, "removed": removed}
