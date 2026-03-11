@@ -375,7 +375,7 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
     items = run_news_pipeline()
     news_upserted = store.upsert_news(items)
-    limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 5, 1, 10)
+    limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 10, 1, 10)
     topics = [it.get("title", "") for it in items[:limit] if it.get("title")]
     for t in topics:
         art = run_article_pipeline(t)

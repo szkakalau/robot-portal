@@ -48,13 +48,9 @@ export async function generateMetadata({ searchParams }: { searchParams?: { page
 }
 
 export default async function ReviewsPage({ searchParams }: { searchParams?: { page?: string } }) {
-  const page = toPositiveInt(searchParams?.page, 1)
   const articles = await getArticles()
   const reviews = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
-  const visible = reviews.length >= PAGE_SIZE ? reviews : articles
-  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE))
-  const safePage = Math.min(page, totalPages)
-  const pageItems = visible.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+  const pageItems = reviews.length > 0 ? reviews : articles
   return (
     <div className="section">
       <section className="section">
@@ -80,13 +76,7 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
           </Link>
         ))}
       </div>
-      <nav className="list">
-        <div className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          {safePage > 1 ? <Link href={safePage - 1 === 1 ? '/reviews' : `/reviews?page=${safePage - 1}`}>Previous</Link> : <span>Previous</span>}
-          <span className="card-meta">Page {safePage} / {totalPages}</span>
-          {safePage < totalPages ? <Link href={`/reviews?page=${safePage + 1}`}>Next</Link> : <span>Next</span>}
-        </div>
-      </nav>
+      <div className="card-meta">{pageItems.length} reviews loaded</div>
     </div>
   )
 }
