@@ -35,6 +35,16 @@ def clean_content(value: str) -> str:
         lines = lines[1:]
     return "\n".join(lines).strip()
 
+def classify_category(value: str) -> str:
+    text = (value or "").lower()
+    guide_keywords = ["guide", "how to", "how", "best", "tips", "buying", "review", "comparison", "vs", "price"]
+    news_keywords = ["funding", "raises", "launch", "partnership", "announces", "report", "trends", "investment", "acquires"]
+    if any(k in text for k in guide_keywords):
+        return "guide"
+    if any(k in text for k in news_keywords):
+        return "news"
+    return "review"
+
 def generate_article(topic: str) -> Dict:
     api_key = os.getenv("DEEPSEEK_API_KEY")
     api_base = os.getenv("DEEPSEEK_API_BASE", "https://api.deepseek.com")
@@ -43,7 +53,7 @@ def generate_article(topic: str) -> Dict:
         content = clean_content(f"Article about {topic}.")
         title = clean_title(f"{topic} Insights")
         slug = topic.lower().replace(" ", "-")[:80]
-        return {"title": title, "slug": slug, "content": content, "category": "review"}
+        return {"title": title, "slug": slug, "content": content, "category": classify_category(topic)}
     try:
         url = f"{api_base}/chat/completions"
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
@@ -61,9 +71,9 @@ def generate_article(topic: str) -> Dict:
             title = clean_title(raw_title)
             text = clean_content(text)
             slug = "-".join(title.lower().split())[:80]
-            return {"title": title, "slug": slug, "content": text, "category": "review"}
+            return {"title": title, "slug": slug, "content": text, "category": classify_category(f"{title} {topic}")}
     except Exception:
         content = clean_content(f"Article about {topic}.")
         title = clean_title(f"{topic} Insights")
         slug = topic.lower().replace(" ", "-")[:80]
-        return {"title": title, "slug": slug, "content": content, "category": "review"}
+        return {"title": title, "slug": slug, "content": content, "category": classify_category(topic)}
