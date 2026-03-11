@@ -370,12 +370,12 @@ def _clamp_int(value: Optional[str], default: int, minimum: int, maximum: int) -
     return max(minimum, min(maximum, parsed))
 
 
-def _perform_daily() -> dict:
+def _perform_daily(article_limit: Optional[int] = None) -> dict:
     if not (run_news_pipeline and run_article_pipeline and run_robot_pipeline):
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
     items = run_news_pipeline()
     news_upserted = store.upsert_news(items)
-    limit = _clamp_int(os.getenv("DAILY_ARTICLE_LIMIT"), 5, 1, 10)
+    limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 5, 1, 10)
     topics = [it.get("title", "") for it in items[:limit] if it.get("title")]
     for t in topics:
         art = run_article_pipeline(t)
@@ -409,8 +409,8 @@ def run_daily(
             raise HTTPException(status_code=403, detail="Forbidden")
     sync = request.query_params.get("sync") == "1"
     if sync:
-        return _perform_daily()
-    background_tasks.add_task(_perform_daily)
+        return _perform_daily(_clamp_int(request.query_params.get("articles"), 5, 1, 10))
+    background_tasks.add_task(_perform_daily, _clamp_int(request.query_params.get("articles"), 5, 1, 10))
     return {"ok": True, "queued": True}
 
 
