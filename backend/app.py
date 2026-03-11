@@ -267,6 +267,7 @@ class DataStore:
 
 store = DataStore()
 app = FastAPI(title="Robot Portal API")
+auto_seeded = False
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [o.strip() for o in allowed_origins.split(",")] if allowed_origins else ["*"]
@@ -302,6 +303,14 @@ def robots(
     max_price: Optional[float] = None,
     limit: int = 200,
 ):
+    global auto_seeded
+    if not store.client and not auto_seeded and build_top200_robot_list and run_robot_pipeline:
+        auto_seeded = True
+        robots_seed = build_top200_robot_list()
+        for r in robots_seed:
+            robo = run_robot_pipeline(r)
+            if not store.has_robot_name(robo.get("name", "")):
+                store.upsert_robot(robo)
     return store.get_robots(category=category, company=company, q=q, min_price=min_price, max_price=max_price, limit=limit)
 
 @app.get("/robot/by-name/{name}", response_model=Robot)
@@ -345,12 +354,19 @@ def _perform_daily() -> dict:
         art = run_article_pipeline(t)
         if not store.has_article_slug(art.get("slug", "")):
             store.upsert_article(art)
-    robots_seed = build_top200_robot_list() if build_top200_robot_list else []
+    robots_seeded = _seed_robots()
+    return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": robots_seeded}
+
+
+def _seed_robots() -> int:
+    if not (build_top200_robot_list and run_robot_pipeline):
+        return 0
+    robots_seed = build_top200_robot_list()
     for r in robots_seed:
         robo = run_robot_pipeline(r)
         if not store.has_robot_name(robo.get("name", "")):
             store.upsert_robot(robo)
-    return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": len(robots_seed)}
+    return len(robots_seed)
 
 
 @app.post("/tasks/run-daily")
@@ -369,3 +385,17 @@ def run_daily(
         return _perform_daily()
     background_tasks.add_task(_perform_daily)
     return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/seed-robots")
+def seed_robots(
+    request: Request,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    seeded = _seed_robots()
+    return {"ok": True, "robots_seeded": seeded}
