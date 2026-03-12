@@ -20,17 +20,25 @@ async function fetchJson(url: string) {
   }
 }
 
-function getSiteUrl() {
+async function getSiteUrl() {
   const site = process.env.NEXT_PUBLIC_SITE_URL
   if (site && site.startsWith('http')) return site
   const vercel = process.env.VERCEL_URL
   if (vercel) return `https://${vercel}`
+  try {
+    const { headers } = await import('next/headers')
+    const host = headers().get('host')
+    if (host) {
+      const protocol = host.includes('localhost') ? 'http' : 'https'
+      return `${protocol}://${host}`
+    }
+  } catch {}
   return 'http://localhost:3000'
 }
 
 async function readStaticJSON(filename: string) {
   if (process.env.NEXT_RUNTIME === 'edge') {
-    const site = getSiteUrl()
+    const site = await getSiteUrl()
     const res = await fetch(`${site}/data/${filename}`, { cache: 'no-store' })
     if (!res.ok) return []
     return res.json()
@@ -42,7 +50,7 @@ async function readStaticJSON(filename: string) {
     const raw = await readFile(filePath, 'utf-8')
     return JSON.parse(raw)
   } catch {
-    const site = getSiteUrl()
+    const site = await getSiteUrl()
     const res = await fetch(`${site}/data/${filename}`, { cache: 'no-store' })
     if (!res.ok) return []
     return res.json()
