@@ -4,24 +4,24 @@ import re
 from typing import Dict
 
 def build_prompt(topic: str) -> str:
-    return f"""Write a professional robotics article.
+    return f"""Write a long-form, SEO-optimized robotics article in English.
 
 Topic: {topic}
 
-Structure:
+Requirements:
 
-Title
-Introduction
-Main sections
-Conclusion
-
-Length:
-1500-2000 words
+- Length: about 2000 words
+- Use a clear H2/H3 structure with descriptive headings
+- Include the main keyword in the title, first paragraph, and at least one H2
+- Add a concise summary paragraph after the title
+- Use short paragraphs and varied sentence length for readability
+- Cite real companies, products, and market context
+- End with a conclusion and 3-5 bullet key takeaways
 
 Style:
-Technology news website.
-
-Include examples of robotics companies and products."""
+- Professional, authoritative, and factual
+- Written for a technology news site audience
+"""
 
 def clean_title(value: str) -> str:
     text = re.sub(r"^\s*title\s*:\s*", "", value, flags=re.IGNORECASE)
