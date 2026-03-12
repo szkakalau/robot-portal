@@ -36,27 +36,38 @@ export default async function NewsPage({ searchParams }: { searchParams?: { page
   const totalPages = Math.max(1, Math.ceil(news.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
   const pageItems = news.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+  const latest = news[0]?.published_at
   return (
     <div className="section">
-      <section className="section">
-        <h1 className="section-title">Robot News</h1>
-        <p className="section-subtitle">Funding, product launches, and research highlights from top feeds.</p>
+      <section className="page-header">
+        <div>
+          <h1 className="page-title">Robot News</h1>
+          <p className="page-lede">Funding, product launches, and research highlights from top feeds.</p>
+        </div>
+        <div className="stat-row">
+          <div className="stat">
+            <div className="stat-value">{news.length}</div>
+            <div className="stat-label">Total items</div>
+          </div>
+          <div className="stat">
+            <div className="stat-value">{latest ? 'Updated' : '—'}</div>
+            <div className="stat-label">{latest || 'No data yet'}</div>
+          </div>
+        </div>
       </section>
-      <div className="list">
+      <div className="data-list">
         {pageItems.map((n:any)=>(
-          <a className="card" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
-            <div className="card-meta">{n.source || 'Newswire'}</div>
-            <h2 className="card-title">{n.title}</h2>
-            <p className="card-description">Read at source →</p>
+          <a className="data-item" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
+            <div className="data-meta">{n.source || 'Newswire'}</div>
+            <h2 className="data-title">{n.title}</h2>
+            <div className="data-link">Read at source</div>
           </a>
         ))}
       </div>
-      <nav className="list">
-        <div className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          {safePage > 1 ? <Link href={safePage - 1 === 1 ? '/news' : `/news?page=${safePage - 1}`}>Previous</Link> : <span>Previous</span>}
-          <span className="card-meta">Page {safePage} / {totalPages}</span>
-          {safePage < totalPages ? <Link href={`/news?page=${safePage + 1}`}>Next</Link> : <span>Next</span>}
-        </div>
+      <nav className="section-card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+        {safePage > 1 ? <Link className="data-link" href={safePage - 1 === 1 ? '/news' : `/news?page=${safePage - 1}`}>Previous</Link> : <span className="data-meta">Previous</span>}
+        <span className="data-meta">Page {safePage} / {totalPages}</span>
+        {safePage < totalPages ? <Link className="data-link" href={`/news?page=${safePage + 1}`}>Next</Link> : <span className="data-meta">Next</span>}
       </nav>
     </div>
   )

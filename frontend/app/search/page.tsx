@@ -24,13 +24,25 @@ export default async function SearchPage({ searchParams }: { searchParams?: { q?
     : robots.slice(0, 6)
   return (
     <div className="section">
-      <section className="section">
-        <h1 className="section-title">Search</h1>
-        <p className="section-subtitle">Find robots, reviews, and guides across Mechaverses.</p>
+      <section className="page-header">
+        <div>
+          <h1 className="page-title">Search</h1>
+          <p className="page-lede">Find robots, reviews, and guides across Mechaverses.</p>
+        </div>
+        <div className="stat-row">
+          <div className="stat">
+            <div className="stat-value">{matchedRobots.length}</div>
+            <div className="stat-label">Robot matches</div>
+          </div>
+          <div className="stat">
+            <div className="stat-value">{matchedArticles.length}</div>
+            <div className="stat-label">Article matches</div>
+          </div>
+        </div>
       </section>
-      <form method="get" className="form-grid">
+      <form method="get" className="section-card form-grid">
         <input name="q" defaultValue={searchParams?.q || ''} placeholder="Search robots, reviews, or companies" />
-        <button type="submit">Search</button>
+        <button className="button" type="submit">Search</button>
         <Link className="button button-ghost" href="/search">Reset</Link>
       </form>
       <section className="section">

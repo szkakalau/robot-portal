@@ -124,23 +124,33 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
   })
   return (
     <div className="section">
-      <section className="section">
-        <h1 className="section-title">Robot Database</h1>
-        <p className="section-subtitle">Filter by category, company, and price to find your next build platform.</p>
-      </section>
-      <section className="section">
-        <h2 className="section-title">Topic Pages</h2>
-        <div className="list">
-          <div className="card" style={{display:'flex', flexWrap:'wrap', gap:8}}>
-            <Link className="chip" href="/topic/robot-dog">Robot Dogs</Link>
-            <Link className="chip" href="/topic/ai-robot">AI Robots</Link>
-            <Link className="chip" href="/topic/robot-toys">Robot Toys</Link>
-            <Link className="chip" href="/topic/best-robot-dog-under-1000">Best Robot Dog Under $1000</Link>
-            <Link className="chip" href="/topic/best-robot-toys-for-kids-2026">Best Robot Toys for Kids 2026</Link>
+      <section className="page-header">
+        <div>
+          <h1 className="page-title">Robot Database</h1>
+          <p className="page-lede">Filter by category, company, and price to find your next build platform.</p>
+        </div>
+        <div className="stat-row">
+          <div className="stat">
+            <div className="stat-value">{total}</div>
+            <div className="stat-label">Robots found</div>
+          </div>
+          <div className="stat">
+            <div className="stat-value">{safePage}</div>
+            <div className="stat-label">Page {safePage} of {totalPages}</div>
           </div>
         </div>
       </section>
-      <form method="get" className="form-grid">
+      <section className="section-card">
+        <h2 className="section-title">Topic Pages</h2>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
+          <Link className="chip" href="/topic/robot-dog">Robot Dogs</Link>
+          <Link className="chip" href="/topic/ai-robot">AI Robots</Link>
+          <Link className="chip" href="/topic/robot-toys">Robot Toys</Link>
+          <Link className="chip" href="/topic/best-robot-dog-under-1000">Best Robot Dog Under $1000</Link>
+          <Link className="chip" href="/topic/best-robot-toys-for-kids-2026">Best Robot Toys for Kids 2026</Link>
+        </div>
+      </section>
+      <form method="get" className="section-card form-grid">
         <input name="q" defaultValue={filters.q} placeholder="Keyword" />
         <input name="category" defaultValue={filters.category} placeholder="Category" />
         <input name="company" defaultValue={filters.company} placeholder="Company" />
@@ -158,17 +168,14 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
           <option value="4plus">4.0+</option>
           <option value="3plus">3.5+</option>
         </select>
-        <button type="submit">Filter</button>
+        <button className="button" type="submit">Filter</button>
         <Link className="button button-ghost" href="/robots">Reset</Link>
       </form>
-      <div className="card-meta">{total} robots found</div>
       <ComparePanel items={pageItems} />
-      <nav className="list">
-        <div className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          {safePage > 1 ? <Link href={prevPageQuery ? `/robots?${prevPageQuery}` : '/robots'}>Previous</Link> : <span>Previous</span>}
-          <span className="card-meta">Page {safePage} / {totalPages}</span>
-          {safePage < totalPages ? <Link href={nextPageQuery ? `/robots?${nextPageQuery}` : '/robots'}>Next</Link> : <span>Next</span>}
-        </div>
+      <nav className="section-card" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+        {safePage > 1 ? <Link className="data-link" href={prevPageQuery ? `/robots?${prevPageQuery}` : '/robots'}>Previous</Link> : <span className="data-meta">Previous</span>}
+        <span className="data-meta">Page {safePage} / {totalPages}</span>
+        {safePage < totalPages ? <Link className="data-link" href={nextPageQuery ? `/robots?${nextPageQuery}` : '/robots'}>Next</Link> : <span className="data-meta">Next</span>}
       </nav>
       {linkBaseQuery && <div className="card-meta">Filtered view</div>}
     </div>

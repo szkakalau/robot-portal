@@ -52,18 +52,24 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
   const pageItems = articles
   return (
     <div className="section">
-      <section className="section">
-        <h1 className="section-title">Robot Reviews</h1>
-        <p className="section-subtitle">Long-form evaluations, guides, and competitive analysis.</p>
-      </section>
-      <section className="section">
-        <h2 className="section-title">Topic Pages</h2>
-        <div className="list">
-          <div className="card" style={{display:'flex', flexWrap:'wrap', gap:8}}>
-            {TOPICS.map((topic) => (
-              <Link className="chip" key={topic.slug} href={`/topic/${topic.slug}`}>{topic.label}</Link>
-            ))}
+      <section className="page-header">
+        <div>
+          <h1 className="page-title">Robot Reviews</h1>
+          <p className="page-lede">Long-form evaluations, guides, and competitive analysis.</p>
+        </div>
+        <div className="stat-row">
+          <div className="stat">
+            <div className="stat-value">{pageItems.length}</div>
+            <div className="stat-label">Total articles</div>
           </div>
+        </div>
+      </section>
+      <section className="section-card">
+        <h2 className="section-title">Topic Pages</h2>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
+          {TOPICS.map((topic) => (
+            <Link className="chip" key={topic.slug} href={`/topic/${topic.slug}`}>{topic.label}</Link>
+          ))}
         </div>
       </section>
       <div className="grid-2">
