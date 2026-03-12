@@ -322,6 +322,44 @@ except Exception:
 def health():
     return {"ok": True}
 
+
+def _table_count(table: str) -> int:
+    if not store.client:
+        if table == "robots":
+            return len(store._robots)
+        if table == "articles":
+            return len(store._articles)
+        if table == "news_sources":
+            return len(store._news)
+        return 0
+    resp = store.client.table(table).select("id", count="exact").execute()
+    count = getattr(resp, "count", None)
+    if isinstance(count, int):
+        return count
+    return len(resp.data or [])
+
+
+@app.get("/health/storage")
+def health_storage():
+    try:
+        return {
+            "ok": True,
+            "using_supabase": bool(store.client),
+            "supabase_url_set": bool(store.supabase_url),
+            "counts": {
+                "robots": _table_count("robots"),
+                "articles": _table_count("articles"),
+                "news": _table_count("news_sources"),
+            },
+        }
+    except Exception as exc:
+        return {
+            "ok": False,
+            "using_supabase": bool(store.client),
+            "supabase_url_set": bool(store.supabase_url),
+            "error": str(exc),
+        }
+
 @app.get("/robots", response_model=List[Robot])
 def robots(
     category: Optional[str] = None,
