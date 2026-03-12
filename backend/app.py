@@ -295,6 +295,7 @@ class DataStore:
 store = DataStore()
 app = FastAPI(title="Robot Portal API")
 auto_seeded = False
+auto_articles_seeded = False
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [o.strip() for o in allowed_origins.split(",")] if allowed_origins else ["*"]
@@ -348,8 +349,13 @@ def robot_by_name(name: str):
         raise HTTPException(status_code=404, detail="Not found")
 
 @app.get("/articles", response_model=List[Article])
-def articles():
-    return store.get_articles()
+def articles(background_tasks: BackgroundTasks):
+    global auto_articles_seeded
+    items = store.get_articles()
+    if not store.client and not auto_articles_seeded and len(items) < 10:
+        auto_articles_seeded = True
+        background_tasks.add_task(_perform_daily, 10)
+    return items
 
 @app.get("/news", response_model=List[NewsItem])
 def news():
