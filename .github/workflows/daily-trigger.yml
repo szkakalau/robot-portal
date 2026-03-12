@@ -9,6 +9,7 @@ jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Trigger run-daily endpoint
         env:
           API_BASE: ${{ secrets.RENDER_API_BASE }}
@@ -25,3 +26,19 @@ jobs:
             sleep 30
           done
           exit 1
+      - name: Export static data
+        env:
+          API_BASE: ${{ secrets.RENDER_API_BASE }}
+        run: |
+          python3 scripts/export_static_data.py
+      - name: Commit static data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend/public/data/*.json
+          if git diff --staged --quiet; then
+            echo "No static data changes"
+          else
+            git commit -m "chore: update static data"
+            git push origin main
+          fi

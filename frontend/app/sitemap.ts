@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
 
 async function fetchJson(url: string) {
   const controller = new AbortController()
@@ -19,8 +20,18 @@ async function fetchJson(url: string) {
   }
 }
 
+async function readStaticJSON(filename: string) {
+  const { readFile } = await import('fs/promises')
+  const { join } = await import('path')
+  const filePath = join(process.cwd(), 'public', 'data', filename)
+  const raw = await readFile(filePath, 'utf-8')
+  return JSON.parse(raw)
+}
+
 async function getRobotData(): Promise<{ names: string[]; categories: string[]; total: number }> {
-  const robots = await fetchJson(`${API_BASE}/robots?limit=500`)
+  const robots = DATA_MODE === 'static'
+    ? await readStaticJSON('robots.json')
+    : await fetchJson(`${API_BASE}/robots?limit=500`)
   if (!robots) return { names: [], categories: [], total: 0 }
   const names = (robots || []).map((r: any) => r.name).filter((name: any): name is string => Boolean(name))
   const categorySet = new Set<string>(
@@ -31,7 +42,9 @@ async function getRobotData(): Promise<{ names: string[]; categories: string[]; 
 }
 
 async function getArticleData(): Promise<{ slugs: string[]; reviewCount: number }> {
-  const articles = await fetchJson(`${API_BASE}/articles`)
+  const articles = DATA_MODE === 'static'
+    ? await readStaticJSON('articles.json')
+    : await fetchJson(`${API_BASE}/articles`)
   if (!articles) return { slugs: [], reviewCount: 0 }
   const slugs = (articles || [])
     .map((item: any) => item.slug)
@@ -44,7 +57,9 @@ async function getArticleData(): Promise<{ slugs: string[]; reviewCount: number 
 }
 
 async function getNewsTotal(): Promise<number> {
-  const news = await fetchJson(`${API_BASE}/news`)
+  const news = DATA_MODE === 'static'
+    ? await readStaticJSON('news.json')
+    : await fetchJson(`${API_BASE}/news`)
   if (!news) return 0
   return Array.isArray(news) ? news.length : 0
 }
