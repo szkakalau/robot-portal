@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getArticle, getArticles } from '../../../lib/api'
+import SubscribeForm from '../../../components/SubscribeForm'
+import ConsultCta from '../../../components/ConsultCta'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
@@ -211,6 +213,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           <p key={`${article.slug}-${idx}`}>{p}</p>
         )) : <p>{content}</p>}
       </div>
+      <ConsultCta source="article" />
+      <SubscribeForm source="article" />
       {relatedArticles.length > 0 && (
         <section className="article-related">
           <h2 className="article-related-title">Related Articles</h2>

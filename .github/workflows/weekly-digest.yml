@@ -1,0 +1,25 @@
+name: Weekly Digest
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger digest webhook
+        env:
+          API_BASE: ${{ secrets.RENDER_API_BASE }}
+          TASK_TOKEN: ${{ secrets.RENDER_TASK_TOKEN }}
+        run: |
+          test -n "$API_BASE"
+          test -n "$TASK_TOKEN"
+          response=$(curl -sS -X POST "$API_BASE/tasks/send-digest" \
+            -H "X-Task-Token: $TASK_TOKEN" \
+            -H "Content-Type: application/json")
+          echo "$response"
+          echo "$response" | grep -q '"ok":true' && exit 0
+          exit 1

@@ -1,9 +1,13 @@
 import os
-from typing import List, Optional
+import hmac
+import hashlib
+import re
+from typing import List, Optional, Dict
 from fastapi import FastAPI, HTTPException, Request, Header, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
+import httpx
 
 try:
     from supabase import create_client, Client
@@ -40,6 +44,53 @@ class NewsItem(BaseModel):
     source: Optional[str] = None
     published_at: Optional[str] = None
 
+class Subscription(BaseModel):
+    id: Optional[str] = None
+    email: str
+    source: Optional[str] = None
+    active: bool = True
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    meta: Optional[dict] = None
+
+class Lead(BaseModel):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    email: str
+    company: Optional[str] = None
+    message: Optional[str] = None
+    source: Optional[str] = None
+    page: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+class Event(BaseModel):
+    id: Optional[str] = None
+    event: str
+    source: Optional[str] = None
+    page: Optional[str] = None
+    meta: Optional[dict] = None
+    created_at: Optional[datetime] = None
+
+class SubscriptionIn(BaseModel):
+    email: str
+    source: Optional[str] = None
+    page: Optional[str] = None
+    meta: Optional[dict] = None
+
+class LeadIn(BaseModel):
+    name: Optional[str] = None
+    email: str
+    company: Optional[str] = None
+    message: Optional[str] = None
+    source: Optional[str] = None
+    page: Optional[str] = None
+
+class EventIn(BaseModel):
+    event: str
+    source: Optional[str] = None
+    page: Optional[str] = None
+    meta: Optional[dict] = None
+
 class DataStore:
     def __init__(self):
         self.supabase_url = os.getenv("SUPABASE_URL")
@@ -61,6 +112,9 @@ class DataStore:
         self._robots: List[Robot] = []
         self._articles: List[Article] = []
         self._news: List[NewsItem] = []
+        self._subscriptions: List[Subscription] = []
+        self._leads: List[Lead] = []
+        self._events: List[Event] = []
         if not self.client:
             self._seed()
 
@@ -142,6 +196,92 @@ class DataStore:
                 published_at=datetime.utcnow().isoformat(),
             )
         ]
+
+    def _normalize_email(self, email: str) -> str:
+        return (email or "").strip().lower()
+
+    def upsert_subscription(self, email: str, source: Optional[str], meta: Optional[dict]) -> Subscription:
+        clean = self._normalize_email(email)
+        now = datetime.utcnow()
+        if self.client:
+            payload = {
+                "email": clean,
+                "source": source,
+                "active": True,
+                "updated_at": now.isoformat(),
+                "created_at": now.isoformat(),
+                "meta": meta or {},
+            }
+            try:
+                self.client.table("subscriptions").upsert(payload, on_conflict="email").execute()
+            except Exception:
+                pass
+            return Subscription(email=clean, source=source, active=True, created_at=now, updated_at=now, meta=meta or {})
+        existing = next((s for s in self._subscriptions if s.email == clean), None)
+        if existing:
+            existing.active = True
+            existing.updated_at = now
+            existing.source = source or existing.source
+            existing.meta = meta or existing.meta
+            return existing
+        sub = Subscription(email=clean, source=source, active=True, created_at=now, updated_at=now, meta=meta or {})
+        self._subscriptions.append(sub)
+        return sub
+
+    def unsubscribe(self, email: str) -> bool:
+        clean = self._normalize_email(email)
+        now = datetime.utcnow()
+        if self.client:
+            try:
+                self.client.table("subscriptions").update({"active": False, "updated_at": now.isoformat()}).eq("email", clean).execute()
+                return True
+            except Exception:
+                return False
+        existing = next((s for s in self._subscriptions if s.email == clean), None)
+        if not existing:
+            return False
+        existing.active = False
+        existing.updated_at = now
+        return True
+
+    def list_active_subscribers(self) -> List[Subscription]:
+        if self.client:
+            try:
+                data = self.client.table("subscriptions").select("*").eq("active", True).execute().data
+                return [Subscription(**r) for r in data]
+            except Exception:
+                return []
+        return [s for s in self._subscriptions if s.active]
+
+    def record_lead(self, lead: Lead) -> None:
+        if self.client:
+            try:
+                self.client.table("leads").insert({
+                    "name": lead.name,
+                    "email": lead.email,
+                    "company": lead.company,
+                    "message": lead.message,
+                    "source": lead.source,
+                    "page": lead.page,
+                    "created_at": (lead.created_at or datetime.utcnow()).isoformat(),
+                }).execute()
+            except Exception:
+                return
+        self._leads.append(lead)
+
+    def record_event(self, event: Event) -> None:
+        if self.client:
+            try:
+                self.client.table("events").insert({
+                    "event": event.event,
+                    "source": event.source,
+                    "page": event.page,
+                    "meta": event.meta or {},
+                    "created_at": (event.created_at or datetime.utcnow()).isoformat(),
+                }).execute()
+            except Exception:
+                return
+        self._events.append(event)
 
     def _filter_robots(
         self,
@@ -333,6 +473,27 @@ def health():
     return {"ok": True}
 
 
+def _subscribe_secret() -> str:
+    return os.getenv("SUBSCRIBE_SECRET") or os.getenv("TASK_TOKEN") or "change-me"
+
+
+def _sign_email(email: str) -> str:
+    secret = _subscribe_secret().encode("utf-8")
+    return hmac.new(secret, email.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _unsubscribe_url(email: str) -> str:
+    base = os.getenv("SITE_URL") or os.getenv("NEXT_PUBLIC_SITE_URL") or "http://localhost:3000"
+    token = _sign_email(email)
+    return f"{base}/unsubscribe?email={email}&token={token}"
+
+
+def _valid_email(email: str) -> bool:
+    if not email:
+        return False
+    return bool(re.match(r"^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", email))
+
+
 def _table_count(table: str) -> int:
     if not store.client:
         if table == "robots":
@@ -371,6 +532,67 @@ def health_storage():
             "supabase_url_set": bool(store.supabase_url),
             "error": str(exc),
         }
+
+
+@app.post("/subscriptions")
+def create_subscription(payload: SubscriptionIn):
+    email = (payload.email or "").strip().lower()
+    if not _valid_email(email):
+        raise HTTPException(status_code=400, detail="Invalid email")
+    meta = payload.meta or {}
+    if payload.page:
+        meta["page"] = payload.page
+    sub = store.upsert_subscription(email=email, source=payload.source, meta=meta)
+    return {"ok": True, "email": sub.email, "unsubscribe_url": _unsubscribe_url(sub.email)}
+
+
+@app.get("/unsubscribe")
+def unsubscribe(email: Optional[str] = None, token: Optional[str] = None):
+    if not email or not token:
+        raise HTTPException(status_code=400, detail="Missing parameters")
+    clean = email.strip().lower()
+    if not _valid_email(clean):
+        raise HTTPException(status_code=400, detail="Invalid email")
+    expected = _sign_email(clean)
+    if not hmac.compare_digest(expected, token):
+        raise HTTPException(status_code=403, detail="Invalid token")
+    ok = store.unsubscribe(clean)
+    if not ok:
+        raise HTTPException(status_code=404, detail="Subscription not found")
+    return {"ok": True, "email": clean}
+
+
+@app.post("/leads")
+def create_lead(payload: LeadIn):
+    email = (payload.email or "").strip().lower()
+    if not _valid_email(email):
+        raise HTTPException(status_code=400, detail="Invalid email")
+    lead = Lead(
+        name=payload.name,
+        email=email,
+        company=payload.company,
+        message=payload.message,
+        source=payload.source,
+        page=payload.page,
+        created_at=datetime.utcnow(),
+    )
+    store.record_lead(lead)
+    return {"ok": True}
+
+
+@app.post("/events")
+def create_event(payload: EventIn):
+    if not payload.event:
+        raise HTTPException(status_code=400, detail="Missing event")
+    event = Event(
+        event=payload.event,
+        source=payload.source,
+        page=payload.page,
+        meta=payload.meta or {},
+        created_at=datetime.utcnow(),
+    )
+    store.record_event(event)
+    return {"ok": True}
 
 @app.get("/robots", response_model=List[Robot])
 def robots(
@@ -516,6 +738,39 @@ def _seed_robots() -> int:
     return len(robots_seed)
 
 
+def _build_digest_payload(limit: int = 6) -> dict:
+    base = os.getenv("SITE_URL") or os.getenv("NEXT_PUBLIC_SITE_URL") or "http://localhost:3000"
+    articles = store.get_articles()[:limit]
+    news = store.get_news()[:limit]
+    return {
+        "subject": "Mechaverses Weekly Robotics Digest",
+        "preview": "Top reviews, new robots, and industry highlights.",
+        "articles": [
+            {
+                "title": a.title,
+                "url": f"{base}/article/{a.slug}",
+                "summary": a.meta_description or ""
+            }
+            for a in articles
+        ],
+        "news": [
+            {
+                "title": n.title,
+                "url": n.link,
+                "source": n.source
+            }
+            for n in news
+        ],
+        "recipients": [
+            {
+                "email": s.email,
+                "unsubscribe_url": _unsubscribe_url(s.email)
+            }
+            for s in store.list_active_subscribers()
+        ],
+    }
+
+
 @app.post("/tasks/run-daily")
 def run_daily(
     request: Request,
@@ -532,6 +787,29 @@ def run_daily(
         return _perform_daily(_clamp_int(request.query_params.get("articles"), 5, 1, 10))
     background_tasks.add_task(_perform_daily, _clamp_int(request.query_params.get("articles"), 5, 1, 10))
     return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/send-digest")
+def send_digest(
+    request: Request,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    webhook = os.getenv("DIGEST_WEBHOOK_URL")
+    payload = _build_digest_payload()
+    if not webhook:
+        return {"ok": True, "sent": False, "reason": "missing_webhook", "recipients": len(payload.get("recipients", []))}
+    try:
+        with httpx.Client(timeout=30) as client:
+            resp = client.post(webhook, json=payload)
+            resp.raise_for_status()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Digest webhook failed: {exc}")
+    return {"ok": True, "sent": True, "recipients": len(payload.get("recipients", []))}
 
 
 @app.post("/tasks/seed-robots")

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import ConsultCta from '../../components/ConsultCta'
 
 type ComparePanelProps = {
   items: any[]
@@ -101,6 +102,7 @@ export default function ComparePanel({ items }: ComparePanelProps) {
           </div>
         </div>
       )}
+      <ConsultCta source="robot-compare" />
     </div>
   )
 }
