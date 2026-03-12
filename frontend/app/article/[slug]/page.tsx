@@ -192,20 +192,26 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     ]
   }
   return (
-    <article className="article-shell article-magazine">
+    <article className="article-shell article-magazine article-google">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <nav className="article-breadcrumb">
-        <Link href="/">Home</Link>
-        <span>/</span>
-        <Link href={section.href}>{section.name}</Link>
-        <span>/</span>
-        <span>{displayTitle}</span>
-      </nav>
-      <section className="article-hero">
+      <div className="article-topbar">
+        <nav className="article-breadcrumb">
+          <Link href="/">Home</Link>
+          <span>/</span>
+          <Link href={section.href}>{section.name}</Link>
+          <span>/</span>
+          <span>{displayTitle}</span>
+        </nav>
+        <div className="article-tools">
+          <a className="article-tool" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(displayTitle)}&url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Share</a>
+          <a className="article-tool" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`} target="_blank" rel="noopener noreferrer">Save</a>
+        </div>
+      </div>
+      <section className="article-hero article-hero-google">
         <div className="article-hero-copy">
           <div className="article-kicker">
-            <span className="chip">{article.category || 'review'}</span>
+            <span className="chip chip-primary">{article.category || 'review'}</span>
             {publishedDate && <span className="article-meta">{publishedDate}</span>}
             <span className="article-meta">{readingMinutes} min read</span>
           </div>
@@ -214,6 +220,20 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           <div className="article-meta-row">
             <span className="article-meta">Mechaverses Editorial Team</span>
             {publishedDate && <span className="article-meta">Updated {publishedDate}</span>}
+          </div>
+          <div className="article-metrics">
+            <div className="metric-card">
+              <span className="metric-label">Words</span>
+              <span className="metric-value">{wordCount.toLocaleString()}</span>
+            </div>
+            <div className="metric-card">
+              <span className="metric-label">Section</span>
+              <span className="metric-value">{section.name}</span>
+            </div>
+            <div className="metric-card">
+              <span className="metric-label">Format</span>
+              <span className="metric-value">Long-form</span>
+            </div>
           </div>
         </div>
         <div className="article-hero-media">
@@ -227,7 +247,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           />
         </div>
       </section>
-      <section className="article-grid">
+      <section className="article-grid article-body">
         <aside className="article-aside">
           <div className="article-aside-card">
             <div className="article-aside-title">Article Brief</div>
