@@ -9,7 +9,19 @@ function getSiteUrl() {
   return 'http://localhost:3000'
 }
 
+function shouldUseFetchFallback() {
+  if (process.env.NEXT_RUNTIME === 'edge') return true
+  if (process.env.VERCEL) return true
+  return false
+}
+
 async function readStaticJSON(filename: string) {
+  if (shouldUseFetchFallback()) {
+    const site = getSiteUrl()
+    const res = await fetch(`${site}/data/${filename}`, { cache: 'no-store' })
+    if (!res.ok) return []
+    return res.json()
+  }
   try {
     const { readFile } = await import('fs/promises')
     const { join } = await import('path')
@@ -19,7 +31,7 @@ async function readStaticJSON(filename: string) {
   } catch {
     const site = getSiteUrl()
     const res = await fetch(`${site}/data/${filename}`, { cache: 'no-store' })
-    if (!res.ok) throw new Error('Static data fetch failed')
+    if (!res.ok) return []
     return res.json()
   }
 }
