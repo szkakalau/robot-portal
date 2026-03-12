@@ -45,11 +45,19 @@ class DataStore:
         self.supabase_url = os.getenv("SUPABASE_URL")
         self.supabase_key = os.getenv("SUPABASE_KEY")
         self.client: Optional[Client] = None
+        self.client_error: Optional[str] = None
         if self.supabase_url and self.supabase_key and create_client:
             try:
                 self.client = create_client(self.supabase_url, self.supabase_key)
             except Exception:
                 self.client = None
+                self.client_error = "create_client_failed"
+        elif self.supabase_url and not self.supabase_key:
+            self.client_error = "missing_supabase_key"
+        elif self.supabase_key and not self.supabase_url:
+            self.client_error = "missing_supabase_url"
+        elif not create_client:
+            self.client_error = "supabase_sdk_unavailable"
         self._robots: List[Robot] = []
         self._articles: List[Article] = []
         self._news: List[NewsItem] = []
@@ -346,6 +354,8 @@ def health_storage():
             "ok": True,
             "using_supabase": bool(store.client),
             "supabase_url_set": bool(store.supabase_url),
+            "supabase_key_set": bool(store.supabase_key),
+            "client_error": store.client_error,
             "counts": {
                 "robots": _table_count("robots"),
                 "articles": _table_count("articles"),
