@@ -4,6 +4,8 @@ const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
 async function getSiteUrl() {
   const site = process.env.NEXT_PUBLIC_SITE_URL
   if (site && site.startsWith('http')) return site
+  const production = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  if (production) return `https://${production}`
   const vercel = process.env.VERCEL_URL
   if (vercel) return `https://${vercel}`
   try {
@@ -45,12 +47,14 @@ async function fetchJSON(path: string) {
 }
 
 export async function getArticles() {
-  if (DATA_MODE === 'static') return readStaticJSON('articles.json')
+  const staticData = await readStaticJSON('articles.json')
+  if (Array.isArray(staticData) && staticData.length > 0) return staticData
+  if (DATA_MODE === 'static') return staticData
   try {
     const data = await fetchJSON('/articles')
     if (Array.isArray(data) && data.length > 0) return data
   } catch {}
-  return readStaticJSON('articles.json')
+  return staticData
 }
 
 type RobotFilters = {
@@ -80,10 +84,9 @@ export async function getRobots(filters: RobotFilters = {}) {
     const limit = filters.limit ? Math.max(1, Math.min(500, Number(filters.limit))) : 200
     return filtered.slice(0, limit)
   }
-  if (DATA_MODE === 'static') {
-    const robots = await readStaticJSON('robots.json')
-    return applyFilters(robots || [])
-  }
+  const staticRobots = await readStaticJSON('robots.json')
+  if (Array.isArray(staticRobots) && staticRobots.length > 0) return applyFilters(staticRobots)
+  if (DATA_MODE === 'static') return applyFilters(staticRobots || [])
   const qs = new URLSearchParams()
   Object.entries(filters).forEach(([k, v]) => {
     if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
@@ -93,45 +96,52 @@ export async function getRobots(filters: RobotFilters = {}) {
     const data = await fetchJSON(query ? `/robots?${query}` : '/robots')
     if (Array.isArray(data) && data.length > 0) return data
   } catch {}
-  const robots = await readStaticJSON('robots.json')
-  return applyFilters(robots || [])
+  return applyFilters(staticRobots || [])
 }
 
 export async function getNews() {
-  if (DATA_MODE === 'static') return readStaticJSON('news.json')
+  const staticData = await readStaticJSON('news.json')
+  if (Array.isArray(staticData) && staticData.length > 0) return staticData
+  if (DATA_MODE === 'static') return staticData
   try {
     const data = await fetchJSON('/news')
     if (Array.isArray(data) && data.length > 0) return data
   } catch {}
-  return readStaticJSON('news.json')
+  return staticData
 }
 
 export async function getArticle(slug: string) {
-  const fromStatic = async () => {
-    const articles = await readStaticJSON('articles.json')
-    const match = (articles || []).find((a: any) => a.slug === slug)
+  const fromStatic = async (articles?: any[]) => {
+    const source = articles || (await readStaticJSON('articles.json'))
+    const match = (source || []).find((a: any) => a.slug === slug)
     if (!match) throw new Error('Article not found')
     return match
   }
-  if (DATA_MODE === 'static') return fromStatic()
+  const staticArticles = await readStaticJSON('articles.json')
+  const staticMatch = (staticArticles || []).find((a: any) => a.slug === slug)
+  if (staticMatch) return staticMatch
+  if (DATA_MODE === 'static') return fromStatic(staticArticles)
   try {
     return await fetchJSON(`/article/${slug}`)
   } catch {
-    return fromStatic()
+    return fromStatic(staticArticles)
   }
 }
 
 export async function getRobotByName(name: string) {
-  const fromStatic = async () => {
-    const robots = await readStaticJSON('robots.json')
-    const match = (robots || []).find((r: any) => r.name === name)
+  const fromStatic = async (robots?: any[]) => {
+    const source = robots || (await readStaticJSON('robots.json'))
+    const match = (source || []).find((r: any) => r.name === name)
     if (!match) throw new Error('Robot not found')
     return match
   }
-  if (DATA_MODE === 'static') return fromStatic()
+  const staticRobots = await readStaticJSON('robots.json')
+  const staticMatch = (staticRobots || []).find((r: any) => r.name === name)
+  if (staticMatch) return staticMatch
+  if (DATA_MODE === 'static') return fromStatic(staticRobots)
   try {
     return await fetchJSON(`/robot/by-name/${encodeURIComponent(name)}`)
   } catch {
-    return fromStatic()
+    return fromStatic(staticRobots)
   }
 }
