@@ -400,9 +400,22 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
                 break
             if topic not in topics:
                 topics.append(topic)
-    for t in topics:
+    for idx, t in enumerate(topics, start=1):
         art = run_article_pipeline(t)
-        if not store.has_article_slug(art.get("slug", "")):
+        slug = (art.get("slug") or "").strip()
+        if not slug:
+            slug = f"article-{datetime.utcnow().strftime('%Y%m%d')}-{idx}"
+            art["slug"] = slug
+        if store.has_article_slug(slug):
+            date_tag = datetime.utcnow().strftime("%Y%m%d")
+            attempt = 1
+            new_slug = f"{slug}-{date_tag}-{attempt}"
+            while store.has_article_slug(new_slug):
+                attempt += 1
+                new_slug = f"{slug}-{date_tag}-{attempt}"
+            art["slug"] = new_slug
+            slug = new_slug
+        if not store.has_article_slug(slug):
             store.upsert_article(art)
     robots_seeded = _seed_robots()
     return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": robots_seeded}
