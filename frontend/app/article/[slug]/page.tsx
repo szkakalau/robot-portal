@@ -1,5 +1,6 @@
+import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getArticle } from '../../../lib/api'
+import { getArticle, getArticles } from '../../../lib/api'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
@@ -56,6 +57,47 @@ function formatDate(value?: string) {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
 }
 
+function tokenize(text: string) {
+  return (text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .split(/\s+/g)
+    .map((t) => t.trim())
+    .filter(Boolean)
+}
+
+function pickKeywords(article: any) {
+  const base = `${article?.title || ''} ${article?.meta_description || ''} ${article?.category || ''}`
+  const tokens = tokenize(base)
+  const stop = new Set([
+    'the', 'a', 'an', 'and', 'or', 'to', 'of', 'in', 'on', 'for', 'with', 'from', 'by', 'at', 'as', 'is', 'are', 'was', 'were',
+    'will', 'how', 'why', 'what', 'when', 'where', 'this', 'that', 'these', 'those', 'into', 'about', 'its', 'their', 'than',
+    'robot', 'robots', 'robotics'
+  ])
+  const counts = new Map<string, number>()
+  tokens.forEach((t) => {
+    if (t.length < 4) return
+    if (stop.has(t)) return
+    counts.set(t, (counts.get(t) || 0) + 1)
+  })
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([k]) => k)
+}
+
+function scoreRelated(current: any, candidate: any, keywords: string[]) {
+  if (!candidate?.slug || candidate.slug === current?.slug) return -1
+  let score = 0
+  if ((candidate.category || '').toLowerCase() === (current.category || '').toLowerCase()) score += 3
+  const hay = tokenize(`${candidate.title || ''} ${candidate.meta_description || ''}`)
+  const set = new Set(hay)
+  keywords.forEach((k) => {
+    if (set.has(k)) score += 2
+  })
+  return score
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const article = await getArticle(params.slug)
   const displayTitle = normalizeTitle(article.title)
@@ -87,6 +129,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
   const article = await getArticle(params.slug)
+  const allArticles = await getArticles()
   const displayTitle = normalizeTitle(article.title)
   const content = normalizeContent(article.content)
   const paragraphs = splitParagraphs(content)
@@ -94,6 +137,13 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const articleUrl = `${SITE_URL}/article/${article.slug}`
   const articleImage = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   const summaryText = article.meta_description || paragraphs[0] || ''
+  const keywords = pickKeywords(article)
+  const relatedArticles = (allArticles || [])
+    .map((candidate: any) => ({ candidate, score: scoreRelated(article, candidate, keywords) }))
+    .filter((item: any) => item.score > 0)
+    .sort((a: any, b: any) => b.score - a.score)
+    .slice(0, 6)
+    .map((item: any) => item.candidate)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -143,6 +193,20 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           <p key={`${article.slug}-${idx}`}>{p}</p>
         )) : <p>{content}</p>}
       </div>
+      {relatedArticles.length > 0 && (
+        <section className="article-related">
+          <h2 className="article-related-title">Related Articles</h2>
+          <div className="article-related-grid">
+            {relatedArticles.map((a: any) => (
+              <Link className="article-related-card" key={a.slug} href={`/article/${a.slug}`}>
+                <div className="chip">{a.category || 'article'}</div>
+                <div className="article-related-heading">{normalizeTitle(a.title)}</div>
+                <div className="article-related-desc">{a.meta_description || ''}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   )
 }
