@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "n-1",
+    "title": "TechCrunch Robotics Update",
+    "link": "https://techcrunch.com/robotics",
+    "source": "TechCrunch",
+    "published_at": "2026-03-12T14:23:34.018436"
+  },
+  {
+    "id": null,
+    "title": "Qualcomm’s partnership with Neura Robotics is just the beginning",
+    "link": "https://techcrunch.com/2026/03/09/qualcomms-partnership-with-neura-robotics-is-just-the-beginning/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Mon, 09 Mar 2026 15:58:11 +0000"
+  },
+  {
+    "id": null,
+    "title": "Upside Robotics is reducing fertilizer use and waste in corn crops",
+    "link": "https://techcrunch.com/2026/02/11/upside-robotics-is-reducing-fertilizer-use-and-waste-in-corn-crops/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Wed, 11 Feb 2026 16:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "How YC-backed Bucket Robotics survived its first CES",
+    "link": "https://techcrunch.com/2026/01/18/how-yc-backed-bucket-robotics-survived-its-first-ces/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Sun, 18 Jan 2026 16:10:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Oshen built the first ocean robot to collect data in a Category 5 hurricane",
+    "link": "https://techcrunch.com/2026/01/17/oshen-built-the-first-ocean-robot-to-collect-data-in-a-category-5-hurricane/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Sat, 17 Jan 2026 16:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Inside CES 2026’s “physical AI” takeover",
+    "link": "https://techcrunch.com/video/inside-ces-2026s-physical-ai-takeover/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Fri, 09 Jan 2026 01:19:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Pickle Robot adds Tesla veteran as first CFO",
+    "link": "https://techcrunch.com/2025/12/18/pickle-robot-adds-tesla-veteran-as-first-cfo/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Thu, 18 Dec 2025 20:01:46 +0000"
+  },
+  {
+    "id": null,
+    "title": "1X struck a deal to send its ‘home’ humanoids to factories and warehouses",
+    "link": "https://techcrunch.com/2025/12/11/1x-struck-a-deal-to-send-its-home-humanoids-to-factories-and-warehouses/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Thu, 11 Dec 2025 22:03:36 +0000"
+  },
+  {
+    "id": null,
+    "title": "This Khosla-backed startup can track drones, trucks, and robotaxis, inch by inch",
+    "link": "https://techcrunch.com/2025/11/20/this-khosla-based-startup-can-track-drones-trucks-and-robotaxis-inch-by-inch/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Thu, 20 Nov 2025 18:00:01 +0000"
+  },
+  {
+    "id": null,
+    "title": "Why a researcher is building robots that look and act like bats",
+    "link": "https://techcrunch.com/2025/11/12/why-a-researcher-is-building-robots-that-look-and-act-like-bats/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Wed, 12 Nov 2025 17:12:07 +0000"
+  },
+  {
+    "id": null,
+    "title": "AI researchers ’embodied’ an LLM into a robot – and it started channeling Robin Williams",
+    "link": "https://techcrunch.com/2025/11/01/ai-researchers-embodied-an-llm-into-a-robot-and-it-started-channeling-robin-williams/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Sat, 01 Nov 2025 15:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Coco Robotics taps UCLA professor to lead new physical AI research lab",
+    "link": "https://techcrunch.com/2025/10/14/coco-robotics-taps-ucla-professor-to-lead-new-physical-ai-research-lab/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Tue, 14 Oct 2025 15:51:10 +0000"
+  },
+  {
+    "id": null,
+    "title": "The world is just not quite ready for humanoids yet",
+    "link": "https://techcrunch.com/2025/10/10/the-world-is-just-not-quite-ready-for-humanoids-yet/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Fri, 10 Oct 2025 13:15:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "SoftBank bulks up its robotics portfolio with ABB Group’s robotics unit",
+    "link": "https://techcrunch.com/2025/10/08/softbank-bulks-up-its-robotics-portfolio-with-abb-groups-robotics-unit/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Wed, 08 Oct 2025 14:10:18 +0000"
+  },
+  {
+    "id": null,
+    "title": "Former OpenAI and DeepMind researchers raise whopping $300M seed to automate science",
+    "link": "https://techcrunch.com/2025/09/30/former-openai-and-deepmind-researchers-raise-whopping-300m-seed-to-automate-science/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Tue, 30 Sep 2025 18:56:59 +0000"
+  },
+  {
+    "id": null,
+    "title": "Live demo fails, AI safety wins, and the golden age of robotics",
+    "link": "https://techcrunch.com/podcast/live-demo-fails-ai-safety-wins-and-the-golden-age-of-robotics/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Fri, 19 Sep 2025 15:48:52 +0000"
+  },
+  {
+    "id": null,
+    "title": "Why Runway is eyeing the robotics industry for future revenue growth",
+    "link": "https://techcrunch.com/2025/09/01/why-runway-is-eyeing-the-robotics-industry-for-future-revenue-growth/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Mon, 01 Sep 2025 15:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Tesla is reportedly behind on its pledge to build 5,000 Optimus bots this year",
+    "link": "https://techcrunch.com/2025/07/25/tesla-is-reportedly-behind-on-its-pledge-to-build-5000-optimus-bots-this-year/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Fri, 25 Jul 2025 14:14:19 +0000"
+  },
+  {
+    "id": null,
+    "title": "How TRIC Robotics is reducing pesticide use on strawberries using UV light",
+    "link": "https://techcrunch.com/2025/07/23/how-tric-robotics-is-reducing-pesticide-use-on-strawberries-using-uv-light/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Wed, 23 Jul 2025 14:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Diligent Robotics hires two notable Cruise alumni to its leadership team",
+    "link": "https://techcrunch.com/2025/07/10/diligent-robotics-adds-two-notable-cruise-alumni-to-its-leadership-team/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Thu, 10 Jul 2025 13:00:00 +0000"
+  },
+  {
+    "id": null,
+    "title": "Hugging Face opens up orders for its Reachy Mini desktop robots",
+    "link": "https://techcrunch.com/2025/07/09/hugging-face-opens-up-orders-for-its-reachy-mini-desktop-robots/",
+    "source": "robotics | TechCrunch",
+    "published_at": "Wed, 09 Jul 2025 07:00:00 +0000"
+  }
+]

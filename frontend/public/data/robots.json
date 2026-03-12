@@ -1,1 +1,3686 @@
-[]
+[
+  {
+    "id": "stub-1",
+    "name": "Unitree Go2 Robot Dog",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 3999.0,
+    "release_year": 2023,
+    "description": "Agile quadruped robot",
+    "specs": {
+      "weight": "15kg"
+    },
+    "image_url": "https://example.com/go2.jpg",
+    "created_at": "2026-03-12T14:23:34.018392"
+  },
+  {
+    "id": "stub-2",
+    "name": "Eilik Robot Companion",
+    "company": "Energize Lab",
+    "category": "companion",
+    "price": 129.0,
+    "release_year": 2022,
+    "description": "Desktop companion robot",
+    "specs": {
+      "battery": "2h"
+    },
+    "image_url": "https://example.com/eilik.jpg",
+    "created_at": "2026-03-12T14:23:34.018416"
+  },
+  {
+    "id": null,
+    "name": "Unitree B2 Industrial Robot Dog",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 100000.0,
+    "release_year": 2024,
+    "description": "Heavy-duty robot dog for industrial inspection",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree A1 Robot Dog",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 2700.0,
+    "release_year": 2020,
+    "description": "Compact quadruped for entry robotics use",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Boston Dynamics Spot",
+    "company": "Boston Dynamics",
+    "category": "robot dog",
+    "price": 74500.0,
+    "release_year": 2020,
+    "description": "Enterprise-grade robot dog for inspection and mapping",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sony Aibo ERS-1000",
+    "company": "Sony",
+    "category": "companion robot",
+    "price": 2899.0,
+    "release_year": 2018,
+    "description": "AI pet robot dog with emotional interaction",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tesla Optimus",
+    "company": "Tesla",
+    "category": "humanoid robot",
+    "price": 30000.0,
+    "release_year": 2025,
+    "description": "General-purpose humanoid robot platform",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree H1",
+    "company": "Unitree",
+    "category": "humanoid robot",
+    "price": 90000.0,
+    "release_year": 2024,
+    "description": "Full-size humanoid for research and mobility",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Figure 01",
+    "company": "Figure AI",
+    "category": "humanoid robot",
+    "price": 0.0,
+    "release_year": 2024,
+    "description": "Industrial and logistics humanoid platform",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Agility Digit",
+    "company": "Agility Robotics",
+    "category": "humanoid robot",
+    "price": 250000.0,
+    "release_year": 2024,
+    "description": "Biped robot for warehouse operations",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "UBTECH Walker S",
+    "company": "UBTECH",
+    "category": "humanoid robot",
+    "price": 0.0,
+    "release_year": 2024,
+    "description": "Humanoid robot for enterprise automation",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Loona Robot Pet",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 449.0,
+    "release_year": 2023,
+    "description": "Smart AI pet robot for home interaction",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "EMO Desktop Pet",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 279.0,
+    "release_year": 2021,
+    "description": "Interactive desktop AI robot companion",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Vector Robot",
+    "company": "Digital Dream Labs",
+    "category": "companion robot",
+    "price": 299.0,
+    "release_year": 2018,
+    "description": "Small AI companion with autonomous behaviors",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko 3",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 249.0,
+    "release_year": 2021,
+    "description": "Educational AI companion robot for families",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Mindstorms Robot Inventor",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 359.0,
+    "release_year": 2020,
+    "description": "Programmable STEM robot kit",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock mBot2",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 149.0,
+    "release_year": 2022,
+    "description": "Entry-level coding robot for students",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Anki Cozmo",
+    "company": "Anki",
+    "category": "education robot",
+    "price": 179.0,
+    "release_year": 2016,
+    "description": "Small educational robot with coding features",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero BOLT",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 199.0,
+    "release_year": 2019,
+    "description": "Programmable rolling robot for STEM learning",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dash Robot",
+    "company": "Wonder Workshop",
+    "category": "education robot",
+    "price": 169.0,
+    "release_year": 2018,
+    "description": "Classroom coding robot for children",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Amazon Astro",
+    "company": "Amazon",
+    "category": "home service robot",
+    "price": 1599.0,
+    "release_year": 2023,
+    "description": "Home monitoring and assistance robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "temi Personal Robot",
+    "company": "temi",
+    "category": "home service robot",
+    "price": 3499.0,
+    "release_year": 2019,
+    "description": "Voice-controlled home and office assistant robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "EBO X Family Robot",
+    "company": "Enabot",
+    "category": "home service robot",
+    "price": 999.0,
+    "release_year": 2024,
+    "description": "Family companion and home patrol robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Enabot ROLA Mini",
+    "company": "Enabot",
+    "category": "home service robot",
+    "price": 199.0,
+    "release_year": 2024,
+    "description": "Affordable mobile home companion robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Airbot Z1",
+    "company": "Ecovacs",
+    "category": "home service robot",
+    "price": 1499.0,
+    "release_year": 2024,
+    "description": "Home service robot with interaction and navigation",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "iRobot Roomba j9+",
+    "company": "iRobot",
+    "category": "cleaning robot",
+    "price": 899.0,
+    "release_year": 2023,
+    "description": "Premium robot vacuum with auto-empty dock",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Roborock S8 MaxV Ultra",
+    "company": "Roborock",
+    "category": "cleaning robot",
+    "price": 1799.0,
+    "release_year": 2024,
+    "description": "AI-powered vacuum and mop cleaning robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dreame X40 Ultra",
+    "company": "Dreame",
+    "category": "cleaning robot",
+    "price": 1499.0,
+    "release_year": 2024,
+    "description": "Advanced robotic cleaner for full-home coverage",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Narwal Freo X Ultra",
+    "company": "Narwal",
+    "category": "cleaning robot",
+    "price": 1399.0,
+    "release_year": 2024,
+    "description": "Smart mop-vac robot with automatic maintenance",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Landroid Vision M",
+    "company": "Worx",
+    "category": "cleaning robot",
+    "price": 1999.0,
+    "release_year": 2024,
+    "description": "Vision-based robotic lawn mower",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Knightscope K5",
+    "company": "Knightscope",
+    "category": "security robot",
+    "price": 0.0,
+    "release_year": 2020,
+    "description": "Autonomous security patrol robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Cobalt Security Robot",
+    "company": "Cobalt Robotics",
+    "category": "security robot",
+    "price": 0.0,
+    "release_year": 2021,
+    "description": "Indoor security robot with remote operators",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Promobot V4",
+    "company": "Promobot",
+    "category": "security robot",
+    "price": 0.0,
+    "release_year": 2023,
+    "description": "Service and public-facing autonomous robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "SMP S5 Patrol Robot",
+    "company": "SMP Robotics",
+    "category": "security robot",
+    "price": 0.0,
+    "release_year": 2022,
+    "description": "Outdoor patrol and surveillance robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "OrionStar Lucki",
+    "company": "OrionStar",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2022,
+    "description": "Delivery and reception service robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Pudu BellaBot",
+    "company": "Pudu Robotics",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2021,
+    "description": "Restaurant delivery robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Pudu KettyBot",
+    "company": "Pudu Robotics",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2022,
+    "description": "Advertising and delivery robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Keenon T8",
+    "company": "Keenon Robotics",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2021,
+    "description": "Hospitality and restaurant service robot",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Bear Robotics Servi",
+    "company": "Bear Robotics",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2021,
+    "description": "Autonomous serving robot for food service",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Pudu SwiftBot",
+    "company": "Pudu Robotics",
+    "category": "commercial robot",
+    "price": 0.0,
+    "release_year": 2024,
+    "description": "Fast indoor delivery robot for commercial venues",
+    "specs": {},
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 05",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 2980.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 5,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 06",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 3100.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 07",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 3220.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 08",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 3340.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 09",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 3460.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 10",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 3580.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 11",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 3700.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 12",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 3820.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 13",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 3940.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 14",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 4060.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 15",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 4180.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 16",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 4300.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 17",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 4420.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 18",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 4540.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 19",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 4660.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 20",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 4780.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 21",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 4900.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 21,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 22",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 5020.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 22,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 23",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 5140.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 23,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 24",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 5260.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 24,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 25",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 5380.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 25,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 26",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 5500.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 26,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 27",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 5620.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 27,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 28",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 5740.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 28,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 29",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 5860.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 29,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 30",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 5980.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 30,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Xiaomi Robotics Robot Dog Series 31",
+    "company": "Xiaomi Robotics",
+    "category": "robot dog",
+    "price": 6100.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 31,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ANYbotics Robot Dog Series 32",
+    "company": "ANYbotics",
+    "category": "robot dog",
+    "price": 6220.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 32,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Deep Robotics Robot Dog Series 33",
+    "company": "Deep Robotics",
+    "category": "robot dog",
+    "price": 6340.0,
+    "release_year": 2022,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 33,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ghost Robotics Robot Dog Series 34",
+    "company": "Ghost Robotics",
+    "category": "robot dog",
+    "price": 6460.0,
+    "release_year": 2024,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 34,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Unitree Robot Dog Series 35",
+    "company": "Unitree",
+    "category": "robot dog",
+    "price": 6580.0,
+    "release_year": 2026,
+    "description": "Robot Dog for practical consumer and business use cases",
+    "specs": {
+      "rank": 35,
+      "primary_keyword": "best robot dog 2026",
+      "long_tail_keywords": [
+        "robot dog review",
+        "robot dog price",
+        "robot dog comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "UBTECH Humanoid Robot Series 06",
+    "company": "UBTECH",
+    "category": "humanoid robot",
+    "price": 15600.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Agility Robotics Humanoid Robot Series 07",
+    "company": "Agility Robotics",
+    "category": "humanoid robot",
+    "price": 15720.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tesla Humanoid Robot Series 08",
+    "company": "Tesla",
+    "category": "humanoid robot",
+    "price": 15840.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Figure AI Humanoid Robot Series 09",
+    "company": "Figure AI",
+    "category": "humanoid robot",
+    "price": 15960.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Fourier Intelligence Humanoid Robot Series 10",
+    "company": "Fourier Intelligence",
+    "category": "humanoid robot",
+    "price": 16080.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "UBTECH Humanoid Robot Series 11",
+    "company": "UBTECH",
+    "category": "humanoid robot",
+    "price": 16200.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Agility Robotics Humanoid Robot Series 12",
+    "company": "Agility Robotics",
+    "category": "humanoid robot",
+    "price": 16320.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tesla Humanoid Robot Series 13",
+    "company": "Tesla",
+    "category": "humanoid robot",
+    "price": 16440.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Figure AI Humanoid Robot Series 14",
+    "company": "Figure AI",
+    "category": "humanoid robot",
+    "price": 16560.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Fourier Intelligence Humanoid Robot Series 15",
+    "company": "Fourier Intelligence",
+    "category": "humanoid robot",
+    "price": 16680.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "UBTECH Humanoid Robot Series 16",
+    "company": "UBTECH",
+    "category": "humanoid robot",
+    "price": 16800.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Agility Robotics Humanoid Robot Series 17",
+    "company": "Agility Robotics",
+    "category": "humanoid robot",
+    "price": 16920.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tesla Humanoid Robot Series 18",
+    "company": "Tesla",
+    "category": "humanoid robot",
+    "price": 17040.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Figure AI Humanoid Robot Series 19",
+    "company": "Figure AI",
+    "category": "humanoid robot",
+    "price": 17160.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Fourier Intelligence Humanoid Robot Series 20",
+    "company": "Fourier Intelligence",
+    "category": "humanoid robot",
+    "price": 17280.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "UBTECH Humanoid Robot Series 21",
+    "company": "UBTECH",
+    "category": "humanoid robot",
+    "price": 17400.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 21,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Agility Robotics Humanoid Robot Series 22",
+    "company": "Agility Robotics",
+    "category": "humanoid robot",
+    "price": 17520.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 22,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tesla Humanoid Robot Series 23",
+    "company": "Tesla",
+    "category": "humanoid robot",
+    "price": 17640.0,
+    "release_year": 2025,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 23,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Figure AI Humanoid Robot Series 24",
+    "company": "Figure AI",
+    "category": "humanoid robot",
+    "price": 17760.0,
+    "release_year": 2021,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 24,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Fourier Intelligence Humanoid Robot Series 25",
+    "company": "Fourier Intelligence",
+    "category": "humanoid robot",
+    "price": 17880.0,
+    "release_year": 2023,
+    "description": "Humanoid Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 25,
+      "primary_keyword": "best humanoid robot 2026",
+      "long_tail_keywords": [
+        "humanoid robot review",
+        "humanoid robot price",
+        "humanoid robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 07",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 870.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 08",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 990.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 09",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 1110.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 10",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 1230.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Energize Lab Companion Robot Series 11",
+    "company": "Energize Lab",
+    "category": "companion robot",
+    "price": 1350.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 12",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 1470.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 13",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 1590.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 14",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 1710.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 15",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 1830.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Energize Lab Companion Robot Series 16",
+    "company": "Energize Lab",
+    "category": "companion robot",
+    "price": 1950.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 17",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 2070.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 18",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 2190.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 19",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 2310.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 20",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 2430.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Energize Lab Companion Robot Series 21",
+    "company": "Energize Lab",
+    "category": "companion robot",
+    "price": 2550.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 21,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 22",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 2670.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 22,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 23",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 2790.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 23,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 24",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 2910.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 24,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 25",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 3030.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 25,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Energize Lab Companion Robot Series 26",
+    "company": "Energize Lab",
+    "category": "companion robot",
+    "price": 3150.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 26,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 27",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 3270.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 27,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 28",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 3390.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 28,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 29",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 3510.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 29,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 30",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 3630.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 30,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Energize Lab Companion Robot Series 31",
+    "company": "Energize Lab",
+    "category": "companion robot",
+    "price": 3750.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 31,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "KEYi Tech Companion Robot Series 32",
+    "company": "KEYi Tech",
+    "category": "companion robot",
+    "price": 3870.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 32,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Tencent Robotics X Companion Robot Series 33",
+    "company": "Tencent Robotics X",
+    "category": "companion robot",
+    "price": 3990.0,
+    "release_year": 2026,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 33,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Living.AI Companion Robot Series 34",
+    "company": "Living.AI",
+    "category": "companion robot",
+    "price": 4110.0,
+    "release_year": 2022,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 34,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Miko Companion Robot Series 35",
+    "company": "Miko",
+    "category": "companion robot",
+    "price": 4230.0,
+    "release_year": 2024,
+    "description": "Companion Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 35,
+      "primary_keyword": "best companion robot 2026",
+      "long_tail_keywords": [
+        "companion robot review",
+        "companion robot price",
+        "companion robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock Education Robot Series 06",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 720.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ELECFREAKS Education Robot Series 07",
+    "company": "ELECFREAKS",
+    "category": "education robot",
+    "price": 840.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Education Robot Series 08",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 960.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero Education Robot Series 09",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 1080.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dobot Education Robot Series 10",
+    "company": "Dobot",
+    "category": "education robot",
+    "price": 1200.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock Education Robot Series 11",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 1320.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ELECFREAKS Education Robot Series 12",
+    "company": "ELECFREAKS",
+    "category": "education robot",
+    "price": 1440.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Education Robot Series 13",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 1560.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero Education Robot Series 14",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 1680.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dobot Education Robot Series 15",
+    "company": "Dobot",
+    "category": "education robot",
+    "price": 1800.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock Education Robot Series 16",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 1920.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ELECFREAKS Education Robot Series 17",
+    "company": "ELECFREAKS",
+    "category": "education robot",
+    "price": 2040.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Education Robot Series 18",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 2160.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero Education Robot Series 19",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 2280.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dobot Education Robot Series 20",
+    "company": "Dobot",
+    "category": "education robot",
+    "price": 2400.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock Education Robot Series 21",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 2520.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 21,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ELECFREAKS Education Robot Series 22",
+    "company": "ELECFREAKS",
+    "category": "education robot",
+    "price": 2640.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 22,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Education Robot Series 23",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 2760.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 23,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero Education Robot Series 24",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 2880.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 24,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dobot Education Robot Series 25",
+    "company": "Dobot",
+    "category": "education robot",
+    "price": 3000.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 25,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Makeblock Education Robot Series 26",
+    "company": "Makeblock",
+    "category": "education robot",
+    "price": 3120.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 26,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "ELECFREAKS Education Robot Series 27",
+    "company": "ELECFREAKS",
+    "category": "education robot",
+    "price": 3240.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 27,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LEGO Education Robot Series 28",
+    "company": "LEGO",
+    "category": "education robot",
+    "price": 3360.0,
+    "release_year": 2023,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 28,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Sphero Education Robot Series 29",
+    "company": "Sphero",
+    "category": "education robot",
+    "price": 3480.0,
+    "release_year": 2025,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 29,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dobot Education Robot Series 30",
+    "company": "Dobot",
+    "category": "education robot",
+    "price": 3600.0,
+    "release_year": 2021,
+    "description": "Education Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 30,
+      "primary_keyword": "best education robot 2026",
+      "long_tail_keywords": [
+        "education robot review",
+        "education robot price",
+        "education robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "temi Home Service Robot Series 06",
+    "company": "temi",
+    "category": "home service robot",
+    "price": 1500.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Samsung Home Service Robot Series 07",
+    "company": "Samsung",
+    "category": "home service robot",
+    "price": 1620.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Amazon Home Service Robot Series 08",
+    "company": "Amazon",
+    "category": "home service robot",
+    "price": 1740.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Home Service Robot Series 09",
+    "company": "Ecovacs",
+    "category": "home service robot",
+    "price": 1860.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LG Home Service Robot Series 10",
+    "company": "LG",
+    "category": "home service robot",
+    "price": 1980.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "temi Home Service Robot Series 11",
+    "company": "temi",
+    "category": "home service robot",
+    "price": 2100.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Samsung Home Service Robot Series 12",
+    "company": "Samsung",
+    "category": "home service robot",
+    "price": 2220.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Amazon Home Service Robot Series 13",
+    "company": "Amazon",
+    "category": "home service robot",
+    "price": 2340.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Home Service Robot Series 14",
+    "company": "Ecovacs",
+    "category": "home service robot",
+    "price": 2460.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LG Home Service Robot Series 15",
+    "company": "LG",
+    "category": "home service robot",
+    "price": 2580.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "temi Home Service Robot Series 16",
+    "company": "temi",
+    "category": "home service robot",
+    "price": 2700.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Samsung Home Service Robot Series 17",
+    "company": "Samsung",
+    "category": "home service robot",
+    "price": 2820.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Amazon Home Service Robot Series 18",
+    "company": "Amazon",
+    "category": "home service robot",
+    "price": 2940.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Home Service Robot Series 19",
+    "company": "Ecovacs",
+    "category": "home service robot",
+    "price": 3060.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LG Home Service Robot Series 20",
+    "company": "LG",
+    "category": "home service robot",
+    "price": 3180.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "temi Home Service Robot Series 21",
+    "company": "temi",
+    "category": "home service robot",
+    "price": 3300.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 21,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Samsung Home Service Robot Series 22",
+    "company": "Samsung",
+    "category": "home service robot",
+    "price": 3420.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 22,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Amazon Home Service Robot Series 23",
+    "company": "Amazon",
+    "category": "home service robot",
+    "price": 3540.0,
+    "release_year": 2025,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 23,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Home Service Robot Series 24",
+    "company": "Ecovacs",
+    "category": "home service robot",
+    "price": 3660.0,
+    "release_year": 2021,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 24,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "LG Home Service Robot Series 25",
+    "company": "LG",
+    "category": "home service robot",
+    "price": 3780.0,
+    "release_year": 2023,
+    "description": "Home Service Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 25,
+      "primary_keyword": "best home service robot 2026",
+      "long_tail_keywords": [
+        "home service robot review",
+        "home service robot price",
+        "home service robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Roborock Cleaning Robot Series 06",
+    "company": "Roborock",
+    "category": "cleaning robot",
+    "price": 1100.0,
+    "release_year": 2021,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Cleaning Robot Series 07",
+    "company": "Ecovacs",
+    "category": "cleaning robot",
+    "price": 1220.0,
+    "release_year": 2023,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "iRobot Cleaning Robot Series 08",
+    "company": "iRobot",
+    "category": "cleaning robot",
+    "price": 1340.0,
+    "release_year": 2025,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dreame Cleaning Robot Series 09",
+    "company": "Dreame",
+    "category": "cleaning robot",
+    "price": 1460.0,
+    "release_year": 2021,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Narwal Cleaning Robot Series 10",
+    "company": "Narwal",
+    "category": "cleaning robot",
+    "price": 1580.0,
+    "release_year": 2023,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Roborock Cleaning Robot Series 11",
+    "company": "Roborock",
+    "category": "cleaning robot",
+    "price": 1700.0,
+    "release_year": 2025,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Cleaning Robot Series 12",
+    "company": "Ecovacs",
+    "category": "cleaning robot",
+    "price": 1820.0,
+    "release_year": 2021,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "iRobot Cleaning Robot Series 13",
+    "company": "iRobot",
+    "category": "cleaning robot",
+    "price": 1940.0,
+    "release_year": 2023,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dreame Cleaning Robot Series 14",
+    "company": "Dreame",
+    "category": "cleaning robot",
+    "price": 2060.0,
+    "release_year": 2025,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Narwal Cleaning Robot Series 15",
+    "company": "Narwal",
+    "category": "cleaning robot",
+    "price": 2180.0,
+    "release_year": 2021,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Roborock Cleaning Robot Series 16",
+    "company": "Roborock",
+    "category": "cleaning robot",
+    "price": 2300.0,
+    "release_year": 2023,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 16,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Ecovacs Cleaning Robot Series 17",
+    "company": "Ecovacs",
+    "category": "cleaning robot",
+    "price": 2420.0,
+    "release_year": 2025,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 17,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "iRobot Cleaning Robot Series 18",
+    "company": "iRobot",
+    "category": "cleaning robot",
+    "price": 2540.0,
+    "release_year": 2021,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 18,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Dreame Cleaning Robot Series 19",
+    "company": "Dreame",
+    "category": "cleaning robot",
+    "price": 2660.0,
+    "release_year": 2023,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 19,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Narwal Cleaning Robot Series 20",
+    "company": "Narwal",
+    "category": "cleaning robot",
+    "price": 2780.0,
+    "release_year": 2025,
+    "description": "Cleaning Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 20,
+      "primary_keyword": "best cleaning robot 2026",
+      "long_tail_keywords": [
+        "cleaning robot review",
+        "cleaning robot price",
+        "cleaning robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Knightscope Security Robot Series 05",
+    "company": "Knightscope",
+    "category": "security robot",
+    "price": 3480.0,
+    "release_year": 2026,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 5,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "SMP Robotics Security Robot Series 06",
+    "company": "SMP Robotics",
+    "category": "security robot",
+    "price": 3600.0,
+    "release_year": 2022,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 6,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "OTSAW Security Robot Series 07",
+    "company": "OTSAW",
+    "category": "security robot",
+    "price": 3720.0,
+    "release_year": 2024,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Cobalt Robotics Security Robot Series 08",
+    "company": "Cobalt Robotics",
+    "category": "security robot",
+    "price": 3840.0,
+    "release_year": 2026,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Promobot Security Robot Series 09",
+    "company": "Promobot",
+    "category": "security robot",
+    "price": 3960.0,
+    "release_year": 2022,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Knightscope Security Robot Series 10",
+    "company": "Knightscope",
+    "category": "security robot",
+    "price": 4080.0,
+    "release_year": 2024,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "SMP Robotics Security Robot Series 11",
+    "company": "SMP Robotics",
+    "category": "security robot",
+    "price": 4200.0,
+    "release_year": 2026,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "OTSAW Security Robot Series 12",
+    "company": "OTSAW",
+    "category": "security robot",
+    "price": 4320.0,
+    "release_year": 2022,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Cobalt Robotics Security Robot Series 13",
+    "company": "Cobalt Robotics",
+    "category": "security robot",
+    "price": 4440.0,
+    "release_year": 2024,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Promobot Security Robot Series 14",
+    "company": "Promobot",
+    "category": "security robot",
+    "price": 4560.0,
+    "release_year": 2026,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Knightscope Security Robot Series 15",
+    "company": "Knightscope",
+    "category": "security robot",
+    "price": 4680.0,
+    "release_year": 2022,
+    "description": "Security Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best security robot 2026",
+      "long_tail_keywords": [
+        "security robot review",
+        "security robot price",
+        "security robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Bear Robotics Commercial Robot Series 07",
+    "company": "Bear Robotics",
+    "category": "commercial robot",
+    "price": 5720.0,
+    "release_year": 2022,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 7,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Gaussian Robotics Commercial Robot Series 08",
+    "company": "Gaussian Robotics",
+    "category": "commercial robot",
+    "price": 5840.0,
+    "release_year": 2024,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 8,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Keenon Robotics Commercial Robot Series 09",
+    "company": "Keenon Robotics",
+    "category": "commercial robot",
+    "price": 5960.0,
+    "release_year": 2026,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 9,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "OrionStar Commercial Robot Series 10",
+    "company": "OrionStar",
+    "category": "commercial robot",
+    "price": 6080.0,
+    "release_year": 2022,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 10,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Pudu Robotics Commercial Robot Series 11",
+    "company": "Pudu Robotics",
+    "category": "commercial robot",
+    "price": 6200.0,
+    "release_year": 2024,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 11,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Bear Robotics Commercial Robot Series 12",
+    "company": "Bear Robotics",
+    "category": "commercial robot",
+    "price": 6320.0,
+    "release_year": 2026,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 12,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Gaussian Robotics Commercial Robot Series 13",
+    "company": "Gaussian Robotics",
+    "category": "commercial robot",
+    "price": 6440.0,
+    "release_year": 2022,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 13,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "Keenon Robotics Commercial Robot Series 14",
+    "company": "Keenon Robotics",
+    "category": "commercial robot",
+    "price": 6560.0,
+    "release_year": 2024,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 14,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  },
+  {
+    "id": null,
+    "name": "OrionStar Commercial Robot Series 15",
+    "company": "OrionStar",
+    "category": "commercial robot",
+    "price": 6680.0,
+    "release_year": 2026,
+    "description": "Commercial Robot for practical consumer and business use cases",
+    "specs": {
+      "rank": 15,
+      "primary_keyword": "best commercial robot 2026",
+      "long_tail_keywords": [
+        "commercial robot review",
+        "commercial robot price",
+        "commercial robot comparison"
+      ]
+    },
+    "image_url": null,
+    "created_at": null
+  }
+]
