@@ -46,7 +46,11 @@ async function fetchJSON(path: string) {
 
 export async function getArticles() {
   if (DATA_MODE === 'static') return readStaticJSON('articles.json')
-  return fetchJSON('/articles')
+  try {
+    const data = await fetchJSON('/articles')
+    if (Array.isArray(data) && data.length > 0) return data
+  } catch {}
+  return readStaticJSON('articles.json')
 }
 
 type RobotFilters = {
@@ -59,8 +63,7 @@ type RobotFilters = {
 }
 
 export async function getRobots(filters: RobotFilters = {}) {
-  if (DATA_MODE === 'static') {
-    const robots = await readStaticJSON('robots.json')
+  const applyFilters = (robots: any[]) => {
     const q = `${filters.q || ''}`.toLowerCase().trim()
     const category = `${filters.category || ''}`.toLowerCase().trim()
     const company = `${filters.company || ''}`.toLowerCase().trim()
@@ -77,35 +80,58 @@ export async function getRobots(filters: RobotFilters = {}) {
     const limit = filters.limit ? Math.max(1, Math.min(500, Number(filters.limit))) : 200
     return filtered.slice(0, limit)
   }
+  if (DATA_MODE === 'static') {
+    const robots = await readStaticJSON('robots.json')
+    return applyFilters(robots || [])
+  }
   const qs = new URLSearchParams()
   Object.entries(filters).forEach(([k, v]) => {
     if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
   })
   const query = qs.toString()
-  return fetchJSON(query ? `/robots?${query}` : '/robots')
+  try {
+    const data = await fetchJSON(query ? `/robots?${query}` : '/robots')
+    if (Array.isArray(data) && data.length > 0) return data
+  } catch {}
+  const robots = await readStaticJSON('robots.json')
+  return applyFilters(robots || [])
 }
 
 export async function getNews() {
   if (DATA_MODE === 'static') return readStaticJSON('news.json')
-  return fetchJSON('/news')
+  try {
+    const data = await fetchJSON('/news')
+    if (Array.isArray(data) && data.length > 0) return data
+  } catch {}
+  return readStaticJSON('news.json')
 }
 
 export async function getArticle(slug: string) {
-  if (DATA_MODE === 'static') {
+  const fromStatic = async () => {
     const articles = await readStaticJSON('articles.json')
     const match = (articles || []).find((a: any) => a.slug === slug)
     if (!match) throw new Error('Article not found')
     return match
   }
-  return fetchJSON(`/article/${slug}`)
+  if (DATA_MODE === 'static') return fromStatic()
+  try {
+    return await fetchJSON(`/article/${slug}`)
+  } catch {
+    return fromStatic()
+  }
 }
 
 export async function getRobotByName(name: string) {
-  if (DATA_MODE === 'static') {
+  const fromStatic = async () => {
     const robots = await readStaticJSON('robots.json')
     const match = (robots || []).find((r: any) => r.name === name)
     if (!match) throw new Error('Robot not found')
     return match
   }
-  return fetchJSON(`/robot/by-name/${encodeURIComponent(name)}`)
+  if (DATA_MODE === 'static') return fromStatic()
+  try {
+    return await fetchJSON(`/robot/by-name/${encodeURIComponent(name)}`)
+  } catch {
+    return fromStatic()
+  }
 }
