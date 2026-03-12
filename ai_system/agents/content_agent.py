@@ -11,12 +11,18 @@ Topic: {topic}
 Requirements:
 
 - Length: about 2000 words
-- Use a clear H2/H3 structure with descriptive headings
+- Use Markdown headings: H2 as "## Heading", H3 as "### Heading"
 - Include the main keyword in the title, first paragraph, and at least one H2
-- Add a concise summary paragraph after the title
+- Output format:
+  - Line 1: Title only (no "Title:" prefix)
+  - Line 2+: One concise summary paragraph (120-160 words), no heading
+  - Then the body with multiple H2/H3 sections
 - Use short paragraphs and varied sentence length for readability
 - Cite real companies, products, and market context
-- End with a conclusion and 3-5 bullet key takeaways
+- End with:
+  - "## Conclusion"
+  - "## Key Takeaways" with 3-5 bullet points
+  - "## FAQ" with 3-5 questions formatted as "### Q: ..." followed by "A: ..."
 
 Style:
 - Professional, authoritative, and factual
@@ -70,7 +76,7 @@ def generate_article(topic: str) -> Dict:
             raw_title = text.splitlines()[0].strip("# ").strip()[:120] or f"{topic} Article"
             title = clean_title(raw_title)
             text = clean_content(text)
-            slug = "-".join(title.lower().split())[:80]
+            slug = "-".join(re.findall(r"[a-z0-9]+", title.lower()))[:80]
             return {"title": title, "slug": slug, "content": text, "category": classify_category(f"{title} {topic}")}
     except Exception:
         content = clean_content(f"Article about {topic}.")
