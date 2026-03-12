@@ -20,12 +20,27 @@ async function fetchJson(url: string) {
   }
 }
 
+function getSiteUrl() {
+  const site = process.env.NEXT_PUBLIC_SITE_URL
+  if (site && site.startsWith('http')) return site
+  const vercel = process.env.VERCEL_URL
+  if (vercel) return `https://${vercel}`
+  return 'http://localhost:3000'
+}
+
 async function readStaticJSON(filename: string) {
-  const { readFile } = await import('fs/promises')
-  const { join } = await import('path')
-  const filePath = join(process.cwd(), 'public', 'data', filename)
-  const raw = await readFile(filePath, 'utf-8')
-  return JSON.parse(raw)
+  try {
+    const { readFile } = await import('fs/promises')
+    const { join } = await import('path')
+    const filePath = join(process.cwd(), 'public', 'data', filename)
+    const raw = await readFile(filePath, 'utf-8')
+    return JSON.parse(raw)
+  } catch {
+    const site = getSiteUrl()
+    const res = await fetch(`${site}/data/${filename}`, { cache: 'no-store' })
+    if (!res.ok) return null
+    return res.json()
+  }
 }
 
 async function getRobotData(): Promise<{ names: string[]; categories: string[]; total: number }> {
