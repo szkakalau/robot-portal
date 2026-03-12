@@ -138,12 +138,30 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const articleImage = article.image_url || buildImageUrl(displayTitle || article.slug) || `${SITE_URL}/og-default.png`
   const summaryText = article.meta_description || paragraphs[0] || ''
   const keywords = pickKeywords(article)
-  const relatedArticles = (allArticles || [])
+  const scored = (allArticles || [])
     .map((candidate: any) => ({ candidate, score: scoreRelated(article, candidate, keywords) }))
     .filter((item: any) => item.score > 0)
     .sort((a: any, b: any) => b.score - a.score)
-    .slice(0, 6)
     .map((item: any) => item.candidate)
+  const selected = new Map<string, any>()
+  scored.forEach((a: any) => {
+    if (a?.slug && !selected.has(a.slug) && selected.size < 6) selected.set(a.slug, a)
+  })
+  if (selected.size < 6) {
+    const currentCategory = `${article.category || ''}`.toLowerCase()
+    const pool = (allArticles || [])
+      .filter((a: any) => a?.slug && a.slug !== article.slug && !selected.has(a.slug))
+      .sort((a: any, b: any) => {
+        const ac = `${a.category || ''}`.toLowerCase() === currentCategory ? 1 : 0
+        const bc = `${b.category || ''}`.toLowerCase() === currentCategory ? 1 : 0
+        return bc - ac
+      })
+    for (const a of pool) {
+      if (selected.size >= 6) break
+      selected.set(a.slug, a)
+    }
+  }
+  const relatedArticles = Array.from(selected.values()).slice(0, 6)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',

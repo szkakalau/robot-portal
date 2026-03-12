@@ -317,12 +317,14 @@ app.add_middleware(
 
 try:
     from ai_system.pipelines.news_pipeline import run_news_pipeline
-    from ai_system.pipelines.article_pipeline import run_article_pipeline
+    from ai_system.pipelines.article_pipeline import run_article_pipeline, validate_article, run_article_pipeline_with_report
     from ai_system.pipelines.robot_pipeline import run_robot_pipeline
     from ai_system.data.top200_robots import build_top200_robot_list
 except Exception:
     run_news_pipeline = None
     run_article_pipeline = None
+    validate_article = None
+    run_article_pipeline_with_report = None
     run_robot_pipeline = None
     build_top200_robot_list = None
 
@@ -454,8 +456,24 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
                 break
             if topic not in topics:
                 topics.append(topic)
+    attempted = len(topics)
+    succeeded = 0
+    failed = 0
+    failure_reasons: Dict[str, int] = {}
     for idx, t in enumerate(topics, start=1):
-        art = run_article_pipeline(t)
+        report = None
+        if run_article_pipeline_with_report:
+            art, report = run_article_pipeline_with_report(t)
+        else:
+            art = run_article_pipeline(t)
+        if validate_article and report is None:
+            ok, reasons = validate_article(t, art)
+            report = {"ok": ok, "attempts": 1, "reasons": reasons}
+        if isinstance(report, dict) and not report.get("ok", True):
+            failed += 1
+            for reason in (report.get("reasons") or [])[:8]:
+                failure_reasons[str(reason)] = failure_reasons.get(str(reason), 0) + 1
+            continue
         slug = (art.get("slug") or "").strip()
         if not slug:
             slug = f"article-{datetime.utcnow().strftime('%Y%m%d')}-{idx}"
@@ -471,8 +489,20 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
             slug = new_slug
         if not store.has_article_slug(slug):
             store.upsert_article(art)
+            succeeded += 1
     robots_seeded = _seed_robots()
-    return {"ok": True, "news_upserted": news_upserted, "articles_attempted": len(topics), "robots_seeded": robots_seeded}
+    success_rate = (succeeded / attempted) if attempted else 1.0
+    top_failures = sorted(failure_reasons.items(), key=lambda it: it[1], reverse=True)[:8]
+    return {
+        "ok": True,
+        "news_upserted": news_upserted,
+        "articles_attempted": attempted,
+        "articles_succeeded": succeeded,
+        "articles_failed": failed,
+        "article_success_rate": round(success_rate, 3),
+        "article_failure_reasons": top_failures,
+        "robots_seeded": robots_seeded,
+    }
 
 
 def _seed_robots() -> int:
