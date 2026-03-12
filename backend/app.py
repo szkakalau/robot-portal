@@ -370,6 +370,23 @@ def _clamp_int(value: Optional[str], default: int, minimum: int, maximum: int) -
     return max(minimum, min(maximum, parsed))
 
 
+def _fallback_topics(limit: int) -> List[str]:
+    date_tag = datetime.utcnow().strftime("%Y-%m-%d")
+    base = [
+        "Robot dog market update",
+        "AI robot assistants for home",
+        "Humanoid robots in warehouses",
+        "Robot toys buying guide",
+        "Personal robotics trends",
+        "Robot vacuum comparison",
+        "Robotics startups to watch",
+        "Autonomous delivery robots",
+        "Security robotics overview",
+        "Industrial robotics automation",
+    ]
+    return [f"{topic} {date_tag}" for topic in base][:limit]
+
+
 def _perform_daily(article_limit: Optional[int] = None) -> dict:
     if not (run_news_pipeline and run_article_pipeline and run_robot_pipeline):
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
@@ -377,6 +394,12 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
     news_upserted = store.upsert_news(items)
     limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 10, 1, 10)
     topics = [it.get("title", "") for it in items[:limit] if it.get("title")]
+    if len(topics) < limit:
+        for topic in _fallback_topics(limit):
+            if len(topics) >= limit:
+                break
+            if topic not in topics:
+                topics.append(topic)
     for t in topics:
         art = run_article_pipeline(t)
         if not store.has_article_slug(art.get("slug", "")):

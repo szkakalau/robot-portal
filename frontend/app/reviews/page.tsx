@@ -49,8 +49,7 @@ export async function generateMetadata({ searchParams }: { searchParams?: { page
 
 export default async function ReviewsPage({ searchParams }: { searchParams?: { page?: string } }) {
   const articles = await getArticles()
-  const reviews = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
-  const pageItems = reviews.length > 0 ? reviews : articles
+  const pageItems = articles
   return (
     <div className="section">
       <section className="section">
