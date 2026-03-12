@@ -49,6 +49,8 @@ export async function generateMetadata({ searchParams }: { searchParams?: { page
 
 export default async function ReviewsPage({ searchParams }: { searchParams?: { page?: string } }) {
   const articles = await getArticles()
+  const reviews = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
+  const featured = (reviews.length > 0 ? reviews : articles).slice(0, 6)
   const pageItems = articles
   return (
     <div className="section">
@@ -62,6 +64,19 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
             <div className="stat-value">{pageItems.length}</div>
             <div className="stat-label">Total articles</div>
           </div>
+        </div>
+      </section>
+      <section className="section">
+        <h2 className="section-title">Editor Picks</h2>
+        <p className="section-subtitle">Top reviews and guides for this week.</p>
+        <div className="grid-2">
+          {featured.map((a:any)=>(
+            <Link className="card" key={a.slug} href={`/article/${a.slug}`}>
+              <div className="chip">{a.category || 'review'}</div>
+              <h3 className="card-title">{normalizeTitle(a.title)}</h3>
+              <p className="card-description">{buildExcerpt(a.meta_description || a.content) || 'Read the full review for specs, positioning, and takeaways.'}</p>
+            </Link>
+          ))}
         </div>
       </section>
       <section className="section-card">

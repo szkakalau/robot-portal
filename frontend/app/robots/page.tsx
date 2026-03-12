@@ -93,6 +93,16 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
   const start = (safePage - 1) * PAGE_SIZE
   const end = start + PAGE_SIZE
   const pageItems = filtered.slice(start, end)
+  const featured = [...filtered]
+    .sort((a: any, b: any) => {
+      const ar = Number(a?.specs?.rank)
+      const br = Number(b?.specs?.rank)
+      if (Number.isFinite(ar) && Number.isFinite(br)) return ar - br
+      if (Number.isFinite(ar)) return -1
+      if (Number.isFinite(br)) return 1
+      return Number(b.price || 0) - Number(a.price || 0)
+    })
+    .slice(0, 6)
   const linkBaseQuery = buildQuery({
     category: filters.category,
     company: filters.company,
@@ -138,6 +148,20 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
             <div className="stat-value">{safePage}</div>
             <div className="stat-label">Page {safePage} of {totalPages}</div>
           </div>
+        </div>
+      </section>
+      <section className="section">
+        <h2 className="section-title">Editor Picks</h2>
+        <p className="section-subtitle">Highest-interest robots based on category rank and demand.</p>
+        <div className="grid-3">
+          {featured.map((robot: any) => (
+            <Link className="card" key={robot.id || robot.name} href={`/robots/${encodeURIComponent(robot.name)}`}>
+              <div className="chip">{robot.category || 'robot'}</div>
+              <h3 className="card-title">{robot.name}</h3>
+              <p className="card-description">{robot.description || 'Explore specs, pricing, and positioning.'}</p>
+              <div className="card-meta">{robot.company || 'Independent lab'}</div>
+            </Link>
+          ))}
         </div>
       </section>
       <section className="section-card">

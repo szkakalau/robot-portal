@@ -33,6 +33,13 @@ export async function generateMetadata({ searchParams }: { searchParams?: { page
 export default async function NewsPage({ searchParams }: { searchParams?: { page?: string } }) {
   const page = toPositiveInt(searchParams?.page, 1)
   const news = await getNews()
+  const featured = [...news]
+    .sort((a: any, b: any) => {
+      const ad = new Date(a.published_at || 0).getTime()
+      const bd = new Date(b.published_at || 0).getTime()
+      return bd - ad
+    })
+    .slice(0, 6)
   const totalPages = Math.max(1, Math.ceil(news.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
   const pageItems = news.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
@@ -53,6 +60,19 @@ export default async function NewsPage({ searchParams }: { searchParams?: { page
             <div className="stat-value">{latest ? 'Updated' : '—'}</div>
             <div className="stat-label">{latest || 'No data yet'}</div>
           </div>
+        </div>
+      </section>
+      <section className="section">
+        <h2 className="section-title">Editor Picks</h2>
+        <p className="section-subtitle">Hand-selected highlights from the latest robotics coverage.</p>
+        <div className="grid-2">
+          {featured.map((n: any) => (
+            <a className="card" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
+              <div className="chip">{n.source || 'Newswire'}</div>
+              <h3 className="card-title">{n.title}</h3>
+              <p className="card-description">Read at source →</p>
+            </a>
+          ))}
         </div>
       </section>
       <div className="data-list">

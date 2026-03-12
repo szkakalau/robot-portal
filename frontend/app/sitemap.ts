@@ -5,6 +5,14 @@ export const dynamic = 'force-dynamic'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
+const TOPIC_PAGE_SIZE = 12
+const TOPIC_CONFIG = [
+  { slug: 'robot-dog', keywords: ['robot dog', 'best robot dog', 'robot dog price', 'ai robot dog', 'robot dog review'] },
+  { slug: 'ai-robot', keywords: ['ai robot', 'ai robotics', 'embodied ai', 'robot assistant', 'smart robot'] },
+  { slug: 'robot-toys', keywords: ['robot toys', 'best robot toys', 'robot toys with ai', 'robot toys for kids', 'robot gadgets'] },
+  { slug: 'best-robot-dog-under-1000', keywords: ['best robot dog under 1000', 'cheap robot dog', 'robot dog budget', 'robot dog price'] },
+  { slug: 'best-robot-toys-for-kids-2026', keywords: ['best robot toys for kids 2026', 'robot toys for kids', 'stem robot toys', 'kids robot guide'] }
+]
 
 async function fetchJson(url: string) {
   const controller = new AbortController()
@@ -85,6 +93,13 @@ async function getArticleData(): Promise<{ slugs: string[]; reviewCount: number 
   return { slugs, reviewCount }
 }
 
+async function getArticlesList(): Promise<any[]> {
+  const articles = DATA_MODE === 'static'
+    ? await readStaticJSON('articles.json')
+    : await fetchJson(`${API_BASE}/articles`)
+  return Array.isArray(articles) ? articles : []
+}
+
 async function getNewsTotal(): Promise<number> {
   const news = DATA_MODE === 'static'
     ? await readStaticJSON('news.json')
@@ -97,13 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const ROBOT_PAGE_SIZE = 24
   const CONTENT_PAGE_SIZE = 20
-  const TOPIC_SLUGS = [
-    'robot-dog',
-    'ai-robot',
-    'robot-toys',
-    'best-robot-dog-under-1000',
-    'best-robot-toys-for-kids-2026'
-  ]
+  const TOPIC_SLUGS = TOPIC_CONFIG.map((t) => t.slug)
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: 'daily', priority: 1 },
     { url: `${SITE_URL}/news`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
@@ -117,6 +126,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly',
     priority: 0.6
   }))
+  const articles = await getArticlesList()
+  const topicPaged: MetadataRoute.Sitemap = TOPIC_CONFIG.flatMap((topic) => {
+    const matches = articles.filter((a: any) => topic.keywords.some((k) => `${a.title || ''} ${a.meta_description || ''}`.toLowerCase().includes(k.split(' ')[0])))
+    const count = Math.max(1, Math.ceil(matches.length / TOPIC_PAGE_SIZE))
+    return Array.from({ length: Math.max(0, count - 1) }, (_, i) => ({
+      url: `${SITE_URL}/topic/${topic.slug}?page=${i + 2}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.5
+    }))
+  })
   const { names, categories, total } = await getRobotData()
   const robotPages: MetadataRoute.Sitemap = names.map((name) => ({
     url: `${SITE_URL}/robots/${encodeURIComponent(name)}`,
@@ -159,5 +179,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly',
     priority: 0.5
   }))
-  return [...staticPages, ...topicPages, ...pagedNews, ...pagedReviews, ...categoryPages, ...pagedRobotLists, ...robotPages, ...articlePages]
+  return [...staticPages, ...topicPages, ...topicPaged, ...pagedNews, ...pagedReviews, ...categoryPages, ...pagedRobotLists, ...robotPages, ...articlePages]
 }

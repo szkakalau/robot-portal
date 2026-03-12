@@ -51,8 +51,38 @@ const TOPICS: TopicConfig[] = [
   }
 ]
 
+const PAGE_SIZE = 12
+
 function getTopic(slug: string) {
   return TOPICS.find((topic) => topic.slug === slug)
+}
+
+function toPositiveInt(value?: string, fallback: number = 1) {
+  const parsed = Number(value || '')
+  if (!Number.isFinite(parsed) || parsed < 1) return fallback
+  return Math.floor(parsed)
+}
+
+function buildFaq(topic: TopicConfig) {
+  const [primary, secondary, tertiary] = topic.keywords
+  return [
+    {
+      q: `What is the best ${primary} in 2026?`,
+      a: `The best ${primary} depends on your budget, use case, and support expectations. Use this hub to compare top models, pricing, and real-world fit.`
+    },
+    {
+      q: `How much does a ${primary} cost?`,
+      a: `Pricing varies widely. Entry models can start in the low hundreds, while enterprise-grade options cost tens of thousands. This page highlights both.`
+    },
+    {
+      q: `What should I look for when choosing ${secondary || primary}?`,
+      a: `Prioritize reliability, vendor support, deployment complexity, and total cost of ownership. Compare specs, case studies, and maintenance needs.`
+    },
+    {
+      q: `Are there alternatives to ${tertiary || primary}?`,
+      a: `Yes. Related categories often provide similar outcomes with different tradeoffs. Explore the related robots and reviews below for alternatives.`
+    }
+  ]
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -78,16 +108,22 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function TopicPage({ params }: { params: { slug: string } }) {
+export default async function TopicPage({ params, searchParams }: { params: { slug: string }, searchParams?: { page?: string } }) {
   const topic = getTopic(params.slug)
   if (!topic) notFound()
+  const page = toPositiveInt(searchParams?.page, 1)
   const [robots, articles] = await Promise.all([getRobots({ limit: 200 }), getArticles()])
   const relatedRobots = topic.category
     ? robots.filter((r: any) => `${r.category || ''}`.toLowerCase() === topic.category).slice(0, 6)
     : robots.slice(0, 6)
-  const relatedArticles = articles
-    .filter((a: any) => topic.keywords.some((k) => `${a.title || ''}`.toLowerCase().includes(k.split(' ')[0])))
-    .slice(0, 6)
+  const keywordMatches = articles.filter((a: any) => topic.keywords.some((k) => `${a.title || ''} ${a.meta_description || ''}`.toLowerCase().includes(k.split(' ')[0])))
+  const fallbackArticles = articles.filter((a: any) => `${a.category || ''}`.toLowerCase().includes('review') || `${a.category || ''}`.toLowerCase().includes('guide'))
+  const merged = [...keywordMatches, ...fallbackArticles, ...articles].filter((a: any, idx: number, arr: any[]) => a?.slug && arr.findIndex((b) => b.slug === a.slug) === idx)
+  const totalPages = Math.max(1, Math.ceil(merged.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const pageItems = merged.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+  const visibleArticles = pageItems.length >= 8 ? pageItems : merged.slice(0, 8)
+  const faqItems = buildFaq(topic)
   return (
     <div className="section">
       <section className="section">
@@ -119,7 +155,7 @@ export default async function TopicPage({ params }: { params: { slug: string } }
       <section className="section">
         <h2 className="section-title">Reviews & Guides</h2>
         <div className="grid-2">
-          {relatedArticles.map((article: any) => (
+          {visibleArticles.map((article: any) => (
             <Link className="card" key={article.slug} href={`/article/${article.slug}`}>
               <div className="chip">{article.category || 'review'}</div>
               <h3 className="card-title">{article.title}</h3>
@@ -127,7 +163,23 @@ export default async function TopicPage({ params }: { params: { slug: string } }
             </Link>
           ))}
         </div>
-        <Link className="button button-ghost" href="/reviews">Browse all reviews</Link>
+        <div className="card-meta">Page {safePage} / {totalPages}</div>
+        <div style={{display:'flex', gap:12}}>
+          {safePage > 1 ? <Link className="button button-ghost" href={`/topic/${topic.slug}?page=${safePage - 1}`}>Previous</Link> : <span className="button button-ghost">Previous</span>}
+          {safePage < totalPages ? <Link className="button button-ghost" href={`/topic/${topic.slug}?page=${safePage + 1}`}>Next</Link> : <span className="button button-ghost">Next</span>}
+          <Link className="button button-ghost" href="/reviews">Browse all reviews</Link>
+        </div>
+      </section>
+      <section className="section">
+        <h2 className="section-title">FAQ</h2>
+        <div className="list">
+          {faqItems.map((item) => (
+            <div className="card" key={item.q}>
+              <h3 className="card-title">{item.q}</h3>
+              <p className="card-description">{item.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   )

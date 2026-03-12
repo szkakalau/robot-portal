@@ -27,6 +27,7 @@ function normalizeTitle(value?: string) {
 export default async function Home() {
   const [articles, robots, news] = await Promise.all([getArticles(), getRobots(), getNews()])
   const reviewItems = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
+  const featuredArticles = (reviewItems.length > 0 ? reviewItems : articles).slice(0, 6)
   return (
     <div className="section">
       <section className="hero">
@@ -51,6 +52,20 @@ export default async function Home() {
             <div className="metric-number">{news.length}</div>
             <div className="metric-label">Live news sources</div>
           </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <h2 className="section-title">Featured Insights</h2>
+        <p className="section-subtitle">Editor-curated analysis for builders and operators.</p>
+        <div className="grid-2">
+          {featuredArticles.map((a:any)=>(
+            <Link className="card" key={a.slug} href={`/article/${a.slug}`}>
+              <div className="chip">{a.category || 'review'}</div>
+              <h3 className="card-title">{normalizeTitle(a.title)}</h3>
+              <p className="card-description">{a.meta_description || 'Read the analysis and key takeaways.'}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
