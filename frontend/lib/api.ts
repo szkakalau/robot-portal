@@ -1,4 +1,8 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+const DEFAULT_API_BASE =
+  process.env.NODE_ENV === 'production'
+    ? 'https://robot-portal-api.onrender.com'
+    : 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
 const USE_API_FIRST = DATA_MODE === 'api' || (DATA_MODE !== 'static' && API_BASE && !API_BASE.includes('localhost'))
 
