@@ -18,11 +18,27 @@ jobs:
           test -n "$API_BASE"
           test -n "$TASK_TOKEN"
           for i in 1 2 3 4 5; do
-            response=$(curl -sS -X POST "$API_BASE/tasks/run-daily" \
+            response=$(curl -sS -X POST "$API_BASE/tasks/run-daily?sync=1&articles=5" \
               -H "X-Task-Token: $TASK_TOKEN" \
               -H "Content-Type: application/json")
             echo "$response"
-            echo "$response" | grep -q '"ok":true' && exit 0
+            RESPONSE="$response" python3 - <<'PY'
+import json, os, sys
+resp = os.environ.get("RESPONSE", "")
+try:
+    data = json.loads(resp)
+except Exception:
+    sys.exit(1)
+if not data.get("ok"):
+    sys.exit(1)
+if data.get("articles_succeeded", 0) <= 0:
+    sys.exit(2)
+sys.exit(0)
+PY
+            code=$?
+            if [ "$code" -eq 0 ]; then
+              exit 0
+            fi
             sleep 30
           done
           exit 1
