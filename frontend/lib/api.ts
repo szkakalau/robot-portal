@@ -1,10 +1,17 @@
-const DEFAULT_API_BASE =
-  process.env.NODE_ENV === 'production'
-    ? 'https://robot-portal-api.onrender.com'
-    : 'http://localhost:8000'
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE
+const IS_PROD = process.env.NODE_ENV === 'production'
+const DEFAULT_API_BASE = IS_PROD
+  ? 'https://robot-portal-api.onrender.com'
+  : 'http://localhost:8000'
+const apiBaseEnv = process.env.NEXT_PUBLIC_API_BASE || ''
+const API_BASE =
+  IS_PROD && apiBaseEnv.includes('localhost')
+    ? DEFAULT_API_BASE
+    : (apiBaseEnv || DEFAULT_API_BASE)
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
-const USE_API_FIRST = DATA_MODE === 'api' || (DATA_MODE !== 'static' && API_BASE && !API_BASE.includes('localhost'))
+const USE_API_FIRST =
+  DATA_MODE === 'api' ||
+  (DATA_MODE !== 'static' && API_BASE && !API_BASE.includes('localhost')) ||
+  (IS_PROD && API_BASE && !API_BASE.includes('localhost'))
 
 async function getSiteUrl() {
   const site = process.env.NEXT_PUBLIC_SITE_URL
