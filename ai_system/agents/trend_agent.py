@@ -57,6 +57,37 @@ def _summarize_text(title: str, summary: str) -> str:
     except Exception:
         return _truncate(base)
 
+def _translate_summary_to_en(title: str, summary: str) -> str:
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    api_base = os.getenv("DEEPSEEK_API_BASE", "https://api.deepseek.com")
+    base = summary or title
+    if not base:
+        return ""
+    if not api_key:
+        return ""
+    prompt = (
+        "Translate the following robotics news summary into fluent English, "
+        "keeping it concise and factual (80-120 words).\n\n"
+        f"Title: {title}\n\n"
+        f"Summary: {summary}\n\nEnglish Summary:"
+    )
+    try:
+        url = f"{api_base}/chat/completions"
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        payload = {
+            "model": os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2
+        }
+        with httpx.Client(timeout=30) as client:
+            r = client.post(url, headers=headers, json=payload)
+            r.raise_for_status()
+            data = r.json()
+            text = data["choices"][0]["message"]["content"]
+            return _truncate(text, 400)
+    except Exception:
+        return ""
+
 def _derive_tags(title: str) -> List[str]:
     text = (title or "").lower()
     tags: List[str] = []
@@ -84,12 +115,16 @@ def fetch_rss_items(feeds: List[Dict]) -> List[Dict]:
                 summary = _extract_summary(e)
                 if feed.get("priority") == "high" and len(summary) < 120:
                     summary = _summarize_text(title, summary)
+                summary_en = ""
+                if feed.get("lang") == "zh":
+                    summary_en = _translate_summary_to_en(title, summary)
                 items.append({
                     "title": title,
                     "link": getattr(e, "link", ""),
                     "source": source,
                     "published_at": getattr(e, "published", None),
                     "summary": summary,
+                    "summary_en": summary_en,
                     "category": category,
                     "lang": lang,
                     "tags": list(dict.fromkeys(base_tags + _derive_tags(title))),

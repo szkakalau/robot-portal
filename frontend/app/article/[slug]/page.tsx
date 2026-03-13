@@ -205,6 +205,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       <div className="article-meta-row article-meta-simple">
         <span className="chip chip-primary">{article.category || 'review'}</span>
         {publishedDate && <span className="article-meta">{publishedDate}</span>}
+        {article.source_url && (
+          <a className="article-meta" href={article.source_url} target="_blank" rel="noopener noreferrer">
+            Source{article.source_title ? `: ${article.source_title}` : ''}
+          </a>
+        )}
       </div>
       <h1 className="article-title">{displayTitle}</h1>
       <p className="article-lede article-summary">{summaryText}</p>

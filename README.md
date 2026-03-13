@@ -14,6 +14,9 @@ NEXT_PUBLIC_API_BASE=http://localhost:8000
 SUPABASE_URL=
 SUPABASE_KEY=
 ALLOWED_ORIGINS=http://localhost:3000
+RSS_EXTRA_FEEDS=
+NEWS_REVIEW_LIMIT=3
+ROBOT_TARGET_COUNT=200
 ```
 
 ## 本地开发
@@ -114,6 +117,26 @@ npm run dev
   curl -X POST https://<your-api>.onrender.com/tasks/run-daily \
     -H "X-Task-Token: <YOUR_TASK_TOKEN>"
   ```
+
+RSS 聚合与深度解读任务：
+
+- 一键全流程：`POST /tasks/run-rss-cycle`
+- 仅新闻刷新：`POST /tasks/run-news`
+- 仅深度解读：`POST /tasks/run-reviews-from-news?limit=3`
+- 仅机器人关联：`POST /tasks/run-robot-associations`
+
+示例（生产）：
+
+```
+curl -X POST https://<your-api>.onrender.com/tasks/run-rss-cycle \
+  -H "X-Task-Token: <YOUR_TASK_TOKEN>"
+```
+
+每 4 小时跑一次（Render Cron）：
+
+- Cron：`0 */4 * * *`
+- URL：`https://<your-api>.onrender.com/tasks/run-rss-cycle`
+- Header：`X-Task-Token: <YOUR_TASK_TOKEN>`
 
 机器人数据库接口：
 

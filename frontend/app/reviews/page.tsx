@@ -75,11 +75,18 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
         <p className="section-subtitle">Top reviews and guides for this week.</p>
         <div className="grid-2">
           {featured.map((a:any)=>(
-            <Link className="card" key={a.slug} href={`/article/${a.slug}`}>
+            <div className="card" key={a.slug}>
               <div className="chip">{a.category || 'review'}</div>
-              <h3 className="card-title">{normalizeTitle(a.title)}</h3>
+              <h3 className="card-title">
+                <Link href={`/article/${a.slug}`}>{normalizeTitle(a.title)}</Link>
+              </h3>
               <p className="card-description">{buildExcerpt(a.meta_description || a.content) || 'Read the full review for specs, positioning, and takeaways.'}</p>
-            </Link>
+              {a.source_url && (
+                <a className="data-link" href={a.source_url} target="_blank" rel="noopener noreferrer">
+                  Source{a.source_title ? `: ${a.source_title}` : ''}
+                </a>
+              )}
+            </div>
           ))}
         </div>
       </section>
@@ -93,11 +100,18 @@ export default async function ReviewsPage({ searchParams }: { searchParams?: { p
       </section>
       <div className="grid-2">
         {pageItems.map((a:any)=>(
-          <Link className="card" key={a.slug} href={`/article/${a.slug}`}>
+          <div className="card" key={a.slug}>
             <div className="chip">{a.category || 'review'}</div>
-            <h2 className="card-title">{normalizeTitle(a.title)}</h2>
+            <h2 className="card-title">
+              <Link href={`/article/${a.slug}`}>{normalizeTitle(a.title)}</Link>
+            </h2>
             <p className="card-description">{buildExcerpt(a.meta_description || a.content) || 'Read the full review for specs, positioning, and takeaways.'}</p>
-          </Link>
+            {a.source_url && (
+              <a className="data-link" href={a.source_url} target="_blank" rel="noopener noreferrer">
+                Source{a.source_title ? `: ${a.source_title}` : ''}
+              </a>
+            )}
+          </div>
         ))}
       </div>
       <div className="card-meta">{pageItems.length} reviews loaded</div>

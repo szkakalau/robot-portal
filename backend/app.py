@@ -35,6 +35,8 @@ class Article(BaseModel):
     category: str
     seo_title: Optional[str] = None
     meta_description: Optional[str] = None
+    source_url: Optional[str] = None
+    source_title: Optional[str] = None
     created_at: Optional[datetime] = None
 
 class NewsItem(BaseModel):
@@ -44,6 +46,7 @@ class NewsItem(BaseModel):
     source: Optional[str] = None
     published_at: Optional[str] = None
     summary: Optional[str] = None
+    summary_en: Optional[str] = None
     category: Optional[str] = None
     lang: Optional[str] = None
     tags: Optional[List[str]] = None
@@ -911,6 +914,10 @@ def _perform_reviews_from_news(limit: Optional[int] = None) -> dict:
                 reasons[str(reason)] = reasons.get(str(reason), 0) + 1
             continue
         art["category"] = "review"
+        source_item = next((n for n in items if (n.title or "").strip() == t), None)
+        if source_item:
+            art["source_url"] = source_item.link
+            art["source_title"] = source_item.title
         slug = (art.get("slug") or "").strip()
         if not slug:
             slug = f"review-{datetime.utcnow().strftime('%Y%m%d')}-{idx}"

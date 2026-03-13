@@ -21,6 +21,8 @@ create table if not exists articles (
   category text not null,
   seo_title text,
   meta_description text,
+  source_url text,
+  source_title text,
   created_at timestamptz default now()
 );
 
@@ -31,15 +33,20 @@ create table if not exists news_sources (
   source text,
   published_at timestamptz,
   summary text,
+  summary_en text,
   category text,
   lang text,
   tags jsonb
 );
 
 alter table if exists news_sources add column if not exists summary text;
+alter table if exists news_sources add column if not exists summary_en text;
 alter table if exists news_sources add column if not exists category text;
 alter table if exists news_sources add column if not exists lang text;
 alter table if exists news_sources add column if not exists tags jsonb;
+
+alter table if exists articles add column if not exists source_url text;
+alter table if exists articles add column if not exists source_title text;
 
 create table if not exists subscriptions (
   id text primary key default gen_random_uuid()::text,
