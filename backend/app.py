@@ -100,7 +100,13 @@ class DataStore:
         self.client: Optional[Client] = None
         self.client_error: Optional[str] = None
         self.client_error_detail: Optional[str] = None
-        if self.supabase_url and self.supabase_key and create_client:
+        if self.supabase_url and not re.match(r"^https://.+\.supabase\.co$", self.supabase_url):
+            self.client_error = "invalid_supabase_url"
+            self.client_error_detail = "url_must_end_with_supabase.co"
+        elif self.supabase_key and not re.match(r"^eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$", self.supabase_key):
+            self.client_error = "invalid_supabase_key"
+            self.client_error_detail = "key_must_be_service_role_jwt"
+        elif self.supabase_url and self.supabase_key and create_client:
             try:
                 self.client = create_client(self.supabase_url, self.supabase_key)
             except Exception as exc:
