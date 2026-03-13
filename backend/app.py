@@ -93,8 +93,10 @@ class EventIn(BaseModel):
 
 class DataStore:
     def __init__(self):
-        self.supabase_url = os.getenv("SUPABASE_URL")
-        self.supabase_key = os.getenv("SUPABASE_KEY")
+        raw_url = os.getenv("SUPABASE_URL") or ""
+        raw_key = os.getenv("SUPABASE_KEY") or ""
+        self.supabase_url = raw_url.strip().rstrip("/") or None
+        self.supabase_key = raw_key.strip() or None
         self.client: Optional[Client] = None
         self.client_error: Optional[str] = None
         self.client_error_detail: Optional[str] = None
@@ -522,6 +524,7 @@ def health_storage():
             "supabase_key_set": bool(store.supabase_key),
             "client_error": store.client_error,
             "client_error_detail": store.client_error_detail,
+            "supabase_url_prefix": (store.supabase_url or "")[:32],
             "counts": {
                 "robots": _table_count("robots"),
                 "articles": _table_count("articles"),
