@@ -43,6 +43,10 @@ class NewsItem(BaseModel):
     link: str
     source: Optional[str] = None
     published_at: Optional[str] = None
+    summary: Optional[str] = None
+    category: Optional[str] = None
+    lang: Optional[str] = None
+    tags: Optional[List[str]] = None
 
 class Subscription(BaseModel):
     id: Optional[str] = None
@@ -390,10 +394,24 @@ class DataStore:
         raise KeyError("not found")
 
     def upsert_news(self, items: List[dict]) -> int:
+        if not items:
+            return 0
         if self.client:
             for batch_start in range(0, len(items), 50):
                 batch = items[batch_start:batch_start+50]
-                self.client.table("news_sources").upsert(batch).execute()
+                try:
+                    self.client.table("news_sources").upsert(batch).execute()
+                except Exception:
+                    minimal = [
+                        {
+                            "title": it.get("title"),
+                            "link": it.get("link"),
+                            "source": it.get("source"),
+                            "published_at": it.get("published_at"),
+                        }
+                        for it in batch
+                    ]
+                    self.client.table("news_sources").upsert(minimal).execute()
             return len(items)
         before = len(self._news)
         for it in items:
@@ -790,6 +808,21 @@ def _perform_daily_safe(article_limit: Optional[int] = None) -> None:
         return
 
 
+def _perform_news_refresh() -> dict:
+    if not run_news_pipeline:
+        raise HTTPException(status_code=503, detail="News pipeline unavailable")
+    items = run_news_pipeline()
+    upserted = store.upsert_news(items)
+    return {"ok": True, "news_upserted": upserted, "news_total": _table_count("news_sources")}
+
+
+def _perform_news_refresh_safe() -> None:
+    try:
+        _perform_news_refresh()
+    except Exception:
+        return
+
+
 def _seed_robots(target_count: Optional[int] = None) -> int:
     if not (build_top200_robot_list and run_robot_pipeline):
         return 0
@@ -874,6 +907,27 @@ def run_daily(
         except Exception as exc:
             return {"ok": False, "error": str(exc)[:200]}
     background_tasks.add_task(_perform_daily_safe, _clamp_int(request.query_params.get("articles"), 5, 1, 10))
+    return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/run-news")
+def run_news(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    if sync:
+        try:
+            return _perform_news_refresh()
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_news_refresh_safe)
     return {"ok": True, "queued": True}
 
 

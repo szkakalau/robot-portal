@@ -29,8 +29,17 @@ create table if not exists news_sources (
   title text not null,
   link text unique not null,
   source text,
-  published_at timestamptz
+  published_at timestamptz,
+  summary text,
+  category text,
+  lang text,
+  tags jsonb
 );
+
+alter table if exists news_sources add column if not exists summary text;
+alter table if exists news_sources add column if not exists category text;
+alter table if exists news_sources add column if not exists lang text;
+alter table if exists news_sources add column if not exists tags jsonb;
 
 create table if not exists subscriptions (
   id text primary key default gen_random_uuid()::text,
