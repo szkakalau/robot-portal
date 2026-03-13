@@ -52,8 +52,8 @@ async function readStaticJSON(filename: string) {
   }
 }
 
-async function fetchJSON(path: string) {
-  const r = await fetch(`${API_BASE}${path}`, { cache: 'no-store' })
+async function fetchJSON(path: string, base: string = API_BASE) {
+  const r = await fetch(`${base}${path}`, { cache: 'no-store' })
   if (!r.ok) throw new Error('API error')
   return r.json()
 }
@@ -61,21 +61,23 @@ async function fetchJSON(path: string) {
 type ArticleFetchOptions = {
   preferApi?: boolean
   ignoreStatic?: boolean
+  apiBaseOverride?: string
 }
 
 export async function getArticles(options: ArticleFetchOptions = {}) {
-  const { preferApi = false, ignoreStatic = false } = options
+  const { preferApi = false, ignoreStatic = false, apiBaseOverride } = options
+  const apiBase = apiBaseOverride || API_BASE
   const staticData = ignoreStatic ? [] : await readStaticJSON('articles.json')
   if (!ignoreStatic && DATA_MODE === 'static') return staticData
   if (preferApi || USE_API_FIRST) {
     try {
-      const data = await fetchJSON('/articles')
+      const data = await fetchJSON('/articles', apiBase)
       if (Array.isArray(data) && data.length > 0) return data
     } catch {}
   }
   if (!ignoreStatic && Array.isArray(staticData) && staticData.length > 0) return staticData
   try {
-    const data = await fetchJSON('/articles')
+    const data = await fetchJSON('/articles', apiBase)
     if (Array.isArray(data) && data.length > 0) return data
   } catch {}
   return staticData

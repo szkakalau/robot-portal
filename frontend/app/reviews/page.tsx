@@ -48,7 +48,11 @@ export async function generateMetadata({ searchParams }: { searchParams?: { page
 }
 
 export default async function ReviewsPage({ searchParams }: { searchParams?: { page?: string } }) {
-  const articles = await getArticles({ preferApi: true, ignoreStatic: true })
+  const articles = await getArticles({
+    preferApi: true,
+    ignoreStatic: true,
+    apiBaseOverride: 'https://robot-portal-api.onrender.com'
+  })
   const reviews = articles.filter((a:any)=>a.category==='review' || a.category==='guide')
   const featured = (reviews.length > 0 ? reviews : articles).slice(0, 6)
   const pageItems = articles
