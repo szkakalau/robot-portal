@@ -88,12 +88,18 @@ def _generated_specs(category: str, rank: int) -> Dict:
     }
 
 
-def build_top200_robot_list() -> List[Dict]:
+def build_top200_robot_list(target_count: int = 200) -> List[Dict]:
     robots: List[Dict] = [dict(item) for item in CURATED_TOP_ROBOTS]
     used_names = {r["name"].lower() for r in robots}
     counts = _current_counts(robots)
+    base_total = sum(CATEGORY_TARGETS.values())
+    target_count = max(base_total, target_count)
+    scale = target_count / base_total
+    targets = {k: max(1, round(v * scale)) for k, v in CATEGORY_TARGETS.items()}
 
-    for category, target in CATEGORY_TARGETS.items():
+    for category, target in targets.items():
+        if counts[category] > target:
+            target = counts[category]
         companies = CATEGORY_COMPANIES[category]
         idx = 1
         while counts[category] < target:

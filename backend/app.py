@@ -790,15 +790,37 @@ def _perform_daily_safe(article_limit: Optional[int] = None) -> None:
         return
 
 
-def _seed_robots() -> int:
+def _seed_robots(target_count: Optional[int] = None) -> int:
     if not (build_top200_robot_list and run_robot_pipeline):
         return 0
-    robots_seed = build_top200_robot_list()
+    target = _clamp_int(
+        str(target_count) if target_count is not None else os.getenv("ROBOT_TARGET_COUNT"),
+        200,
+        50,
+        1000,
+    )
+    robots_seed = build_top200_robot_list(target)
     for r in robots_seed:
         robo = run_robot_pipeline(r)
         if not store.has_robot_name(robo.get("name", "")):
             store.upsert_robot(robo)
     return len(robots_seed)
+
+
+def _perform_robot_enrichment(target_count: Optional[int] = None) -> dict:
+    seeded = _seed_robots(target_count)
+    return {
+        "ok": True,
+        "robots_seeded": seeded,
+        "robots_total": _table_count("robots"),
+    }
+
+
+def _perform_robot_enrichment_safe(target_count: Optional[int] = None) -> None:
+    try:
+        _perform_robot_enrichment(target_count)
+    except Exception:
+        return
 
 
 def _build_digest_payload(limit: int = 6) -> dict:
@@ -888,8 +910,30 @@ def seed_robots(
         query_token = request.query_params.get("token")
         if x_task_token != secret and query_token != secret:
             raise HTTPException(status_code=403, detail="Forbidden")
-    seeded = _seed_robots()
+    seeded = _seed_robots(_clamp_int(request.query_params.get("target"), 200, 50, 1000))
     return {"ok": True, "robots_seeded": seeded}
+
+
+@app.post("/tasks/run-robots")
+def run_robots(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    target = _clamp_int(request.query_params.get("target"), 200, 50, 1000)
+    if sync:
+        try:
+            return _perform_robot_enrichment(target)
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_robot_enrichment_safe, target)
+    return {"ok": True, "queued": True}
 
 
 @app.post("/tasks/cleanup-seed")
