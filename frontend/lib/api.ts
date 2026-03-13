@@ -92,7 +92,16 @@ type RobotFilters = {
   limit?: string | number
 }
 
-export async function getRobots(filters: RobotFilters = {}) {
+type RobotFetchOptions = {
+  preferApi?: boolean
+  ignoreStatic?: boolean
+  apiBaseOverride?: string
+}
+
+export async function getRobots(filters: RobotFilters = {}, options: RobotFetchOptions = {}) {
+  const preferApi = options.preferApi ?? false
+  const ignoreStatic = options.ignoreStatic ?? false
+  const apiBase = options.apiBaseOverride || API_BASE
   const applyFilters = (robots: any[]) => {
     const q = `${filters.q || ''}`.toLowerCase().trim()
     const category = `${filters.category || ''}`.toLowerCase().trim()
@@ -110,27 +119,27 @@ export async function getRobots(filters: RobotFilters = {}) {
     const limit = filters.limit ? Math.max(1, Math.min(500, Number(filters.limit))) : 200
     return filtered.slice(0, limit)
   }
-  const staticRobots = await readStaticJSON('robots.json')
-  if (DATA_MODE === 'static') return applyFilters(staticRobots || [])
-  if (USE_API_FIRST) {
+  const staticRobots = ignoreStatic ? [] : await readStaticJSON('robots.json')
+  if (!ignoreStatic && DATA_MODE === 'static') return applyFilters(staticRobots || [])
+  if (preferApi || USE_API_FIRST) {
     const qs = new URLSearchParams()
     Object.entries(filters).forEach(([k, v]) => {
       if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
     })
     const query = qs.toString()
     try {
-      const data = await fetchJSON(query ? `/robots?${query}` : '/robots')
+      const data = await fetchJSON(query ? `/robots?${query}` : '/robots', apiBase)
       if (Array.isArray(data) && data.length > 0) return data
     } catch {}
   }
-  if (Array.isArray(staticRobots) && staticRobots.length > 0) return applyFilters(staticRobots)
+  if (!ignoreStatic && Array.isArray(staticRobots) && staticRobots.length > 0) return applyFilters(staticRobots)
   const qs = new URLSearchParams()
   Object.entries(filters).forEach(([k, v]) => {
     if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
   })
   const query = qs.toString()
   try {
-    const data = await fetchJSON(query ? `/robots?${query}` : '/robots')
+    const data = await fetchJSON(query ? `/robots?${query}` : '/robots', apiBase)
     if (Array.isArray(data) && data.length > 0) return data
   } catch {}
   return applyFilters(staticRobots || [])

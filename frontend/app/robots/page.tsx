@@ -72,7 +72,11 @@ export default async function RobotsPage({ searchParams }: { searchParams?: Sear
     max_price: searchParams?.max_price || '',
     limit: 500
   }
-  const robots = await getRobots(filters)
+  const robots = await getRobots(filters, {
+    preferApi: true,
+    ignoreStatic: true,
+    apiBaseOverride: 'https://robot-portal-api.onrender.com'
+  })
   const filtered = robots.filter((robot: any) => {
     const price = Number(robot.price)
     if (priceBand === 'under-1000' && (!(price >= 0) || price >= 1000)) return false

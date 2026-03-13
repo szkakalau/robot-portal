@@ -461,6 +461,7 @@ store = DataStore()
 app = FastAPI(title="Robot Portal API")
 auto_seeded = False
 auto_articles_seeded = False
+auto_seeded_db = False
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [o.strip() for o in allowed_origins.split(",")] if allowed_origins else ["*"]
@@ -630,6 +631,10 @@ def robots(
     limit: int = 200,
 ):
     global auto_seeded
+    global auto_seeded_db
+    if store.client and not auto_seeded_db and build_top200_robot_list and run_robot_pipeline:
+        auto_seeded_db = True
+        _seed_robots()
     if not store.client and not auto_seeded and build_top200_robot_list and run_robot_pipeline:
         auto_seeded = True
         robots_seed = build_top200_robot_list()
