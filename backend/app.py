@@ -697,18 +697,23 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
     items = run_news_pipeline()
     news_upserted = store.upsert_news(items)
     limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 10, 1, 10)
-    topics = [it.get("title", "") for it in items[:limit] if it.get("title")]
-    if len(topics) < limit:
-        for topic in _fallback_topics(limit):
-            if len(topics) >= limit:
+    attempt_mult = _clamp_int(os.getenv("DAILY_ARTICLE_ATTEMPT_MULT", "3"), 6, 1, 6)
+    max_attempts = max(limit, limit * attempt_mult)
+    topics = [it.get("title", "") for it in items if it.get("title")]
+    if len(topics) < max_attempts:
+        for topic in _fallback_topics(max_attempts):
+            if len(topics) >= max_attempts:
                 break
             if topic not in topics:
                 topics.append(topic)
-    attempted = len(topics)
+    attempted = 0
     succeeded = 0
     failed = 0
     failure_reasons: Dict[str, int] = {}
     for idx, t in enumerate(topics, start=1):
+        if attempted >= max_attempts or succeeded >= limit:
+            break
+        attempted += 1
         report = None
         if run_article_pipeline_with_report:
             art, report = run_article_pipeline_with_report(t)
@@ -744,9 +749,11 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
     return {
         "ok": True,
         "news_upserted": news_upserted,
+        "articles_target": limit,
         "articles_attempted": attempted,
         "articles_succeeded": succeeded,
         "articles_failed": failed,
+        "articles_shortfall": max(0, limit - succeeded),
         "article_success_rate": round(success_rate, 3),
         "article_failure_reasons": top_failures,
         "robots_seeded": robots_seeded,
