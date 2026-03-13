@@ -70,7 +70,7 @@ export default async function NewsPage({ searchParams }: { searchParams?: { page
             <a className="card" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
               <div className="chip">{n.source || 'Newswire'}</div>
               <h3 className="card-title">{n.title}</h3>
-              <p className="card-description">Read at source →</p>
+              <p className="card-description">{n.summary || 'Read at source →'}</p>
             </a>
           ))}
         </div>
@@ -80,7 +80,7 @@ export default async function NewsPage({ searchParams }: { searchParams?: { page
           <a className="data-item" key={n.link} href={n.link} target="_blank" rel="noopener noreferrer">
             <div className="data-meta">{n.source || 'Newswire'}</div>
             <h2 className="data-title">{n.title}</h2>
-            <div className="data-link">Read at source</div>
+            <div className="data-link">{n.summary || 'Read at source'}</div>
           </a>
         ))}
       </div>

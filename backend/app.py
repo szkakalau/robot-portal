@@ -495,7 +495,7 @@ try:
     from ai_system.pipelines.news_pipeline import run_news_pipeline
     from ai_system.pipelines.article_pipeline import run_article_pipeline, validate_article, run_article_pipeline_with_report
     from ai_system.pipelines.robot_pipeline import run_robot_pipeline
-    from ai_system.data.top200_robots import build_top200_robot_list
+    from ai_system.data.top200_robots import build_top200_robot_list, CATEGORY_COMPANIES
 except Exception:
     run_news_pipeline = None
     run_article_pipeline = None
@@ -503,6 +503,21 @@ except Exception:
     run_article_pipeline_with_report = None
     run_robot_pipeline = None
     build_top200_robot_list = None
+    CATEGORY_COMPANIES = {}
+
+HIGH_WEIGHT_SOURCES = {
+    "IEEE Spectrum Robotics",
+    "The Robot Report",
+    "Robotics Business Review",
+    "Robohub",
+    "Singularity Hub Robotics",
+    "MIT News Robotics",
+    "IEEE T-RO",
+    "IEEE RAM",
+    "arXiv cs.RO",
+    "arXiv cs.AI",
+    "机器之心",
+}
 
 @app.get("/health")
 def health():
@@ -808,6 +823,45 @@ def _perform_daily_safe(article_limit: Optional[int] = None) -> None:
         return
 
 
+def _company_names() -> List[str]:
+    names: List[str] = []
+    for _, companies in (CATEGORY_COMPANIES or {}).items():
+        names.extend(companies)
+    return list(dict.fromkeys([n for n in names if n]))
+
+
+def _guess_robot_from_title(title: str, companies: List[str]) -> Optional[dict]:
+    if not title:
+        return None
+    lowered = title.lower()
+    if "robot" not in lowered and not any(c.lower() in lowered for c in companies):
+        return None
+    core = title.split(":")[0].strip()
+    tokens = re.findall(r"[A-Za-z0-9][A-Za-z0-9\-]+", core)
+    if len(tokens) < 2:
+        return None
+    candidate = " ".join(tokens[:4]).strip()
+    company = None
+    for c in companies:
+        if c.lower() in lowered:
+            company = c
+            break
+    return {
+        "name": candidate[:80],
+        "company": company,
+        "category": "robot",
+        "description": core[:160],
+        "specs": {"source": "rss"},
+    }
+
+
+def _is_high_weight_news(item: NewsItem) -> bool:
+    source = (item.source or "").strip()
+    if source in HIGH_WEIGHT_SOURCES:
+        return True
+    return False
+
+
 def _perform_news_refresh() -> dict:
     if not run_news_pipeline:
         raise HTTPException(status_code=503, detail="News pipeline unavailable")
@@ -819,6 +873,115 @@ def _perform_news_refresh() -> dict:
 def _perform_news_refresh_safe() -> None:
     try:
         _perform_news_refresh()
+    except Exception:
+        return
+
+
+def _perform_reviews_from_news(limit: Optional[int] = None) -> dict:
+    if not (run_article_pipeline and run_article_pipeline_with_report):
+        raise HTTPException(status_code=503, detail="Article pipeline unavailable")
+    target = _clamp_int(str(limit) if limit is not None else os.getenv("NEWS_REVIEW_LIMIT"), 3, 1, 6)
+    items = store.get_news()
+    topics: List[str] = []
+    seen = set()
+    for n in items:
+        if not _is_high_weight_news(n):
+            continue
+        title = (n.title or "").strip()
+        if not title:
+            continue
+        key = title.lower()
+        if key in seen:
+            continue
+        topics.append(title)
+        seen.add(key)
+        if len(topics) >= target:
+            break
+    attempted = 0
+    succeeded = 0
+    failed = 0
+    reasons: Dict[str, int] = {}
+    for idx, t in enumerate(topics, start=1):
+        attempted += 1
+        topic = f"{t} implications for robotics"
+        art, report = run_article_pipeline_with_report(topic)
+        if isinstance(report, dict) and not report.get("ok", True) and not report.get("skipped_validation"):
+            failed += 1
+            for reason in (report.get("reasons") or [])[:8]:
+                reasons[str(reason)] = reasons.get(str(reason), 0) + 1
+            continue
+        art["category"] = "review"
+        slug = (art.get("slug") or "").strip()
+        if not slug:
+            slug = f"review-{datetime.utcnow().strftime('%Y%m%d')}-{idx}"
+            art["slug"] = slug
+        if store.has_article_slug(slug):
+            failed += 1
+            reasons["duplicate_slug"] = reasons.get("duplicate_slug", 0) + 1
+            continue
+        store.upsert_article(art)
+        succeeded += 1
+    return {
+        "ok": True,
+        "reviews_target": target,
+        "reviews_attempted": attempted,
+        "reviews_succeeded": succeeded,
+        "reviews_failed": failed,
+        "review_failure_reasons": sorted(reasons.items(), key=lambda it: it[1], reverse=True)[:8],
+    }
+
+
+def _perform_reviews_from_news_safe(limit: Optional[int] = None) -> None:
+    try:
+        _perform_reviews_from_news(limit)
+    except Exception:
+        return
+
+
+def _perform_robot_associations(limit: Optional[int] = None) -> dict:
+    items = store.get_news()
+    robots = store.get_robots(limit=500)
+    by_name = {r.name.lower(): r for r in robots if r.name}
+    companies = _company_names()
+    updated = 0
+    created = 0
+    for n in items[: max(10, min(len(items), 200))]:
+        title = (n.title or "").strip()
+        link = n.link or ""
+        lower = title.lower()
+        matched = False
+        for name, robot in by_name.items():
+            if name and name in lower:
+                specs = robot.specs or {}
+                mentions = list(specs.get("mention_links") or [])
+                if link and link not in mentions:
+                    mentions = [link] + mentions[:4]
+                    specs["mention_count"] = int(specs.get("mention_count") or 0) + 1
+                specs["mention_links"] = mentions[:5]
+                specs["last_mentioned_at"] = n.published_at or datetime.utcnow().isoformat()
+                data = robot.dict()
+                data["specs"] = specs
+                store.upsert_robot(data)
+                updated += 1
+                matched = True
+                break
+        if matched:
+            continue
+        candidate = _guess_robot_from_title(title, companies)
+        if not candidate:
+            continue
+        name = candidate.get("name", "")
+        if not name or store.has_robot_name(name):
+            continue
+        store.upsert_robot(candidate)
+        by_name[name.lower()] = Robot(**candidate)
+        created += 1
+    return {"ok": True, "robots_updated": updated, "robots_created": created}
+
+
+def _perform_robot_associations_safe(limit: Optional[int] = None) -> None:
+    try:
+        _perform_robot_associations(limit)
     except Exception:
         return
 
@@ -928,6 +1091,75 @@ def run_news(
         except Exception as exc:
             return {"ok": False, "error": str(exc)[:200]}
     background_tasks.add_task(_perform_news_refresh_safe)
+    return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/run-reviews-from-news")
+def run_reviews_from_news(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    limit = _clamp_int(request.query_params.get("limit"), 3, 1, 6)
+    if sync:
+        try:
+            return _perform_reviews_from_news(limit)
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_reviews_from_news_safe, limit)
+    return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/run-robot-associations")
+def run_robot_associations(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    if sync:
+        try:
+            return _perform_robot_associations()
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_robot_associations_safe)
+    return {"ok": True, "queued": True}
+
+
+@app.post("/tasks/run-rss-cycle")
+def run_rss_cycle(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    x_task_token: Optional[str] = Header(default=None, alias="X-Task-Token"),
+):
+    secret = os.getenv("TASK_TOKEN")
+    if secret:
+        query_token = request.query_params.get("token")
+        if x_task_token != secret and query_token != secret:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    sync = request.query_params.get("sync") == "1"
+    if sync:
+        try:
+            news = _perform_news_refresh()
+            reviews = _perform_reviews_from_news()
+            robots = _perform_robot_associations()
+            return {"ok": True, "news": news, "reviews": reviews, "robots": robots}
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_news_refresh_safe)
+    background_tasks.add_task(_perform_reviews_from_news_safe, None)
+    background_tasks.add_task(_perform_robot_associations_safe, None)
     return {"ok": True, "queued": True}
 
 
