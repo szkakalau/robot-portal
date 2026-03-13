@@ -97,12 +97,14 @@ class DataStore:
         self.supabase_key = os.getenv("SUPABASE_KEY")
         self.client: Optional[Client] = None
         self.client_error: Optional[str] = None
+        self.client_error_detail: Optional[str] = None
         if self.supabase_url and self.supabase_key and create_client:
             try:
                 self.client = create_client(self.supabase_url, self.supabase_key)
-            except Exception:
+            except Exception as exc:
                 self.client = None
                 self.client_error = "create_client_failed"
+                self.client_error_detail = type(exc).__name__
         elif self.supabase_url and not self.supabase_key:
             self.client_error = "missing_supabase_key"
         elif self.supabase_key and not self.supabase_url:
@@ -519,6 +521,7 @@ def health_storage():
             "supabase_url_set": bool(store.supabase_url),
             "supabase_key_set": bool(store.supabase_key),
             "client_error": store.client_error,
+            "client_error_detail": store.client_error_detail,
             "counts": {
                 "robots": _table_count("robots"),
                 "articles": _table_count("articles"),
