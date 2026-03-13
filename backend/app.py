@@ -694,8 +694,17 @@ def _fallback_topics(limit: int) -> List[str]:
 def _perform_daily(article_limit: Optional[int] = None) -> dict:
     if not (run_news_pipeline and run_article_pipeline and run_robot_pipeline):
         raise HTTPException(status_code=503, detail="Pipelines unavailable")
-    items = run_news_pipeline()
-    news_upserted = store.upsert_news(items)
+    errors: List[str] = []
+    try:
+        items = run_news_pipeline()
+    except Exception as exc:
+        items = []
+        errors.append(f"news_pipeline:{type(exc).__name__}")
+    try:
+        news_upserted = store.upsert_news(items)
+    except Exception as exc:
+        news_upserted = 0
+        errors.append(f"news_upsert:{type(exc).__name__}")
     limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 10, 1, 10)
     attempt_mult = _clamp_int(os.getenv("DAILY_ARTICLE_ATTEMPT_MULT", "3"), 6, 1, 6)
     max_attempts = max(limit, limit * attempt_mult)
@@ -731,19 +740,27 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
         if not slug:
             slug = f"article-{datetime.utcnow().strftime('%Y%m%d')}-{idx}"
             art["slug"] = slug
-        if store.has_article_slug(slug):
-            date_tag = datetime.utcnow().strftime("%Y%m%d")
-            attempt = 1
-            new_slug = f"{slug}-{date_tag}-{attempt}"
-            while store.has_article_slug(new_slug):
-                attempt += 1
+        try:
+            if store.has_article_slug(slug):
+                date_tag = datetime.utcnow().strftime("%Y%m%d")
+                attempt = 1
                 new_slug = f"{slug}-{date_tag}-{attempt}"
-            art["slug"] = new_slug
-            slug = new_slug
-        if not store.has_article_slug(slug):
-            store.upsert_article(art)
-            succeeded += 1
-    robots_seeded = _seed_robots()
+                while store.has_article_slug(new_slug):
+                    attempt += 1
+                    new_slug = f"{slug}-{date_tag}-{attempt}"
+                art["slug"] = new_slug
+                slug = new_slug
+            if not store.has_article_slug(slug):
+                store.upsert_article(art)
+                succeeded += 1
+        except Exception as exc:
+            failed += 1
+            errors.append(f"article_upsert:{type(exc).__name__}")
+    try:
+        robots_seeded = _seed_robots()
+    except Exception as exc:
+        robots_seeded = 0
+        errors.append(f"robots_seed:{type(exc).__name__}")
     success_rate = (succeeded / attempted) if attempted else 1.0
     top_failures = sorted(failure_reasons.items(), key=lambda it: it[1], reverse=True)[:8]
     return {
@@ -757,7 +774,15 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
         "article_success_rate": round(success_rate, 3),
         "article_failure_reasons": top_failures,
         "robots_seeded": robots_seeded,
+        "errors": errors[:10],
     }
+
+
+def _perform_daily_safe(article_limit: Optional[int] = None) -> None:
+    try:
+        _perform_daily(article_limit)
+    except Exception:
+        return
 
 
 def _seed_robots() -> int:
@@ -817,8 +842,11 @@ def run_daily(
             raise HTTPException(status_code=403, detail="Forbidden")
     sync = request.query_params.get("sync") == "1"
     if sync:
-        return _perform_daily(_clamp_int(request.query_params.get("articles"), 5, 1, 10))
-    background_tasks.add_task(_perform_daily, _clamp_int(request.query_params.get("articles"), 5, 1, 10))
+        try:
+            return _perform_daily(_clamp_int(request.query_params.get("articles"), 5, 1, 10))
+        except Exception as exc:
+            return {"ok": False, "error": str(exc)[:200]}
+    background_tasks.add_task(_perform_daily_safe, _clamp_int(request.query_params.get("articles"), 5, 1, 10))
     return {"ok": True, "queued": True}
 
 
