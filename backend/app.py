@@ -706,7 +706,7 @@ def _perform_daily(article_limit: Optional[int] = None) -> dict:
         news_upserted = 0
         errors.append(f"news_upsert:{type(exc).__name__}")
     limit = _clamp_int(str(article_limit) if article_limit is not None else os.getenv("DAILY_ARTICLE_LIMIT"), 10, 1, 10)
-    attempt_mult = _clamp_int(os.getenv("DAILY_ARTICLE_ATTEMPT_MULT", "3"), 6, 1, 6)
+    attempt_mult = _clamp_int(os.getenv("DAILY_ARTICLE_ATTEMPT_MULT", "4"), 6, 1, 6)
     max_attempts = max(limit, limit * attempt_mult)
     topics = [it.get("title", "") for it in items if it.get("title")]
     if len(topics) < max_attempts:
