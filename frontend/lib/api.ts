@@ -1,5 +1,6 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE || ''
+const USE_API_FIRST = DATA_MODE === 'api' || (DATA_MODE !== 'static' && API_BASE && !API_BASE.includes('localhost'))
 
 async function getSiteUrl() {
   const site = process.env.NEXT_PUBLIC_SITE_URL
@@ -48,8 +49,14 @@ async function fetchJSON(path: string) {
 
 export async function getArticles() {
   const staticData = await readStaticJSON('articles.json')
-  if (Array.isArray(staticData) && staticData.length > 0) return staticData
   if (DATA_MODE === 'static') return staticData
+  if (USE_API_FIRST) {
+    try {
+      const data = await fetchJSON('/articles')
+      if (Array.isArray(data) && data.length > 0) return data
+    } catch {}
+  }
+  if (Array.isArray(staticData) && staticData.length > 0) return staticData
   try {
     const data = await fetchJSON('/articles')
     if (Array.isArray(data) && data.length > 0) return data
@@ -85,8 +92,19 @@ export async function getRobots(filters: RobotFilters = {}) {
     return filtered.slice(0, limit)
   }
   const staticRobots = await readStaticJSON('robots.json')
-  if (Array.isArray(staticRobots) && staticRobots.length > 0) return applyFilters(staticRobots)
   if (DATA_MODE === 'static') return applyFilters(staticRobots || [])
+  if (USE_API_FIRST) {
+    const qs = new URLSearchParams()
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
+    })
+    const query = qs.toString()
+    try {
+      const data = await fetchJSON(query ? `/robots?${query}` : '/robots')
+      if (Array.isArray(data) && data.length > 0) return data
+    } catch {}
+  }
+  if (Array.isArray(staticRobots) && staticRobots.length > 0) return applyFilters(staticRobots)
   const qs = new URLSearchParams()
   Object.entries(filters).forEach(([k, v]) => {
     if (v !== undefined && v !== null && `${v}`.trim() !== '') qs.set(k, `${v}`)
@@ -101,8 +119,14 @@ export async function getRobots(filters: RobotFilters = {}) {
 
 export async function getNews() {
   const staticData = await readStaticJSON('news.json')
-  if (Array.isArray(staticData) && staticData.length > 0) return staticData
   if (DATA_MODE === 'static') return staticData
+  if (USE_API_FIRST) {
+    try {
+      const data = await fetchJSON('/news')
+      if (Array.isArray(data) && data.length > 0) return data
+    } catch {}
+  }
+  if (Array.isArray(staticData) && staticData.length > 0) return staticData
   try {
     const data = await fetchJSON('/news')
     if (Array.isArray(data) && data.length > 0) return data
@@ -118,9 +142,14 @@ export async function getArticle(slug: string) {
     return match
   }
   const staticArticles = await readStaticJSON('articles.json')
+  if (DATA_MODE === 'static') return fromStatic(staticArticles)
+  if (USE_API_FIRST) {
+    try {
+      return await fetchJSON(`/article/${slug}`)
+    } catch {}
+  }
   const staticMatch = (staticArticles || []).find((a: any) => a.slug === slug)
   if (staticMatch) return staticMatch
-  if (DATA_MODE === 'static') return fromStatic(staticArticles)
   try {
     return await fetchJSON(`/article/${slug}`)
   } catch {
