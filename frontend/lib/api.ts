@@ -58,16 +58,22 @@ async function fetchJSON(path: string) {
   return r.json()
 }
 
-export async function getArticles() {
-  const staticData = await readStaticJSON('articles.json')
-  if (DATA_MODE === 'static') return staticData
-  if (USE_API_FIRST) {
+type ArticleFetchOptions = {
+  preferApi?: boolean
+  ignoreStatic?: boolean
+}
+
+export async function getArticles(options: ArticleFetchOptions = {}) {
+  const { preferApi = false, ignoreStatic = false } = options
+  const staticData = ignoreStatic ? [] : await readStaticJSON('articles.json')
+  if (!ignoreStatic && DATA_MODE === 'static') return staticData
+  if (preferApi || USE_API_FIRST) {
     try {
       const data = await fetchJSON('/articles')
       if (Array.isArray(data) && data.length > 0) return data
     } catch {}
   }
-  if (Array.isArray(staticData) && staticData.length > 0) return staticData
+  if (!ignoreStatic && Array.isArray(staticData) && staticData.length > 0) return staticData
   try {
     const data = await fetchJSON('/articles')
     if (Array.isArray(data) && data.length > 0) return data
