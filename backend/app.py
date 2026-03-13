@@ -97,6 +97,12 @@ class DataStore:
         raw_key = os.getenv("SUPABASE_KEY") or ""
         self.supabase_url = raw_url.strip().rstrip("/") or None
         self.supabase_key = raw_key.strip() or None
+        self.supabase_url_len = len(self.supabase_url or "")
+        self.supabase_key_len = len(self.supabase_key or "")
+        self.supabase_url_has_space = any(ch.isspace() for ch in (self.supabase_url or ""))
+        self.supabase_key_has_space = any(ch.isspace() for ch in (self.supabase_key or ""))
+        self.supabase_key_ascii = all(ord(ch) < 128 for ch in (self.supabase_key or ""))
+        self.supabase_key_hash_prefix = hashlib.sha256((self.supabase_key or "").encode("utf-8", errors="ignore")).hexdigest()[:8] if self.supabase_key else None
         self.client: Optional[Client] = None
         self.client_error: Optional[str] = None
         self.client_error_detail: Optional[str] = None
@@ -113,6 +119,7 @@ class DataStore:
                 self.client = None
                 self.client_error = "create_client_failed"
                 self.client_error_detail = type(exc).__name__
+                self.client_error_message = str(exc)[:120]
         elif self.supabase_url and not self.supabase_key:
             self.client_error = "missing_supabase_key"
         elif self.supabase_key and not self.supabase_url:
@@ -531,6 +538,13 @@ def health_storage():
             "client_error": store.client_error,
             "client_error_detail": store.client_error_detail,
             "supabase_url_prefix": (store.supabase_url or "")[:32],
+            "supabase_url_len": store.supabase_url_len,
+            "supabase_key_len": store.supabase_key_len,
+            "supabase_url_has_space": store.supabase_url_has_space,
+            "supabase_key_has_space": store.supabase_key_has_space,
+            "supabase_key_ascii": store.supabase_key_ascii,
+            "supabase_key_hash_prefix": store.supabase_key_hash_prefix,
+            "client_error_message": getattr(store, "client_error_message", None),
             "counts": {
                 "robots": _table_count("robots"),
                 "articles": _table_count("articles"),
