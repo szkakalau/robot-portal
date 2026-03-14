@@ -90,6 +90,21 @@ npm run dev
 3. 工作流会每天触发 `POST /tasks/run-daily`
 4. 也可在 Actions 页面手动点击 `Run workflow`
 
+验证日更与前端能否显示：
+
+- 在仓库根目录（即含 `scripts/` 的目录）执行：
+  ```bash
+  # 仅检查线上 API 是否有数据
+  API_BASE=https://你的后端.onrender.com python3 scripts/verify_daily_and_frontend.py
+
+  # 导出静态数据到 frontend/public/data（与 Actions 日更后导出一致）
+  API_BASE=https://你的后端.onrender.com python3 scripts/verify_daily_and_frontend.py --export
+
+  # 先触发一次日更再检查（需配置 TASK_TOKEN）
+  TASK_TOKEN=xxx API_BASE=https://你的后端.onrender.com python3 scripts/verify_daily_and_frontend.py --run-daily
+  ```
+- 通过则说明：API 可读、可选导出的静态文件写入成功，前端会优先用 API、失败时用静态 JSON，能实现日更且前端可显示。
+
 使用蓝图一键部署（推荐）：
 
 1. Render Dashboard → Blueprints → New Blueprint
