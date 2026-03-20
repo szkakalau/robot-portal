@@ -44,5 +44,3 @@ services:
         fromService: robot-portal-api
       - key: TASK_TOKEN
         fromService: robot-portal-api
-      - key: API_BASE
-        value: "https://robot-portal-api.onrender.com"

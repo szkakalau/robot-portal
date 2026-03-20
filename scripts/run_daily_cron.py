@@ -1,37 +1,33 @@
 #!/usr/bin/env python3
 """
-Daily cron job script - runs on Render Free Cron.
-Calls the local running API to trigger daily article refresh.
-Falls back to direct pipeline execution if API is not reachable.
+Daily cron job script - runs inside the cron container on Render.
+直接导入 ai_system pipeline 执行，不依赖外部 HTTP call。
 """
-import os, sys, urllib.request, json
+import os, sys
 
-API_BASE = os.getenv("API_BASE", "https://robot-portal-api.onrender.com")
-TASK_TOKEN = os.getenv("TASK_TOKEN", "")
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(BACKEND_DIR, '..'))
+
+from ai_system.pipelines.article_pipeline import run_article_pipeline
+
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 
 def main():
-    url = f"{API_BASE}/tasks/run-daily?articles=5"
-    req = urllib.request.Request(url, method="POST")
-    req.add_header("Content-Type", "application/json")
-    if TASK_TOKEN:
-        req.add_header("X-Task-Token", TASK_TOKEN)
-
+    print("Starting daily article refresh...")
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            body = resp.read()
-            result = json.loads(body)
-            print("Daily refresh result:", json.dumps(result))
-            return 0
+        result = run_article_pipeline(
+            article_count=5,
+            deepseek_api_key=DEEPSEEK_API_KEY,
+            supabase_url=SUPABASE_URL,
+            supabase_key=SUPABASE_KEY,
+        )
+        print("Result:", result)
+        return 0
     except Exception as exc:
-        print("API call failed, trying direct pipeline:", exc)
-        try:
-            from ai_system.pipelines.article_pipeline import run_article_pipeline
-            result = run_article_pipeline(article_count=5)
-            print("Direct pipeline result:", json.dumps(result))
-            return 0
-        except Exception as exc2:
-            print("Direct pipeline also failed:", exc2)
-            return 1
+        print("Error:", exc)
+        return 1
 
 if __name__ == "__main__":
     sys.exit(main())
