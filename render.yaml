@@ -19,3 +19,30 @@ services:
         sync: false
       - key: TASK_TOKEN
         sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+
+  - type: cron
+    name: daily-article-refresh
+    schedule: "0 0 * * *"
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python3 scripts/run_daily_cron.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: DEEPSEEK_API_KEY
+        fromService: robot-portal-api
+      - key: DEEPSEEK_API_BASE
+        fromService: robot-portal-api
+      - key: DEEPSEEK_MODEL
+        fromService: robot-portal-api
+      - key: SUPABASE_URL
+        fromService: robot-portal-api
+      - key: SUPABASE_KEY
+        fromService: robot-portal-api
+      - key: TASK_TOKEN
+        fromService: robot-portal-api
+      - key: API_BASE
+        value: "https://robot-portal-api.onrender.com"
